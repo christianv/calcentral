@@ -847,7 +847,7 @@ var calcentral = calcentral || {};
 			// Append department siblings to left-hand nav
 
 			data.pages = $.map(data.departments, function(val, i) {
-				url = "/classlist.jsp?college=" + data.college.slug + "&dept=" + val.key;
+				url = "/classlist.jsp?college=" + data.college.slug + "&dept=" + encodeURIComponent(val.key);
 				return {'title': val.title, 'url': url};
 			});
 
@@ -872,7 +872,7 @@ var calcentral = calcentral || {};
 		// We'll always have college= in the URL, plus dept= if this is a department listing
 		url = '/api/classList/' + college;
 		if (dept) {
-			url += '/' + dept;
+			url += '/' + encodeURIComponent(dept);
 		}
 
 		return $.ajax({
