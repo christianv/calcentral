@@ -30,8 +30,8 @@
 			"source": "Student Billing Services",
 			"type": "block",
 			"notificationDate": 1348185901,
-			"url": "https://studentbilling.berkeley.edu",
-			"sourceUrl": "https://studentbilling.berkeley.edu"
+			"url": "http://studentbilling.berkeley.edu/",
+			"sourceUrl": "http://studentbilling.berkeley.edu/"
 		},
 		{
 			"id": 4,
