@@ -6,10 +6,10 @@
   /**
    * CalCentral module
    */
-  var calcentral = angular.module('calcentral', []);
+  var calcentral = angular.module('calcentral', [])
 
   // Set the configuration
-  calcentral.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+  .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     // We set it to html5 mode so we don't have hash bang URLs
     $locationProvider.html5Mode(true).hashPrefix('!');
 
@@ -22,10 +22,6 @@
       templateUrl: 'templates/dashboard.html',
       controller: 'DashboardController'
     }).
-    when('/profile', {
-      templateUrl: 'templates/profile.html',
-      controller: 'ProfileController'
-    }).
 
     // Redirect to a 404 page
     otherwise({
@@ -33,9 +29,9 @@
       controller: 'ErrorController'
     });
 
-    }]
-  );
+  }]);
 
-  // Hello calcentral
+  // Initialize calcentral
   window.calcentral = calcentral;
+
 })(window);
