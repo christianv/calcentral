@@ -173,6 +173,9 @@
               <div class="cc-widget-tasks-notifications-list-source"><a data-ng-href="{{notification.source_url}}">{{notification.source}}</a></div>
             </li>
           </ul>
+          <div ng-show="!section.notifications.length" class="cc-widget-text">
+            There are currently no notifications available for this section.
+          </div>
         </div>
       </div>
     </div>

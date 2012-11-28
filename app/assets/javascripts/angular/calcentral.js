@@ -22,7 +22,8 @@
     }).
     when('/dashboard', {
       templateUrl: 'templates/dashboard.html',
-      controller: 'DashboardController'
+      controller: 'DashboardController',
+      isPublic: true
     }).
     when('/profile', {
       templateUrl: 'templates/profile.html',
