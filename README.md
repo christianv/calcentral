@@ -61,7 +61,7 @@ cd calcentral
 ```bash
 export JRUBY_OPTS="-Xcext.enabled=true -J-d32 -J-client -X-C"
 ```
-  * __WARNING__: Do switch between 32-bit and 64-bit JRuby after your gemset has been initialized (your bundle library will have serious issues). If you do need to change settings, make sure to reinitialize your gemset:
+  * __WARNING__: Do not switch between 32-bit and 64-bit JRuby after your gemset has been initialized (your bundle library will have serious issues). If you do need to change settings, make sure to reinitialize your gemset:
      * ```rvm gemset delete calcentral```
      * (set your JRUBY_OPTS)
      * ```bundle install```
@@ -73,12 +73,14 @@ bundle install
 
 8. Copy and update the settings
 ```
-cp config/settings.yml config/settings.local.yml
-cp config/settings/testext.yml config/settings/testext.local.yml
-cp config/settings/development.yml config/settings/development.local.yml
+mkdir ~/.calcentral_config
+cp config/settings.yml ~/.calcentral_config/settings.local.yml
+cp config/settings/testext.yml ~/.calcentral_config/testext.local.yml
+cp config/settings/development.yml ~/.calcentral_config/development.local.yml
+cp config/settings/production.yml ~/.calcentral_config/production.local.yml
 ```
 and update the settings in the `.local.yml` files.
-These won't be committed to the repository.
+Settings live outside of the project dir to prevent accidental commits to the repo.
 
 9. Install JDBC driver (for Oracle connection)
 You may already have an Oracle driver from MyBerkeley-OAE development, in which case you just need to copy it to your local JRuby installation:
@@ -159,24 +161,6 @@ If you use VPN, use group #1 (1-Campus_VPN)
 ```html
 <div data-ng-view></div>
 <span data-ng-bind="name"></span>
-```
-
-## API Endpoints:
-
-Projected endpoints:
-
-* ``` /api/my/status ```
-* ``` /api/my/course_sites ```
-* ``` /api/my/group_sites ```
-* ``` /api/my/upcoming_events ```
-* ``` /api/my/assignments_tasks ```
-
-```
-/api/my/status :
-  is_logged_in: <boolean>
-  preferred_name: <string if exists else "">
-  uid: <string uid if logged in>
-  widget_data: <object>
 ```
 
 ## Freshening fake data feeds
