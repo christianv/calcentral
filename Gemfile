@@ -4,6 +4,8 @@ source "https://rubygems.org"
 # https://github.com/rails/rails
 gem "rails", "3.2.8"
 
+gem "localtunnel"
+
 # Postgresql adapter
 gem "activerecord-jdbcpostgresql-adapter", "~> 1.2.2.1"
 

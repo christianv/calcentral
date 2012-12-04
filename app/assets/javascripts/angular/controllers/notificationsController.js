@@ -78,11 +78,17 @@
     };
 
     var aws_signature;
-    var generateSignedURL = function(aws_action, aws_queue_url,aws_timestamp, aws_key_id, aws_secret_access_key, aws_endpoint, aws_version) {
+    var generateSignedURL = function(aws_action, aws_queue_url,aws_timestamp, aws_key_id, aws_secret_access_key, aws_endpoint, aws_version, aws_extra) {
 
       var url = aws_endpoint + "?SignatureVersion=1&Action=" + aws_action + "&Version=" + encodeURIComponent(aws_version) + '&';
       url += 'QueueUrl=' + encodeURIComponent(aws_queue_url) + '&';
+
+      if (aws_extra) {
+        url += 'ReceiptHandle=' + encodeURIComponent(aws_extra) + '&';
+      }
+
       url += "Timestamp=" + encodeURIComponent(aws_timestamp);
+
 
       url += "&AWSAccessKeyId=" + encodeURIComponent(aws_key_id);
       var signature = generateV1Signature(url, aws_secret_access_key);
@@ -111,20 +117,82 @@
           .replace("__QUERY__" , encodeURIComponent(query));
     };
 
-    var amazon_url = aws_queue_url + url.replace(aws_endpoint, '');
-
     var getNotifications = function() {
+      var amazon_url = aws_queue_url + url.replace(aws_endpoint, '');
       $.ajax({
         'url': createYqlUrl('select * from xml where url="' + amazon_url + '"'),
         'success': function(data) {
-          addNotification(data);
+          addNotifications(data);
         }
       });
     };
 
     var interval = window.setInterval(getNotifications, 1000);
 
-    var addNotification = function(data) {
+    var deleteMessage = function(messageId) {
+      var aws_now_timestamp = getNowTimeStamp();
+
+      var delete_url = generateSignedURL('DeleteMessage', aws_queue_url,aws_now_timestamp, aws_key_id, aws_secret_access_key, aws_endpoint, aws_version, messageId);
+
+      var amazon_url = aws_queue_url + delete_url.replace(aws_endpoint, '');
+
+      $.ajax({
+        'url': createYqlUrl('select * from xml where url="' + amazon_url + '"'),
+        'success': function(data) {
+          console.log(data.query.results);
+        }
+      });
+
+    };
+
+    var addNotification = function(message, body) {
+
+      if (!body.systemID || body.systemID !== 'BearFacts') {
+        return;
+      }
+
+      if (body.eventCode === 'RegBlock') {
+        notifications.sections[0].notifications.push({
+          "id": body.eventID,
+          "title": 'Registration block has been updated',
+          "summary": 'Your registration block has been updated',
+          "source": "Bear Facts",
+          "type": "alert",
+          "epoch": new Date().getTime(),
+          "url": "https://bearfacts.berkeley.edu/",
+          "source_url": "https://bearfacts.berkeley.edu/"
+        });
+      }
+
+      if (body.eventCode === 'RegStatus') {
+        notifications.sections[0].notifications.push({
+          "id": body.eventID,
+          "title": 'Registration status has been updated',
+          "summary": 'Your registration status has been updated',
+          "source": "Bear Facts",
+          "type": "alert",
+          "epoch": new Date().getTime(),
+          "url": "https://bearfacts.berkeley.edu/",
+          "source_url": "https://bearfacts.berkeley.edu/"
+        });
+      }
+
+      if (body.eventCode === "EndOfTermGrades") {
+        notifications.sections[1].notifications.push({
+          "id": body.eventID,
+          "title": 'End of term grades have been posted for ' + body.payload.name + ' ' + body.payload.year,
+          "summary": 'Your end of term grades have been posted for ' + body.payload.name + ' ' + body.payload.year,
+          "source": "Bear Facts",
+          "type": "classes",
+          "epoch": new Date().getTime(),
+          "url": "https://bearfacts.berkeley.edu/",
+          "source_url": "https://bearfacts.berkeley.edu/"
+        });
+      }
+
+    };
+
+    var addNotifications = function(data) {
       var message = {};
       if (data
           && data.query
@@ -134,51 +202,18 @@
         message = data.query.results.ReceiveMessageResponse.ReceiveMessageResult;
 
         if (notificationsIds.indexOf(message.Message.MessageId) === -1) {
-          var rand = Math.floor((Math.random()*2));
 
           var body = JSON.parse(message.Message.Body);
 
-          if (body.topic === 'Bearfacts - RegStatus') {
-            notifications.sections[0].notifications.push({
-              "id": body.id,
-              "title": 'Registration event',
-              "summary": 'Your registration status or block has been updated',
-              "source": "Bear Facts",
-              "type": "alert",
-              "notification_date": new Date().getTime(),
-              "url": "https://bearfacts.berkeley.edu/",
-              "source_url": "https://bearfacts.berkeley.edu/"
-            });
-          }
-
-          if (body.topic === "Bearfacts - EndOfTermGrades") {
-            notifications.sections[1].notifications.push({
-              "id": body.id,
-              "title": 'Grades posted',
-              "summary": 'Your end of term grades have been posted for ' + body.payload.term_name + ' ' + body.payload.term_year,
-              "source": "Bear Facts",
-              "type": "classes",
-              "notification_date": new Date().getTime(),
-              "url": "https://bearfacts.berkeley.edu/",
-              "source_url": "https://bearfacts.berkeley.edu/"
-            });
-          }
-
-          if (body.topic === "MyFinAid - Emergency Notice") {
-            notifications.sections[1].notifications.push({
-              "id": body.id,
-              "user_id": 177914,
-              "title": body.payload.title,
-              "summary": body.payload.summary,
-              "source": "MyFinAid",
-              "type": "finances",
-              "notification_date": new Date().getTime(),
-              "url": "http://example.com",
-              "source_url": false
-            });
+          if (body && body.events) {
+            for (var i = 0; i < body.events.length; i++) {
+              addNotification(message, body.events[i]);
+            }
           }
 
           notificationsIds.push(message.Message.MessageId);
+          deleteMessage(message.Message.ReceiptHandle);
+
         }
 
         $scope.$apply();
