@@ -16,8 +16,6 @@ module Calcentral
   USER_CACHE_EXPIRATION = Calcentral::UserCacheInvalidator.new
 
   {
-      UserApi => :expire,
-      UserApiController => :expire,
       MyCourseSites => :expire,
       MyTasks => :expire,
       MyUpNext => :expire,
