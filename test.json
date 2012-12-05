@@ -27,7 +27,7 @@
    "event": {
       "eventID": 821,
       "systemID": "BearFacts",
-      "eventCode": "RegBlocked",
+      "eventCode": "RegBlock",
       "payload": {
          "uid": 5434342
       }
