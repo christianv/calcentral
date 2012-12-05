@@ -205,10 +205,8 @@
 
           var body = JSON.parse(message.Message.Body);
 
-          if (body && body.events) {
-            for (var i = 0; i < body.events.length; i++) {
-              addNotification(message, body.events[i]);
-            }
+          if (body && body.event) {
+            addNotification(message, body.event);
           }
 
           notificationsIds.push(message.Message.MessageId);

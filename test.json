@@ -1,38 +1,35 @@
 {
-    "id": 386,
-    "topic": "Bearfacts - RegStatus",
-    "access": "Public",
-    "jmsDist": "topic",
-    "expiry": "1h",
-    "payload": {
-        "uid": 2040
-    }
-}
-
-
-
-{
-    "id": 472,
-    "topic": "Bearfacts - EndOfTermGrades",
-    "access": "public",
-    "jmsDist": "queue",
-    "expiry": "1h",
-    "payload": {
-        "course_control_number": 23456,
-        "term_code": "D",
-        "term_name": "Fall",
-        "term_year": 2012
-    }
+   "event": {
+      "eventID": 821,
+      "systemID": "BearFacts",
+      "eventCode": "RegStatus",
+      "payload": {
+         "uid": 5434342
+      }
+   }
 }
 
 {
-    "id": 999,
-    "topic": "MyFinAid - Emergency Notice",
-    "access": "public",
-    "jmsDist": "queue",
-    "expiry": "1h",
-    "payload": {
-        "title": "Incomplete Emergency Loan Application Notice",
-        "summary": "Your Loan Promissory Note has not been submitted with a signature"
-    }
+   "event": {
+      "eventID": 267,
+      "systemID": "BearFacts",
+      "eventCode": "EndOfTermGrades",
+      "payload": {
+         "ccn": 121265,
+         "year": 2013,
+         "term": "Fall",
+         "code": "Bio"
+      }
+   }
+}
+
+{
+   "event": {
+      "eventID": 821,
+      "systemID": "BearFacts",
+      "eventCode": "RegBlocked",
+      "payload": {
+         "uid": 5434342
+      }
+   }
 }
