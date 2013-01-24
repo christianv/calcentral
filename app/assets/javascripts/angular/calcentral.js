@@ -30,6 +30,11 @@
       templateUrl: 'templates/settings.html',
       controller: 'SettingsController'
     }).
+    when('/findata', {
+      templateUrl: 'templates/findata.html',
+      controller: 'FindataController',
+      isPublic: true
+    }).
 
     // Redirect to a 404 page
     otherwise({

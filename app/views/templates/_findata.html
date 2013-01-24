@@ -1,0 +1,8 @@
+<script type="text/ng-template" id="templates/findata.html">
+  <div class="twelve columns cc-findata">
+    <h1>Financial data</h1>
+    <select data-ng-model="student" data-ng-options="s.name for s in students">
+    </select>
+    <iframe src="{{student.url}}"></iframe>
+  </div>
+</script>
