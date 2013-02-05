@@ -13,6 +13,17 @@
           <a href="http://bcal.berkeley.edu" class="cc-ir cc-left cc-icon cc-icon-calendar" title="bCal">bCal</a>
           <a href="https://drive.google.com/a/berkeley.edu/" class="cc-ir cc-left cc-icon cc-icon-drive" title="bDrive">bDrive</a>
         </div>
+        <div class="cc-popover-container cc-left">
+          <button class="button small cc-button-link cc-launcher-info cc-launcher-bar"
+            data-ng-click="showStatus=!showStatus">Status
+          </button>
+          <div id="cc-launcher-status" class="cc-popover" data-ng-show="showStatus">
+            <h4>Academic Profile</h4>
+            <strong>Registration Status: Not registered</strong><br />
+            <strong>Registration Block: Yes</strong><br />
+            <strong>Units Enrolled</strong>
+          </div>
+        </div>
         <button class="button small cc-button-link cc-launcher-info cc-launcher-bar cc-left"
           data-ng-click="user._redirectToSettingsPage()">Settings
         </button>
