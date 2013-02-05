@@ -3,6 +3,6 @@
     <h1>Financial data</h1>
     <select data-ng-model="student" data-ng-options="s.name for s in students">
     </select>
-    <iframe src="{{student.url}}"></iframe>
+    <iframe src="{{student.url.replace(' ', '')}}"></iframe>
   </div>
 </script>
