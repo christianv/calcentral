@@ -1,0 +1,63 @@
+/* Tasks and Assigments widget */
+.cc-widget-tasks {
+  .cc-widget-body {
+    .cc-alert-text {
+      margin-bottom: 5px;
+    }
+    .cc-widget-text {
+      margin-bottom: 0;
+    }
+  }
+  .cc-widget-tasks-form {
+    margin-top: 5px;
+  }
+  .cc-widget-tasks-button-top-margin {
+    margin-top: 15px;
+  }
+  .cc-widget-tasks-checkbox-column {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .cc-widget-tasks-date-input .ng-invalid {
+    margin-bottom: 2px;
+  }
+  .cc-widget-tasks-section-top {
+    border-top: 1px solid $cc-list-border-color;
+    padding-top: 7px;
+    &:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+  }
+  .cc-widget-tasks-taskslider {
+    margin: 10px 0;
+  }
+  .cc-widget-tasks-title-column {
+    padding-left: 0;
+  }
+  .cc-widget-tasks-more {
+    padding-left: 10px;
+    div {
+      margin-bottom: 10px;
+    }
+  }
+
+  /* Mobile only */
+  @media only screen and (max-width: 767px) {
+    .row .cc-mobile-task-checkbox-column {
+      width: 10% !important;
+    }
+    .row .cc-mobile-task-title-column {
+      padding-left: 5px;
+      padding-right: 5px;
+      width: 40% !important;
+    }
+    .row .cc-mobile-task-emitter-column {
+      width: 30% !important;
+    }
+    .row .cc-mobile-task-date-column {
+      width: 20% !important;
+    }
+  }
+
+}

@@ -7,36 +7,31 @@
     margin-bottom: -99999px;
     padding-bottom: 99999px;
   }
-
   .cc-page-dashboard-column-b, .cc-page-dashboard-column-c {
     border-left: 5px solid $cc-column-border-color;
   }
   .cc-page-dashboard-column-a, .cc-page-dashboard-column-c {
     background: #fafafa;
   }
-  .cc-page-dashboard-column-b {
-    background: $cc-standout-column-color;
-  }
+
   .cc-emitter-col {
     padding-right: 0;
   }
   .cc-emitter {
     color: #fff;
     background: #1d6592;
+    border-radius: 4px;
     font-size: 11px;
     font-weight: bold;
     padding: 2px 5px;
     text-align: center;
     width: 100%;
-    border-radius: 4px;
   }
-
   .cc-emitter-square {
     border-radius: 4px;
     height: 18px;
     width: 18px;
   }
-
   // Emitter lozenge colors
   .cc-emitter-bspace-class {
     background: #3e7fbe;
@@ -57,27 +52,27 @@
   .cc-emitter-campus-item {
     background: image-url('icon_notifications_campus_16x16.png') no-repeat;
   }
+
   .cc-widget-section-label-due {
     color: $cc-widget-section-label-color;
     font-size: 14px;
     font-weight: bold;
     margin-top: 5px;
-    padding-right: 15px;
-    text-align: right;
   }
   .cc-widget-tasks-notifications-date-string {
     color: #999999;
+    float: right;
+    font-size: 12px;
     text-align: right;
     text-transform: uppercase;
   }
   .cc-widget-add-icon {
     @include user-select("none");
-    background: $cc-standout-column-color;
+    background: #fff;
     // Border color equals section bg color so button doesn't jump when hover border appears
-    border: 2px solid $cc-standout-column-color;
+    border: 2px solid #fff;
     border-radius: 4px;
     cursor: pointer;
-    font-family: Arial, sans-serif;
     font-size: 14px;
     margin: 3px 0 0 5px;
     padding: 1px 3px 0 2px;
@@ -87,9 +82,13 @@
       border: 2px solid $cc-action-button-color;
       .cc-widget-add-icon-plus {
         background-color: $cc-action-button-color;
+        float: left;
       }
       .cc-widget-add-icon-text {
         display: inline-block;
+        height: auto;
+        position: relative;
+        width: auto;
       }
     }
   }
@@ -100,45 +99,14 @@
     border-radius: 3px;
     display: inline-block;
     margin-bottom: 2px;
-    padding: 2px 5px 2px 5px;
+    padding: 2px 5px;
   }
   .cc-widget-add-icon-text {
-    display: none;
-    margin-bottom: 0;
-    margin-top: 2px;
+    margin: 2px 2px 0 5px;
   }
-}
 
-.cc-widget-tasks-form {
-  margin-top: 5px;
-}
-
-/* Shared between mygroups and myclasses */
-.cc-widget-mygroups-myclasses-list {
-  .cc-widget-mygroups-myclasses-emitter-column {
-    margin-top: 1px;
-    padding-left: 0;
-    .cc-emitter-square {
-      float: right;
-    }
-  }
-  .cc-widget-mygroups-myclasses-icon {
-    height: 20px;
-    width: 20px;
-  }
-  .cc-widget-mygroups-myclasses-list-item {
-    line-height: 0.5;
-    padding-bottom: 4px;
-  }
-  .cc-widget-mygroups-myclasses-title-link {
-    line-height: 1.1;
-  }
-}
-
-
-/* Mobile styles */
-@media only screen and (max-width: 767px) {
-  .cc-container-main {
+  /* Mobile styles */
+  @media only screen and (max-width: 767px) {
     .cc-page-dashboard-column-b, .cc-page-dashboard-column-c {
       border: none;
     }

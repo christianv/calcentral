@@ -7,100 +7,40 @@ $cc-border-color: #999;
 $cc-button-color: #80c7de;
 $cc-column-border-color: #dedede;
 $cc-launcher-border-color: #114d80;
-$cc-light-grey: #5c5c5c;
-$cc-medium-grey: #dddddd;
+$cc-light-grey: #4a4b4d;
 $cc-list-border-color: #cacaca;
 $cc-main-background-color: #f2f2f2;
 $cc-main-header-border-color: #d3d8d8;
+$cc-medium-grey: #dddddd;
 $cc-nav-gradient1-color: #012955;
 $cc-nav-gradient2-color: #3b5d86;
 $cc-nav-link-color: #fdd692;
+$cc-placeholder-color: #aaa;
 $cc-shadow-color: #ccc;
-$cc-standout-column-color: #eaeff3;
 $cc-widget-section-label-color: #515151;
 $cc-widget-highlight-background-color: #f2fef3;
 $cc-widget-hover-background-color: #e3ffff;
 $cc-widget-more-background-color: #c8dee9;
 
-/* Inset list items */
-ul {
-  padding: 0 0 0 40px;
-}
-
 /* Body */
 body {
   background-color: $cc-main-background-color;
+}
 
-  /* Masthead */
-  > header {
-    background-image: image-url('calcentral_branding_strip_background.png');
-    background-repeat: no-repeat;
-    margin: 0 auto;
-    height: 42px;
-    position: relative;
+/* Headings */
+h1 {
+  font-size: 32px;
+}
+h2 {
+  font-size: 24px;
+}
+h3 {
+  font-size: 16px;
+}
 
-    > div > h1 {
-      height: 0;
-      margin: 0;
-      text-indent: 100%;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-
-    > div > a img {
-      padding: 10px 10px 0;
-    }
-  }
-
-  /* Footer */
-  > footer {
-    clear: both;
-    font-size: 0.85em;
-    line-height: 1.5;
-    overflow: hidden;
-    padding: 10px 10px 15px;
-
-    a {
-      font-weight: bold;
-    }
-
-    .cc-footer-links a {
-      float: right;
-      padding-left: 21px;
-    }
-    .copyright:hover {
-      cursor: pointer;
-    }
-
-    ul {
-      margin-top: 20px;
-      padding-left: 18px;
-    }
-
-    .confirmation, .button.first.tiny {
-      margin-left: 5px;
-    }
-  }
-
-  h1 {
-    font-size: 32px;
-    margin-bottom: 25px;
-  }
-
-  h2 {
-    font-size: 24px;
-  }
-
-  h3 {
-    font-size: 16px;
-  }
-
-  .header_border {
-    border-top: 1px solid $cc-medium-grey;
-    margin-top: 20px;
-    padding-top: 5px;
-  }
-
+/* Inset list items */
+ul {
+  padding: 0 0 0 40px;
 }
 
 /* Anchor tag */
@@ -127,22 +67,30 @@ form {
   label {
     display: block;
     margin-top: 5px;
-    sup {
-      color: #ff0000;
-      font-weight: bold;
-    }
     text-align: right;
   }
+
+  ::-moz-placeholder {
+    color: $cc-placeholder-color;
+  }
+  input:-moz-placeholder {
+    color: $cc-placeholder-color;
+  }
+
 }
 
 /* Buttons */
 button {
   font-family: Arial, sans-serif;
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 }
 .button {
   background-color: $cc-button-color;
   &.selected {
-    @include background-image(linear-gradient(#7ec9Df, #35b5d4));
+    @include background(linear-gradient(#7ec9df, #35b5d4));
   }
   &.secondary {
     border-left: 1px solid $cc-border-color;
@@ -173,10 +121,24 @@ button {
   font-size: 13px;
   padding: 3px 5px;
 }
+.cc-button-link {
+  &, &:hover, &:focus {
+    background-color: transparent;
+    border: none;
+    color: $mainColor;
+  }
+}
 
-.cc-button-submit:hover, .cc-button-reset:hover {
-  cursor: pointer;
-  text-decoration: underline;
+/* Message for oldIE */
+.cc-old-ie {
+  margin-bottom: 20px !important;
+  a {
+    color: #fff;
+    text-decoration: underline;
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }
 
 /* Container */
@@ -184,357 +146,37 @@ button {
   background-color: $white;
 }
 
-/* Launcher */
-.cc-launcher {
-  padding: 0;
-  position: absolute;
-  right: -1px;
-  top: 0;
-
-  a {
-    font-weight: bold;
-  }
-  .cc-launcher-bar {
-    border-right: 1px solid $cc-launcher-border-color;
-  }
-  .cc-launcher-icons {
-    border-right: 1px solid $cc-launcher-border-color;
-    padding: 1px 10px 3px 5px;
-  }
-  .cc-icon {
-    margin: 2px 0 0 5px;
-  }
-  .cc-launcher-info {
-    padding: 0 10px;
-    margin: 4px 0 5px;
-  }
-  .cc-launcher-icon-dropdown {
-    font-size: 8px;
-  }
-}
-.cc-launcher, .cc-launcher .cc-launcher-dropdown {
-  background: $white;
-  border: 1px solid $cc-launcher-border-color;
-  border-bottom-left-radius: 6px;
-  border-top: none;
-}
-
-/* Useful classes */
-.cc-alert, .cc-alert-nobang {
-  color: $cc-alert-color !important;
-}
-.cc-alert:before {
-   content: "! ";
-}
-.cc-ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.cc-icon {
-  height: 16px;
-  width: 16px;
-}
-.cc-icon, .cc-icon-big {
-  background: no-repeat;
-}
-
-.cc-icon-alert {
-  background-image: image-url('icon_alert_16x16.png');
-}
-.cc-icon-arrow-right-brown {
-  background-image: image-url('icon_arrow_right_brown_16x16.png');
-}
-.cc-icon-arrow-right {
-  background-image: image-url('icon_arrow_right_16x16.png');
-}
-.cc-icon-big {
-  height: 24px;
-  width: 24px;
-}
-.cc-icon-big-academics {
-  background-image: image-url('icon_academics_24x24.png');
-}
-.cc-icon-big-alert {
-  background-image: image-url('icon_alert_24x24.png');
-}
-.cc-icon-big-block {
-  background-image: image-url('icon_block_24x24.png');
-}
-.cc-icon-big-classes {
-  background-image: image-url('icon_classes_24x24.png');
-}
-.cc-icon-big-completed {
-  background-image: image-url('icon_completed_24x24.png');
-}
-.cc-icon-big-enrollment {
-  background-image: image-url('icon_enrollment_24x24.png');
-}
-.cc-icon-big-finances {
-  background-image: image-url('icon_finances_24x24.png');
-}
-.cc-icon-big-inprogress {
-  background-image: image-url('icon_inprogress_24x24.png');
-}
-.cc-icon-big-overdue {
-  background-image: image-url('icon_overdue_24x24.png');
-}
-.cc-icon-bspace {
-  background-image: image-url('icon_bspace_16x16.png');
-}
-.cc-icon-calendar {
-  background-image: image-url('icon_calendar_16x16.png');
-}
-.cc-icon-canvas {
-  background-image: image-url('icon_canvas_16x16.png');
-}
-.cc-icon-close {
-  background-image: image-url('icon_close_16x16.png');
-}
-.cc-icon-drive {
-  background-image: image-url('icon_drive_16x16.png');
-}
-.cc-icon-email {
-  background-image: image-url('icon_message_16x16.png');
-}
-.cc-icon-info {
-  background-image: image-url('icon_info_16x16.png');
-}
-.cc-icon-mail {
-  background-image: image-url('icon_mail_16x16.png');
-}
-
-/* 150x150 icons */
-.cc-icon-advising {
-  background-image: image-url('icon_campus_advising_150x150.png');
-}
-.cc-icon-academicplan {
-  background-image: image-url('icon_campus_academicplan_150x150.png');
-}
-.cc-icon-campusdepartments {
-  background-image: image-url('icon_campus_campusdepartments_150x150.png');
-}
-.cc-icon-career {
-  background-image: image-url('icon_campus_career_150x150.png');
-}
-.cc-icon-finances {
-  background-image: image-url('icon_campus_finances_150x150.png');
-}
-.cc-icon-gettingaround {
-  background-image: image-url('icon_campus_gettingaround_150x150.png');
-}
-.cc-icon-foodhousing {
-  background-image: image-url('icon_campus_foodhousing_150x150.png');
-}
-.cc-icon-healthsafety {
-  background-image: image-url('icon_campus_healthsafety_150x150.png');
-}
-.cc-icon-newtocampus {
-  background-image: image-url('icon_campus_newtocampus_150x150.png');
-}
-.cc-icon-researchstudying {
-  background-image: image-url('icon_campus_researchstudying_150x150.png');
-}
-.cc-icon-studentgroups {
-  background-image: image-url('icon_campus_studentgroups_150x150.png');
-}
-.cc-icon-socialrecreation {
-  background-image: image-url('icon_campus_socialrecreation_150x150.png');
-}
-
-.cc-lowercase {
-  text-transform: lowercase;
-}
-
-.cc-left {
-  float: left;
-}
-.cc-right {
-  float: right;
-}
-
-/* Widgets */
-.cc-widget-list-icon {
-  background-color: transparent;
-  background-position: 0 2px;
-  background-repeat: no-repeat;
-}
-
-.cc-widget-title {
-  border-bottom: 1px solid $cc-border-color;
-  overflow: hidden;
-
-  h2 {
-    color: $cc-light-grey;
-    margin: 4px 0;
-    padding: 2px 0;
-    font-size: 16px;
-  }
-}
-
-.cc-widget-title-small {
-  margin-top: 3px;
-  font-size: 13px;
-  font-weight: normal;
-}
-
-.cc-widget-list-subtitle {
-  font-size: 11px;
-  line-height: 8px;
-  margin-left: 21px;
-  padding-bottom: 7px;
-}
-
-.cc-widget-section-label {
-  clear: both;
-  color: $cc-widget-section-label-color;
-  font-size: 14px;
-  margin-top: 5px;
-}
-
-.cc-container-widget {
-  float: left;
-  margin-bottom: 10px;
-  margin-right: 10px;
-  width: 100%;
-
-  .cc-widget-text {
-    padding: 20px;
-  }
-
-  .cc-widget-list {
-    margin: 0;
-    max-height: 200px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 0;
-
-    > li {
-      border-bottom: 1px dotted $cc-list-border-color;
-      &:last-child {
-        border-bottom: none;
-      }
-      a {
-        display: block;
-        padding: 4px 0 3px 5px;
-      }
-    }
-  }
-  li .cc-widget-list-hover {
-    overflow: hidden;
-    &:hover {
-      cursor: pointer;
-      .cc-widget-list-hover-title {
-        text-decoration: underline;
-      }
-    }
-  }
-  .cc-widget-list-selected {
-    background: $cc-widget-more-background-color;
-    .cc-widget-list-selected-title {
-      font-weight: bold;
-    }
-    .row {
-      background: $cc-widget-more-background-color;
-    }
-  }
-}
-
-.cc-widget-main {
-  padding: 0 17px;
-}
-
-.cc-container-widgets {
-  margin: 0 15px;
-  overflow: hidden;
-}
-
-.cc-widget-short-title {
-  display: inline-block;
-  font-size: 14px;
-  line-height: 1.25;
-  width: 100%;
-}
-
-.cc-widget-tasks-notifications-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0 0 10px 0;
-
-  li .row {
-    padding: 5px 0;
-  }
-
-  .cc-widget-tasks-notifications-more {
-    .cc-widget-tasks-notifications-text {
-      line-height: 1.2;
-      margin-bottom: 5px;
-      padding-left: 0;
-      p {
-        margin-bottom: 0;
-        padding-bottom: 5px;
-      }
-    }
-  }
-  .cc-widget-more-view-in {
-    background-color: #e8eff2;
-    color: #16191b;
-    font-size: 11px;
-    font-weight: bold;
-    padding: 5px 10px;
-  }
-}
-
-
-/* Image replacement */
-.ir {
-  *line-height: 0;
-  background-color: transparent;
-  background-repeat: no-repeat;
-  border: 0;
-  display: block;
-  direction: ltr;
-  overflow: hidden;
-  text-align: left;
-  text-indent: -999em;
-
-  br {
-    display: none;
-  }
-}
-
-/* Hide only visually, but have it available for screenreaders / accessibility: h5bp.com/v */
-.visuallyhidden {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-}
-
 /*
 Read more about why we're using @import instead of require at
 http://stackoverflow.com/questions/6269420
 */
 
+/* Header */
+@import "header";
 /* Top navigation */
-@import "navigation.scss";
+@import "navigation";
+/* Footer */
+@import "footer";
+
+/* Icons */
+@import "icons";
+/* Widgets */
+@import "widgets";
+/* Widgets */
+@import "useful";
 
 /* Dashboard */
-@import "dashboard.scss";
-@import "mycalendar.scss";
-@import "notifications.scss";
-@import "tasks.scss";
-@import "classes.scss";
+@import "dashboard";
+@import "mycalendar";
+@import "notifications";
+@import "tasks";
+@import "mygroups_myclasses";
 
 /* Settings */
-@import "settings.scss";
+@import "settings";
 
 /* Splash */
-@import "splash.scss";
+@import "splash";
 
 /* Findata */
-@import "findata.scss";
+@import "findata";

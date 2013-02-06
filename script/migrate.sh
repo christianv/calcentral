@@ -18,4 +18,4 @@ echo "------------------------------------------" | $LOGIT
 echo "`date`: Database migration CalCentral on app node: `hostname -s`..." | $LOGIT
 
 echo "`date`: rake db:migrate RAILS_ENV=$RAILS_ENV ..." | $LOGIT
-rake db:migrate RAILS_ENV=$RAILS_ENV | $LOGIT
+bundle exec rake db:migrate RAILS_ENV=$RAILS_ENV | $LOGIT

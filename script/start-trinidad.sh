@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script to update and start a shared deployment of CalCentral.
+# Script to start a shared deployment of CalCentral.
 
 cd $( dirname "${BASH_SOURCE[0]}" )/..
 
@@ -22,4 +22,4 @@ echo | $LOGIT
 echo "------------------------------------------" | $LOGIT
 echo "`date`: Starting CalCentral..." | $LOGIT
 export JRUBY_OPTS="-Xcext.enabled=true -J-server"
-nohup trinidad < /dev/null >> log/production.log 2>&1 &
+nohup trinidad < /dev/null > /dev/null 2> $LOG  &

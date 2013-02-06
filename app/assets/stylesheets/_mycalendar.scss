@@ -1,8 +1,8 @@
 /* Icon */
-#cc-widget-mycalendar {
+.cc-widget-mycalendar {
   @include user-select("none");
-  font-size: 12px;
-  p {
+
+  &, p {
     font-size: 12px;
   }
   .cc-widget-title .cc-icon {
@@ -26,6 +26,9 @@
       border-bottom: 1px dotted $cc-list-border-color;
       color: $cc-light-grey;
       overflow: hidden;
+      &:first-child {
+        margin-top: 10px;
+      }
       &:last-child {
         border-bottom: none;
       }

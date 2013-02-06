@@ -63,22 +63,34 @@ describe CanvasProxy do
 
   it "should get user activity feed using the Tammi account" do
     # by the time the fake access token is used below, it probably has well expired
-    proxy = CanvasUserActivityProxy.new(:fake => true)
-    response = proxy.user_activity
-    user_activity = JSON.parse(response.body)
-    user_activity.kind_of?(Array).should be_true
-    user_activity.size.should == 20
-    required_fields = %w(created_at updated_at id type html_url)
-    user_activity.each do |entry|
-      (entry.keys & required_fields).size.should == required_fields.size
-      expect {
-        DateTime.parse(entry["created_at"]) unless entry["created_at"].blank?
-        DateTime.parse(entry["updated_at"]) unless entry["update_at"].blank?
-      }.to_not raise_error
-      entry["id"].is_a?(Integer).should == true
-      category_specific_id_exists = entry["course_id"] || entry["group_id"] || entry["conversation_id"]
-      category_specific_id_exists.blank?.should_not be_true
+    begin
+      proxy = CanvasUserActivityProxy.new(:fake => true)
+      response = proxy.user_activity
+      user_activity = JSON.parse(response.body)
+      user_activity.kind_of?(Array).should be_true
+      user_activity.size.should == 20
+      required_fields = %w(created_at updated_at id type html_url)
+      user_activity.each do |entry|
+        (entry.keys & required_fields).size.should == required_fields.size
+        expect {
+          DateTime.parse(entry["created_at"]) unless entry["created_at"].blank?
+          DateTime.parse(entry["updated_at"]) unless entry["update_at"].blank?
+        }.to_not raise_error
+        entry["id"].is_a?(Integer).should == true
+        category_specific_id_exists = entry["course_id"] || entry["group_id"] || entry["conversation_id"]
+        category_specific_id_exists.blank?.should_not be_true
+      end
+    ensure
+      VCR.eject_cassette
     end
+  end
+
+  it "should return nil if server is not available" do
+    client = CanvasCoursesProxy.new(user_id: @user_id, fake: false)
+    stub_request(:any, /#{Regexp.quote(Settings.canvas_proxy.url_root)}.*/).to_raise(Faraday::Error::ConnectionFailed)
+    response = client.courses
+    response.should be_nil
+    WebMock.reset!
   end
 
 end

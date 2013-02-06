@@ -1,5 +1,6 @@
 require 'observer.rb'
 
+
 module Calcentral
 
   Rails.application.config.after_initialize do
@@ -11,15 +12,18 @@ module Calcentral
     {
         UserApi => :expire,
         MyClasses => :expire,
-        MyTasks => :expire,
+        MyTasks::Merged => :expire,
         MyUpNext => :expire,
         MyGroups => :expire,
+        MyNotifications => :expire,
 
         CanvasProxy => :expire,
         CanvasComingUpProxy => :expire,
         CanvasCoursesProxy => :expire,
         CanvasGroupsProxy => :expire,
         CanvasTodoProxy => :expire,
+        CanvasUserActivityProxy => :expire,
+        CanvasUserActivityProcessor => :expire,
 
         GoogleProxy => :expire,
         GoogleCreateTaskListProxy => :expire,

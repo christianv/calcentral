@@ -29,6 +29,7 @@ class UserApi < MyMergedModel
       user.delete
       # The nice way to do this is to also revoke their tokens by sending revoke request to the remote services
       Oauth2Data.destroy_all(:uid => uid)
+      Notification.destroy_all(:uid => uid)
     end
     Calcentral::USER_CACHE_EXPIRATION.notify uid
   end
@@ -62,9 +63,9 @@ class UserApi < MyMergedModel
     {
         :uid => @uid,
         :preferred_name => self.preferred_name,
-        :widget_data => {},
         :has_canvas_access_token => CanvasProxy.access_granted?(@uid),
         :has_google_access_token => GoogleProxy.access_granted?(@uid),
+        :reg_status => @campus_attributes[:reg_status],
         :first_login_at => @first_login_at
     }
   end
