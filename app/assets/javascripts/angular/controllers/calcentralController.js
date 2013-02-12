@@ -61,6 +61,11 @@
      */
     $scope.user._handleUserLoaded = function(data) {
       $scope.user.profile = data;
+      $scope.user.profile.reg_status = {
+    "code": "C",
+    "summary": "REGISTERED",
+    "explanation": "You are officially registered for this term and are entitled to access campus services."
+  }
       $scope.user._handleAccessToPage();
       $scope.user.isLoaded = true;
     };
