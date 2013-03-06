@@ -69,6 +69,7 @@ class UserApi < MyMergedModel
         :has_canvas_access_token => CanvasProxy.access_granted?(@uid),
         :has_canvas_account => CanvasProxy.has_account?(@uid),
         :has_google_access_token => GoogleProxy.access_granted?(@uid),
+        :google_email => Oauth2Data.get_google_email(@uid),
         :last_name => @last_name,
         :preferred_name => self.preferred_name,
         :roles => @campus_attributes[:roles],
