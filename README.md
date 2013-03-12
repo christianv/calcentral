@@ -4,7 +4,7 @@ Home of CalCentral. [![Dependency Status](https://gemnasium.com/ets-berkeley-edu
 * Master: [![Build Status](https://travis-ci.org/ets-berkeley-edu/calcentral.png?branch=master)](https://travis-ci.org/ets-berkeley-edu/calcentral)
 * QA: [![Build Status](https://travis-ci.org/ets-berkeley-edu/calcentral.png?branch=qa)](https://travis-ci.org/ets-berkeley-edu/calcentral)
 
-## Dependencies
+## Dependenciess
 
 * [Bundler](http://gembundler.com/rails3.html)
 * [Git](https://help.github.com/articles/set-up-git)
