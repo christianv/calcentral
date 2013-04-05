@@ -53,6 +53,7 @@ class MyGroups < MyMergedModel
     response[:groups].sort! { |x, y| x[:title].casecmp(y[:title]) }
     logger.debug "#{self.class.name} get_feed is #{response.inspect}"
     response
+    render :status => 500
   end
 
 end
