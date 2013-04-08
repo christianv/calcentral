@@ -1,0 +1,102 @@
+<script type="text/ng-template" id="templates/myfinances.html">
+
+  <div class="cc-page-myfinances" data-ng-cloak>
+    <div class="row">
+      <div class="small-10 small-centered columns">
+        <h1>My Finances</h1>
+        <h2>Account Summary</h2>
+        <div class="row">
+          <div class="small-6 columns">
+            Real time balance:
+          </div>
+          <div class="small-6 columns">
+            {{myfinances.summary.realTimeBalance}}
+          </div>
+          <div class="small-6 columns">
+            Adjusted balance:
+          </div>
+          <div class="small-6 columns">
+            {{myfinances.summary.adjustedBalance}}
+          </div>
+          <div class="small-6 columns">
+            New Charges:
+          </div>
+          <div class="small-6 columns">
+            {{myfinances.summary.newCharges}}
+          </div>
+          <div class="small-6 columns">
+            New Payments:
+          </div>
+          <div class="small-6 columns">
+            {{myfinances.summary.newPayments}}
+          </div>
+          <div class="small-6 columns">
+            Amount Due:
+          </div>
+          <div class="small-6 columns">
+            {{myfinances.summary.amountDue}}
+          </div>
+          <div class="small-6 columns">
+            Due date:
+          </div>
+          <div class="small-6 columns">
+            {{myfinances.summary.dueDate || "noduedate"}}
+          </div>
+          <div class="small-6 columns">
+            Next statement day:
+          </div>
+          <div class="small-6 columns">
+            {{myfinances.summary.nextStatementDate}}
+          </div>
+        </div>
+
+        <h2>Account Activity</h2>
+        <div class="row">
+          <div class="small-4 small-offset-8 columns">
+            <select class="cc-right" data-ng-model="search.transTerm">
+              <option value="">All Terms</option>
+              <option value="{{term}}" data-ng-repeat="term in myfinances.terms">{{term}}</option>
+            </select>
+            {{search.term}}
+          </div>
+        </div>
+        <div class="row cc-page-myfinances-table-header">
+          <div class="small-2 columns">
+            Date
+          </div>
+          <div class="small-5 columns">
+            Description
+          </div>
+          <div class="small-2 columns">
+            Department
+          </div>
+          <div class="small-1 columns">
+            Type
+          </div>
+          <div class="small-2 columns">
+            Amount
+          </div>
+        </div>
+        <div class="row" data-ng-repeat="item in myfinances.activity | filter:search">
+          <div class="small-2 columns">
+            {{item.transDate}}
+          </div>
+          <div class="small-5 columns">
+            {{item.transDesc}}
+          </div>
+          <div class="small-2 columns">
+            {{item.transDept}}
+          </div>
+          <div class="small-1 columns">
+            {{item.transType}}
+          </div>
+          <div class="small-2 columns">
+            {{item.transAmount}}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</script>

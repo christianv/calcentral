@@ -45,6 +45,10 @@
       templateUrl: 'templates/dashboard.html',
       controller: 'DashboardController'
     }).
+    when('/myfinances', {
+      templateUrl: 'templates/myfinances.html',
+      controller: 'MyFinancesController'
+    }).
     when('/settings', {
       templateUrl: 'templates/settings.html',
       controller: 'SettingsController'
