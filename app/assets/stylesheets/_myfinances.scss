@@ -12,9 +12,49 @@
     font-size: 16px;
     padding-bottom: 5px;
   }
+  hr {
+    border: 1px solid #999;
+    margin: 50px 1.1em 5px;
+  }
+  .cc-page-myfinances-amount {
+    text-align: right;
+  }
+  .cc-myfincances-red {
+    color: #D23D46;
+  }
+  .cc-myfincances-green {
+    color: #0D863D;
+  }
+  .cc-page-myfinances-light {
+    color: #777;
+    font-size: 13px;
+  }
+  .cc-page-myfinances-account-summary {
+    font-size: 18px;
+    line-height: 1.3;
+    margin-bottom: 30px;
+    margin-bottom: 20px;
+    .cc-page-myfinances-amount {
+      font-weight: bold;
+    }
+    .cc-page-myfinances-minimum-amount > div {
+      background: #E7EFF8;
+      padding-bottom: 5px;
+      padding-top: 5px;
+    }
+  }
+  .cc-page-myfinances-account-activity {
+    font-size: 14px;
+    line-height: 1.4;
+  }
   .cc-page-myfinances-table-header {
+    background: #E5E5E5;
     font-weight: bold;
     margin-bottom: 5px;
     margin-top: 15px;
+    padding: 5px 0;
+  }
+  .cc-page-myfinances-table-row:nth-child(even) {
+    background: #F1F1F1;
   }
 }

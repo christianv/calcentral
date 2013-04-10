@@ -2,99 +2,82 @@
 
   <div class="cc-page-myfinances" data-ng-cloak>
     <div class="row">
-      <div class="small-10 small-centered columns">
+      <div class="small-12 large-8 small-centered columns">
         <h1>My Finances</h1>
         <h2>Account Summary</h2>
-        <div class="row">
-          <div class="small-6 columns">
-            Real time balance:
+        <div class="row cc-page-myfinances-account-summary">
+          <div class="small-3 columns">
+            <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.lastStatementBalance"></div>
           </div>
-          <div class="small-6 columns">
-            {{myfinances.summary.realTimeBalance}}
+          <div class="small-9 columns">
+            Last Statement Balance <span class="cc-page-myfinances-light">on {{myfinances.summary.lastStatementDate | date:'MMMM d'}}</span>
           </div>
-          <div class="small-6 columns">
-            Adjusted balance:
+          <div class="small-3 columns">
+            <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.unbilledActivity"></div>
           </div>
-          <div class="small-6 columns">
-            {{myfinances.summary.adjustedBalance}}
+          <div class="small-9 columns">
+            Activity Since Last Statement <span class="cc-page-myfinances-light">since {{myfinances.summary.lastStatementDate | date:'MMMM d'}}</span>
           </div>
-          <div class="small-6 columns">
-            New Charges:
+          <hr />
+          <div class="small-3 columns">
+            <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.totalCurrentBalance"></div>
           </div>
-          <div class="small-6 columns">
-            {{myfinances.summary.newCharges}}
+          <div class="small-9 columns">
+            Total Current Balance <span class="cc-page-myfinances-light">Includes charges not due yet</span>
           </div>
-          <div class="small-6 columns">
-            New Payments:
+          <div class="small-3 columns">
+            <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.futureActivity"></div>
           </div>
-          <div class="small-6 columns">
-            {{myfinances.summary.newPayments}}
+          <div class="small-9 columns">
+            Charges <span class="cc-page-myfinances-light">not due yet</span>
           </div>
-          <div class="small-6 columns">
-            Amount Due:
-          </div>
-          <div class="small-6 columns">
-            {{myfinances.summary.amountDue}}
-          </div>
-          <div class="small-6 columns">
-            Due date:
-          </div>
-          <div class="small-6 columns">
-            {{myfinances.summary.dueDate || "noduedate"}}
-          </div>
-          <div class="small-6 columns">
-            Next statement day:
-          </div>
-          <div class="small-6 columns">
-            {{myfinances.summary.nextStatementDate}}
+          <div class="cc-page-myfinances-minimum-amount">
+            <div class="small-3 columns">
+              <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.minimumAmountDue"></div>
+            </div>
+            <div class="small-9 columns">
+              Minimum Amount Due <span class="cc-page-myfinances-light">since {{myfinances.summary.minimumAmountDueDate | date:'MMMM d'}}</span>
+            </div>
           </div>
         </div>
 
         <h2>Account Activity</h2>
-        <div class="row">
-          <div class="small-4 small-offset-8 columns">
-            <select class="cc-right" data-ng-model="search.transTerm">
-              <option value="">All Terms</option>
-              <option value="{{term}}" data-ng-repeat="term in myfinances.terms">{{term}}</option>
-            </select>
-            {{search.term}}
+        <div class="cc-page-myfinances-account-activity">
+          <div class="row">
+            <div class="small-4 small-offset-8 columns">
+              <select class="cc-right" data-ng-model="search.transTerm">
+                <option value="">All Terms</option>
+                <option value="{{term}}" data-ng-repeat="term in myfinances.terms">{{term}}</option>
+              </select>
+              {{search.term}}
+            </div>
+          </div>
+          <div class="row cc-page-myfinances-table-header">
+            <div class="small-2 columns">
+              Date
+            </div>
+            <div class="small-5 columns">
+              Description
+            </div>
+            <div class="small-2 columns cc-page-myfinances-amount">
+              Amount
+            </div>
+            <div class="small-3 columns">
+              Due Date
+            </div>
+          </div>
+          <div class="row cc-page-myfinances-table-row" data-ng-repeat="item in myfinances.activity | filter:search" title="Department: {{item.transDept}}">
+            <div class="small-2 columns">
+              {{item.transDate | date:'MMM d'}}
+            </div>
+            <div class="small-5 columns">
+              {{item.transDesc}}
+            </div>
+            <div class="small-2 columns cc-page-myfinances-amount" data-ng-bind-html="item.transAmount">
+            </div>
+            <div class="small-3 columns" data-ng-bind-html="item.transDueDate"></div>
           </div>
         </div>
-        <div class="row cc-page-myfinances-table-header">
-          <div class="small-2 columns">
-            Date
-          </div>
-          <div class="small-5 columns">
-            Description
-          </div>
-          <div class="small-2 columns">
-            Department
-          </div>
-          <div class="small-1 columns">
-            Type
-          </div>
-          <div class="small-2 columns">
-            Amount
-          </div>
-        </div>
-        <div class="row" data-ng-repeat="item in myfinances.activity | filter:search">
-          <div class="small-2 columns">
-            {{item.transDate}}
-          </div>
-          <div class="small-5 columns">
-            {{item.transDesc}}
-          </div>
-          <div class="small-2 columns">
-            {{item.transDept}}
-          </div>
-          <div class="small-1 columns">
-            {{item.transType}}
-          </div>
-          <div class="small-2 columns">
-            {{item.transAmount}}
-          </div>
-        </div>
-
       </div>
     </div>
   </div>
