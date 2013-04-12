@@ -53,9 +53,11 @@ class CanvasUserActivityProcessor
       formatted_entry[:url] = entry["html_url"]
       formatted_entry[:source_url] = entry["html_url"]
       formatted_entry[:summary] = process_message entry
+      formatted_entry[:summary] += process_score(entry)
       formatted_entry[:date] = format_date date
 
       feed << formatted_entry
+
     end
     feed
   end
@@ -102,7 +104,22 @@ class CanvasUserActivityProcessor
 
   def process_message(entry)
     message_partial = Nokogiri::HTML(entry["message"])
-    message_partial = message_partial.xpath("//text()").to_s.gsub(/\s+/, " ").strip
+    message_partial = message_partial.xpath("//text()").to_s.gsub(/\s+/, " ")
+
+    # Remove system-generated "Click here" strings, leaving instructor-added "Click here" strings intact
+    checkstrings = [
+      "Click here to view the assignment: http.*",
+      "You can view the submission here: http.*"
+    ]
+
+    checkstrings.each do |str|
+      if message_index = message_partial.rindex(/#{Regexp.new(str)}/)
+        message_partial = message_partial[0..message_index - 1]
+      end
+    end
+
+    message_partial = message_partial.strip
+
     if entry["type"] == "Message"
       title_and_summary = split_title_and_summary entry["title"]
       message = title_and_summary[2] if title_and_summary.size > 2
@@ -112,6 +129,26 @@ class CanvasUserActivityProcessor
     else
       message_partial
     end
+  end
+
+  def process_score(entry)
+    # Some assignments have been graded - append score and comments to summary
+    if entry["score"] && entry["assignment"] && entry["assignment"]["points_possible"]
+
+      score_message = " #{entry["score"].to_s} out of #{entry["assignment"]["points_possible"].to_s}"
+
+      if entry["submission_comments"].length > 0
+        if (entry["submission_comments"].length == 1)
+          msg = entry["submission_comments"].first["body"]
+        end
+
+        if (entry["submission_comments"] && entry["submission_comments"].length > 1)
+          msg = entry["submission_comments"].length.to_s + " comments"
+        end
+        score_message += " - #{msg}"
+      end
+    end
+    score_message || ""
   end
 
   def filter_classes(classes = [])

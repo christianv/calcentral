@@ -59,6 +59,7 @@ google_proxy:
   #Maps to tammi.chang.clc@gmail.com. Used for testing + recording responses
   test_user_access_token: "someMumboJumbo"
   test_user_refresh_token: "someMumboJumbo"
+  atom_mail_feed_url: "https://mail.google.com/mail/feed/atom/"
 sakai_proxy:
   host: "https://sakai-dev.berkeley.edu"
   fake: false
@@ -97,7 +98,7 @@ sentry_url: "https://facf7ad7bd7047f0a356e9322107ce50@app.getsentry.com/7185"
 cache:
   # Array of server addresses in cluster (for memcached)
   servers: ["localhost"]
-  maximum_expires_in: <%= 1.day %>
+  maximum_expires_in: <%= 48.hours %>
   race_condition_ttl: <%= 10.seconds %>
   expiration:
     default: <%= 5.minutes %>
@@ -117,6 +118,7 @@ cache:
     GoogleEventsProxy: <%= 1.hour %>
     GoogleTasksListProxy: <%= 1.hour %>
     GoogleTasksProxy: <%= 1.hour %>
+    MyRegBlocks: <%= 24.hours %>
     SakaiProxy: <%= 24.hours %>
     SakaiSiteAnnouncementsProxy: <%= 30.minutes %>
     SakaiUserSitesProxy: <%= 4.hours %>
