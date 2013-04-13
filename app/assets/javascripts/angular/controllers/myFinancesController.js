@@ -34,11 +34,11 @@
     var parseAmount = function(obj, i) {
       var item = obj[i];
       if (isNumber(item)) {
-        obj[i] = $filter('number')(item, 2);
+        var currency = $filter('number')(item, 2);
         if (obj[i] >= 0) {
-          obj[i] = '  $ ' + obj[i];
+          obj[i + 'Show'] = '  $ ' + currency;
         } else {
-          obj[i] = '<span class="cc-myfincances-green">- $ ' + obj[i].replace('-', '') + '</span>';
+          obj[i + 'Show'] = '<span class="cc-myfincances-green">- $ ' + currency.replace('-', '') + '</span>';
         }
       }
     };
@@ -47,7 +47,7 @@
       var item = obj[i];
       var test = Object.prototype.toString.call(item) === '[object Date]';
       if (test) {
-        obj[i] = $filter('date')(item, 'MMM d');
+        obj.transDueDateShow = $filter('date')(item, 'MMM d');
       }
     };
 
@@ -87,6 +87,15 @@
       $scope.myfinances.terms = terms;
     };
 
+    var findStudentDate = function(students, uid) {
+      for (var i = 0; i < students.length; i++) {
+        if (students[i].uid === uid) {
+          return students[i];
+        }
+      }
+      return {};
+    };
+
     /**
      * Get the student's financial information
      */
@@ -95,14 +104,37 @@
       // Data contains "students"
       $http.get('/json/student_financials.json').success(function(data) {
         // TODO select the right user
-        $scope.myfinances = data.students[0];
+        $scope.myfinances = findStudentDate(data.students, $scope.user.profile.uid);
 
-        parseData();
+        if ($scope.myfinances.uid) {
+          parseData();
 
-        createTerms();
+          createTerms();
+        }
 
         apiService.util.setTitle('My Finances');
       });
+    };
+
+    //http://jsfiddle.net/vojtajina/js64b/14/
+    $scope.sort = {
+      column: 'transDate',
+      descending: true
+    };
+
+    $scope.getSortClass = function(column) {
+      var sortUpDown = $scope.sort.descending ? 'down' : 'up';
+      return column == $scope.sort.column && 'icon-chevron-' + sortUpDown;
+    };
+
+    $scope.changeSorting = function(column) {
+      var sort = $scope.sort;
+      if (sort.column === column) {
+        sort.descending = !sort.descending;
+      } else {
+        sort.column = column;
+        sort.descending = false;
+      }
     };
 
     // We need to wait until the user is loaded

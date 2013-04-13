@@ -19,6 +19,9 @@
   .cc-page-myfinances-amount {
     text-align: right;
   }
+  .cc-page-myfinances-terms {
+    margin-bottom: 15px;
+  }
   .cc-myfincances-red {
     color: #D23D46;
   }
@@ -52,6 +55,10 @@
     font-weight: bold;
     margin-top: 15px;
     padding: 3px 0;
+    &>div:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
   }
   .cc-page-myfinances-table-row:nth-child(even) {
     background: #F1F1F1;

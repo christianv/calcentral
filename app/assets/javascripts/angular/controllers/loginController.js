@@ -17,6 +17,7 @@
               return;
             }
             $scope.login.user = data;
+            window.location = '/';
         });
     };
 
