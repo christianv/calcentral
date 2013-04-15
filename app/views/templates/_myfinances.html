@@ -57,13 +57,13 @@
             </div>
             <div class="row">
               <div class="small-6 small-offset-3 columns">
-                <ul class="button-group radius even-2" data-ng-init="search.transStatus=''">
+                <ul class="button-group radius even-2" data-ng-init="transStatusSearch=''">
                   <li>
-                    <button class="tiny button selected" data-ng-click="search.transStatus=''" data-ng-class="{'secondary':(search.transStatus!=''),'selected':(search.transStatus=='')}">All Transactions
+                    <button class="tiny button selected" data-ng-click="transStatusSearch=''" data-ng-class="{'secondary':(transStatusSearch!=''),'selected':(transStatusSearch=='')}">All Transactions
                     </button>
                   </li>
                   <li>
-                    <button class="tiny button secondary" data-ng-click="search.transStatus='open'" data-ng-class="{'secondary':(search.transStatus!='open'),'selected':(search.transStatus=='open')}">Current Transactions
+                    <button class="tiny button secondary" data-ng-click="transStatusSearch='open'" data-ng-class="{'secondary':(transStatusSearch!='open'),'selected':(transStatusSearch=='open')}">Current Transactions
                     </button>
                   </li>
                 </ul>
@@ -83,7 +83,7 @@
                 Due Date <i data-ng-class="getSortClass('transDueDate')"></i>
               </div>
             </div>
-            <div class="row cc-page-myfinances-table-row" data-ng-repeat="item in myfinances.activity | filter:search | orderBy:sort.column:sort.descending" title="Department: {{item.transDept}}">
+            <div class="row cc-page-myfinances-table-row" data-ng-repeat="item in myfinances.activity | filter:search | filter:statusFilter | orderBy:sort.column:sort.descending" title="Department: {{item.transDept}}">
               <div class="small-2 columns">
                 {{item.transDate | date:'MMM d'}}
               </div>

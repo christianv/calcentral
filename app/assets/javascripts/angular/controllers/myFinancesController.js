@@ -48,6 +48,9 @@
       var test = Object.prototype.toString.call(item) === '[object Date]';
       if (test) {
         obj.transDueDateShow = $filter('date')(item, 'MMM d');
+        if (obj.transStatus === 'pastDue') {
+          obj.transDueDateShow = '<span class="cc-myfincances-red">' + obj.transDueDateShow + '</span>';
+        }
       }
     };
 
@@ -135,6 +138,18 @@
         sort.column = column;
         sort.descending = false;
       }
+    };
+
+    $scope.$watch('transStatusSearch', function(status) {
+      if (status === 'open') {
+        $scope.searchStatuses = ['current','pastDue','future'];
+      } else {
+        $scope.searchStatuses = ['current','pastDue','future', 'closed'];
+      }
+    });
+
+    $scope.statusFilter = function(item) {
+      return ($scope.searchStatuses.indexOf(item.transStatus) !== -1);
     };
 
     // We need to wait until the user is loaded
