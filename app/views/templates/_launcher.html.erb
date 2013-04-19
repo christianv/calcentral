@@ -8,7 +8,12 @@
 <div class="large-8 columns small-6">
   <nav class="cc-launcher">
     <div data-ng-show="user.isAuthenticated()">
-      <%= render 'templates/widgets/badges_popover' %>
+      <div data-ng-show="user.profile.has_google_access_token">
+        <%= render 'templates/widgets/badges_popover' %>
+      </div>
+      <div data-ng-show="!user.profile.has_google_access_token">
+        <%= render 'templates/widgets/badges' %>
+      </div>
       <%= render 'templates/widgets/academic_profile_popover' %>
       <%= render 'templates/widgets/user_name_popover' %>
     </div>
