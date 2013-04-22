@@ -1,11 +1,16 @@
 require "spec_helper"
 
-describe "MyRegBlocks" do
+describe "MyAcademics::Regblocks" do
 
-  it "should get properly formatted registration blocks from fake Bearfacts" do
-    oski_bearfacts_proxy = BearfactsRegblocksProxy.new({:user_id => "61889", :fake => true})
-    BearfactsRegblocksProxy.stub(:new).and_return(oski_bearfacts_proxy)
-    oski_blocks = MyRegBlocks.new("61889").get_feed
+  it "should get properly formatted data from fake Bearfacts" do
+    oski_blocks_proxy = BearfactsRegblocksProxy.new({:user_id => "61889", :fake => true})
+    BearfactsRegblocksProxy.stub(:new).and_return(oski_blocks_proxy)
+
+    feed = {}
+    MyAcademics::Regblocks.new("61889").merge(feed)
+    feed.empty?.should be_false
+
+    oski_blocks = feed[:regblocks]
     oski_blocks[:active_blocks].empty?.should be_false
     oski_blocks[:active_blocks].each do |block|
       block[:status].should == "Active"

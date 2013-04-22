@@ -17,9 +17,10 @@ class SakaiSiteAnnouncementsProxy < SakaiProxy
     @message_max_length
   end
 
-  def get_announcements
+  def get_all_announcements
     end_time = @fake_now || DateTime.now
     start_time = end_time.advance(days: -10)
+    # Cache all announcements site-wide, and filter out group-specific announcements as needed.
     self.class.fetch_from_cache @site_id do
       announcements = []
       @tool_id = SakaiData.get_announcement_tool_id(@site_id)
@@ -37,6 +38,13 @@ class SakaiSiteAnnouncementsProxy < SakaiProxy
         end
       end
       announcements
+    end
+  end
+
+  def get_announcements(site_groups = [])
+    announcements = get_all_announcements
+    announcements.select do |ann|
+      ann['to_group_ids'].nil? || !(ann['to_group_ids'] & site_groups).empty?
     end
   end
 
@@ -69,6 +77,21 @@ class SakaiSiteAnnouncementsProxy < SakaiProxy
       }.join
       ann['summary'] = message_text.squish.truncate(@message_max_length)
       ann['title'] = doc.at_xpath('header')['subject']
+
+      # Is the announcement site-wide or targeted at particular sections/groups?
+      if (doc.at_xpath('header')['access'] == 'grouped')
+        group_ids = []
+        doc.xpath('header/group').each do |el|
+          authz_group = el['authzGroup']
+          if (group_id = %r{/site/.+/group/(.+)}.match(authz_group)[1])
+            group_ids << group_id
+          else
+            Rails.logger.warn("Unexpected group for #{channel_id} : #{authz_group}")
+          end
+        end
+        ann['to_group_ids'] = group_ids
+      end
+
       # Relative-url '/content/attachment/XXX/Announcements/YYY/FILE NAME.EXT' becomes link
       # 'https://HOST/access/content/attachment/XXX/Announcements/YYY/FILE%20NAME.EXT'.
       doc.xpath('header/attachment').each do |el|
@@ -98,8 +121,6 @@ class SakaiSiteAnnouncementsProxy < SakaiProxy
     else
       # The only other sort of CHANNEL_ID I've seen supports the bSpace-wide "Message of the Day"
       # feature, at '/announcement/channel/!site/motd'.
-      # Sakai CLE also supposedly allows announcements targeting specific groups within
-      # a site, but I haven't seen that in the wild yet.
       if channel_id != '/announcement/channel/!site/motd'
         Rails.logger.warn("Skipping siteless announcement for #{channel_id}")
       end

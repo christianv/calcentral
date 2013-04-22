@@ -49,7 +49,7 @@ class MyActivities < MyMergedModel
       [:classes, :groups].each do |category|
         if (sites = categorized_sites[category])
           sites.each do |site|
-            announcements = SakaiSiteAnnouncementsProxy.new(site_id: site[:id]).get_announcements
+            announcements = SakaiSiteAnnouncementsProxy.new(site_id: site[:id]).get_announcements(site[:groups])
             announcements.each do |sakai_ann|
               announcement = {
                   id: sakai_ann['message_id'],
@@ -78,7 +78,7 @@ class MyActivities < MyMergedModel
 
   def append_regblocks(activities)
     proxy = BearfactsRegblocksProxy.new({:user_id => @uid})
-    blocks_feed = proxy.get_blocks
+    blocks_feed = proxy.get
 
     #Bearfacts proxy will return nil on >= 400 errors.
     return activities if blocks_feed.nil?

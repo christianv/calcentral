@@ -17,7 +17,7 @@ Calcentral::Application.routes.draw do
   match '/api/my/groups' => 'my_groups#get_feed', :as => :my_groups, :defaults => { :format => 'json' }
   match '/api/my/activities' => 'my_activities#get_feed', :as => :my_activities, :defaults => { :format => 'json' }
   match '/api/my/badges' => 'my_badges#get_feed', :as => :my_badges, :defaults => { :format => 'json' }
-  match '/api/my/regblocks' => 'my_reg_blocks#get_feed', :as => :my_regblocks, :defaults => { :format => 'json' }
+  match '/api/my/academics' => 'my_academics#get_feed', :as => :my_academics, :defaults => { :format => 'json' }
 
   match '/api/blog/release_notes/latest' => 'blog_feed#get_latest_release_notes', :as => :blog_latest_release_notes, :defaults => { :format => 'json' }
 
@@ -34,9 +34,14 @@ Calcentral::Application.routes.draw do
 
   match '/auth/cas/callback' => 'sessions#lookup'
   match '/auth/failure' => 'sessions#failure'
-  match '/logout' => 'sessions#destroy', :as => :logout, :via => :post
+  if Settings.developer_auth.enabled
+    match '/basic_auth_login' => 'sessions#basic_lookup'
+    match '/logout' => 'sessions#destroy', :as => :logout
+  else
+    match '/logout' => 'sessions#destroy', :as => :logout, :via => :post
+  end
+
   match '/login' => 'sessions#new', :as => :login
-  match '/basic_auth_login' => 'sessions#basic_lookup' if Settings.developer_auth.enabled
 
   match '/act_as' => 'sessions#act_as', :via => :post
   match '/stop_act_as' => 'sessions#stop_act_as', :via => :post

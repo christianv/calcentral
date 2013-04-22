@@ -31,11 +31,14 @@ class MyBadges::Merged < MyMergedModel
 
     #Appending empty counts for non-enabled services
     @service_list.each do |service|
-      badges[service] ||= 0
+      badges[service] ||= {
+        count: 0,
+        items: []
+      }
     end
 
     logger.debug "#{self.class.name} get_feed is #{badges.inspect}"
-    {"unread_badge_counts" => badges}
+    {:badges => badges}
   end
 
 end
