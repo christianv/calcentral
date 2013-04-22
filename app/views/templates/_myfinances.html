@@ -57,13 +57,13 @@
             </div>
             <div class="row">
               <div class="small-6 small-offset-3 columns">
-                <ul class="button-group radius even-2" data-ng-init="transStatusSearch=''">
+                <ul class="button-group radius even-2" data-ng-init="transStatusSearch='open'">
                   <li>
-                    <button class="tiny button selected" data-ng-click="transStatusSearch=''" data-ng-class="{'secondary':(transStatusSearch!=''),'selected':(transStatusSearch=='')}">All Transactions
+                    <button class="tiny button selected" data-ng-click="transStatusSearch='open'" data-ng-class="{'secondary':(transStatusSearch!='open'),'selected':(transStatusSearch=='open')}">Current Transactions
                     </button>
                   </li>
                   <li>
-                    <button class="tiny button secondary" data-ng-click="transStatusSearch='open'" data-ng-class="{'secondary':(transStatusSearch!='open'),'selected':(transStatusSearch=='open')}">Current Transactions
+                    <button class="tiny button secondary" data-ng-click="transStatusSearch=''" data-ng-class="{'secondary':(transStatusSearch!=''),'selected':(transStatusSearch=='')}">All Transactions
                     </button>
                   </li>
                 </ul>
