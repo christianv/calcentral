@@ -143,6 +143,8 @@
     $scope.$watch('transStatusSearch', function(status) {
       if (status === 'open') {
         $scope.searchStatuses = ['current','pastDue','future'];
+      } else if (status === 'minamountdue') {
+        $scope.searchStatuses = ['current','pastDue'];
       } else {
         $scope.searchStatuses = ['current','pastDue','future', 'closed'];
       }
