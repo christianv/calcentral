@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   after_filter :access_log
 
   def set_csp
-    response.headers['Content-Security-Policy'] = "default-src *;"
+    response.headers['Content-Security-Policy'] = "default-src *;style-src 'self' data: inline"
   end
 
   def authenticate
