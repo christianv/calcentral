@@ -1,6 +1,11 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  before_filter :set_csp
   after_filter :access_log
+
+  def set_csp
+    response.headers['Content-Security-Policy'] = "default-src *;"
+  end
 
   def authenticate
     redirect_to login_url unless session[:user_id]

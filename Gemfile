@@ -119,17 +119,6 @@ group :development, :test , :testext do
 end
 
 group :development do
-  # Automatically reloads your browser when "view" files are modified.
-  # https://github.com/guard/guard-livereload
-  gem "guard-livereload", "~> 1.1.0"
-  gem "rack-livereload", "~> 0.3.11"
-
-  # Polling is evil:
-  # https://github.com/guard/guard#readme
-  gem "rb-inotify", "~> 0.9.0", require: false
-  gem "rb-fsevent", "~> 0.9.2", require: false
-  gem "rb-fchange", "~> 0.0.6", require: false
-
   # Adds extra information to the requests
   # Enables the RailsPanel chrome extension
   gem "meta_request", "~> 0.2.3"
