@@ -6,9 +6,15 @@
    */
   calcentral.controller('UpNextController', ['$http', '$scope', function($http, $scope) {
 
-    $http.get('/api/my/up_next').success(function(data) {
-      $scope.items = data.items;
-    });
+    setTimeout(function() {
+
+      $http.get('/api/my/up_next').success(function(data) {
+        console.log($scope._is_loading);
+        angular.extend($scope, data);
+        console.log($scope._is_loading);
+      });
+
+    }, 2500);
 
   }]);
 

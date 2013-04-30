@@ -6,10 +6,13 @@
    */
   calcentral.controller('MyClassesController', ['$http', '$scope', function($http, $scope) {
 
-    $http.get('/api/my/classes').success(function(data) {
-      $scope.myclasses = data.classes;
-    });
+setTimeout(function(){
 
+
+    $http.get('/api/my/classes').success(function(data) {
+      angular.extend($scope, data);
+    });
+}, 2000);
   }]);
 
 })(window.calcentral);

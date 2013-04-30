@@ -22,7 +22,20 @@ $cc-widget-highlight-background-color: #f2fef3;
 $cc-widget-hover-background-color: #e3ffff;
 $cc-widget-more-background-color: #c8dee9;
 $cc-widget-section-label-color: #515151;
-
+.cc-spinner {
+  div {
+    display: none;
+  }
+  &:after {
+    content: '\f110';
+    display: block;
+    font-family: FontAwesome;
+    font-size: 20px;
+    text-align: center;
+    margin: 20px 0;
+    -webkit-animation: spin 2s infinite linear;
+  }
+}
 /* Body */
 body {
   background-color: $cc-main-background-color;
