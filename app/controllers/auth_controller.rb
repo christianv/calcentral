@@ -11,6 +11,10 @@ class AuthController < ApplicationController
     nil
   end
 
+  def connected_token_callback(uid)
+    nil
+  end
+
   def request_authorization
     expire
     final_redirect = params[:final_redirect] || "/settings"
@@ -38,15 +42,13 @@ class AuthController < ApplicationController
             client.issued_at.to_i + client.expires_in
           end
       )
-      Calcentral::USER_CACHE_WARMER.warm session[:user_id]
+      connected_token_callback session[:user_id]
     else
       Rails.logger.debug "Deleting #{app_id} token for user #{session[:user_id]}"
-      use_pooled_connection {
-        Oauth2Data.destroy_all(:uid => session[:user_id], :app_id => app_id)
-      }
+      Oauth2Data.remove(session[:user_id], app_id)
     end
 
-    expire
+    expire_then_warm_cache
 
     final_redirect = params[:state] || "/settings"
     final_redirect = Base64.decode64 final_redirect
@@ -55,15 +57,18 @@ class AuthController < ApplicationController
 
   def remove_authorization
     Rails.logger.debug "Deleting #{app_id} token for user #{session[:user_id]}"
-    use_pooled_connection {
-      Oauth2Data.destroy_all(:uid => session[:user_id], :app_id => app_id)
-    }
-    expire
+    Oauth2Data.remove(session[:user_id], app_id)
+    expire_then_warm_cache
     render :nothing => true, :status => 204
   end
 
   def expire
     Calcentral::USER_CACHE_EXPIRATION.notify session[:user_id]
+  end
+
+  def expire_then_warm_cache
+    expire
+    Calcentral::USER_CACHE_WARMER.warm session[:user_id]
   end
 
 end

@@ -12,7 +12,7 @@
   }
   h2 {
     font-size: 20px;
-    margin-top: 10px;
+    margin-top: 20px;
   }
   h3 {
     font-size: 16px;
@@ -33,6 +33,15 @@
   .cc-academics-block-history {
     margin-top: 15px;
   }
+  .cc-academics-calculator-grid-section {
+    margin-top: 10px;
+  }
+  .cc-academics-calculator-panel {
+    border: 1px solid $cc-medium-grey;
+  }
+  .cc-academics-calculator-row {
+    line-height: 2;
+  }
   .cc-academics-calendar {
     font-size: 11px;
     line-height: 1.5em;
@@ -52,6 +61,9 @@
   }
   .cc-academics-empasize {
     font-weight: bold;
+  }
+  .cc-academics-exam-block {
+    margin-bottom: 15px;
   }
   .cc-academics-nolink {
     color: $cc-light-medium-grey;
@@ -89,5 +101,9 @@
   }
   .cc-academics-showhide-text {
     font-size: 14px;
+  }
+  .cc-academics-status-and-blocks {
+    margin-top: 20px;
+    padding-top: 0;
   }
 }
