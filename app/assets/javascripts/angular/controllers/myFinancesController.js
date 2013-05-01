@@ -49,7 +49,7 @@
       if (test) {
         obj.transDueDateShow = $filter('date')(item, 'MMM d');
         if (obj.transStatus === 'pastDue') {
-          obj.transDueDateShow = '<span class="cc-myfincances-red">' + obj.transDueDateShow + '</span>';
+          obj._isPastDueDate = true;
         }
       }
     };
