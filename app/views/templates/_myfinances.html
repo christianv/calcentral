@@ -4,11 +4,11 @@
     <div class="row">
       <div class="small-12 large-8 small-centered columns">
         <h1>My Finances</h1>
-
         <div data-ng-show="myfinances.uid">
           <h2>Account Summary</h2>
 
           <div class="row cc-page-myfinances-account-summary">
+
             <div data-ng-hide="isAllZero" class="small-3 columns">
               <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.lastStatementBalanceShow"></div>
             </div>
@@ -55,6 +55,7 @@
                   Credit Balance <button class="button radius small cc-right">Pay Now</button>
                 </div>
                 <div data-ng-show="myfinances.summary.totalPastDueAmount > 0" class="cc-page-myfinances-total-pastdue">Includes Past Due Amount of {{myfinances.summary.totalPastDueAmountShow}}</div>
+                <button class="button radius small cc-right">View MyFinAid</button>
               </div>
             </div>
           </div>
@@ -64,7 +65,7 @@
           <div class="cc-page-myfinances-account-activity">
             <div class="row cc-page-myfinances-terms">
               <div class="small-4 small-offset-8 columns">
-                <select class="cc-right" data-ng-model="search.transTerm">
+                <select class="cc-right" data-ng-model="search.transTerm" data-ng-init="search.transTerm=currentTerm">
                   <option value="">All Terms</option>
                   <option value="{{term}}" data-ng-repeat="term in myfinances.terms" data-ng-selected="term==currentTerm">{{term}}</option>
                 </select>
@@ -103,7 +104,7 @@
                   Due Date <i data-ng-class="getSortClass('transDueDate')"></i>
                 </div>
               </div>
-              <div class="row cc-page-myfinances-table-row" data-ng-repeat="item in myfinances.activity | filter:search | filter:statusFilter | orderBy:sort.column:sort.descending" title="Department: {{item.transDept}}" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
+              <div class="row cc-page-myfinances-table-row" data-ng-repeat="item in myfinances.activity | filter:search | filter:statusFilter | orderBy:sort.column:sort.descending" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}" data-ng-click="item._showdetail = !item._showdetail" data-cc-accessible-focus-directive>
                 <div class="small-2 columns">
                   {{item.transDate | date:'MMM dd, yyyy'}}
                 </div>
@@ -113,6 +114,10 @@
                 <div class="small-2 columns cc-page-myfinances-amount" data-ng-bind-html="item.transAmountShow">
                 </div>
                 <div class="small-3 columns" data-ng-bind-html="item.transDueDateShow"></div>
+                <div class="cc-myfincances-normal" data-ng-show="item._showdetail">
+                  <div class="small-2 small-offset-2 columns">Department:</div><div class="small-8 columns"> <span data-ng-bind="item.transDept"></span></div>
+                  <div class="small-2 small-offset-2 columns">Term:</div><div class="small-8 columns"> <span data-ng-bind="item.transTerm"></span></div>
+                </div>
               </div>
             </div>
           </div>

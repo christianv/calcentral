@@ -16,6 +16,14 @@
     border: 1px solid #999;
     margin: 50px 1.1em 5px;
   }
+  .cc-myfinances-nofinaid {
+    font-size: 12px;
+    margin-bottom: 15px;
+    text-align: right;
+    button {
+      margin-left: 20px;
+    }
+  }
   .cc-myfinances-100 li, .cc-myfinances-100 li button {
     width: 100%;
   }
@@ -27,6 +35,9 @@
   }
   .cc-myfincances-red {
     color: #D23D46;
+  }
+  .cc-myfincances-normal {
+    color: #666;
   }
   .cc-myfincances-grey {
     color: #222;
@@ -80,6 +91,9 @@
       cursor: pointer;
       text-decoration: underline;
     }
+  }
+  .cc-page-myfinances-table-row {
+    cursor: pointer;
   }
   .cc-page-myfinances-table-row:nth-child(even) {
     background: #F1F1F1;
