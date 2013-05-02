@@ -1,3 +1,11 @@
+begin
+  require 'fcntl'
+rescue LoadError
+  # Trap a mysterious error loading fcntl. By trapping the error early on, it will give a
+  # chance for subsequent libraries that use fcntl to load fcntl properly. Workaround is as
+  # suggested at http://markmail.org/message/zukili5zqtvqy7h5
+end
+
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
@@ -16,6 +24,7 @@ end
 module Calcentral
   class Application < Rails::Application
     initializer :amend_yaml_config, :before => :load_environment_config do
+      CalcentralLogging.init_logging
       amended_config = CalcentralConfig.load_settings
       Kernel.const_set(:Settings, amended_config)
     end

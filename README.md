@@ -203,6 +203,13 @@ https://[hostname]/stop_act_as
 
 3. We support **source maps** for SASS in development mode. There is a [great blog post](http://fonicmonkey.net/2013/03/25/native-sass-scss-source-map-support-in-chrome-and-rails/) explaining how to set it up and use it.
 
+### Best Practices
+
+In some places, we echo unescaped script tags back to the browser, so we need to be very careful not to expose those in any places where they could get executed.
+
+* Never use ngBindHtmlUnsafe.
+* Never use innerHTML unless displaying completely static data.
+
 ### Styleguide
 
 * Use an editor that supports [.editorconfig](http://editorconfig.org/#overview). Feel free to have a look at the [editor plug-ins](http://editorconfig.org/#download)
@@ -261,6 +268,17 @@ To view other rake task for the project: ```rake -T```
 * ```rake spec:xml``` - Runs rake spec, but pipes the output to xml using the rspec_junit_formatter gem, for JUnit compatible test result reports
 * ```rake vcr:record``` - Refresh vcr recordings and reformats the fixtures with formatted JSON output. Will also parse the reponse body's string into json output for legibility.
 * ```rake vcr:list``` - List the available recordings captured in the fixtures.
+
+## Memcached tasks:
+
+A few rake tasks to help monitor statistics and more:
+
+* ```rake memcached:clear_stats``` - Reset memcached stats from all cluster nodes
+* ```rake memcached:empty``` - Invalidate all memcached keys from all cluster nodes
+* ```rake memcached:get_stats``` - Fetch memcached stats from all cluster nodes
+
+* Generally, if you `rake memcached:empty` ( __WARNING:__ do not run on the production cluster unless you know what you're doing), you should follow with an `rake memcached:clear_stats`.
+* All three task take the optional param of "hosts." So, if say you weren't running these tasks on the cluster layers themselves, or only wanted to tinker with a certain subset of clusters: `rake memcached:get_stats hosts="localhost:11212,localhost:11213,localhost:11214"`
 
 ## Using the feature toggle:
 

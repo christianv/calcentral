@@ -5,23 +5,40 @@
   /**
    * Academics controller
    */
-  calcentral.controller('AcademicsController', ['apiService', '$http', '$scope', function(apiService, $http, $scope) {
+  calcentral.controller('AcademicsController', ['apiService', '$http', '$routeParams', '$scope', function(apiService, $http, $routeParams, $scope) {
 
     apiService.util.setTitle('My Academics');
-
-    $scope.getUserStatus = function() {
-      // return $http.get('/dummy/json/status_oski_sample.json').success(function(data) {
-      return $http.get('/api/my/status').success(function(data) {
-        $scope.user_status = data;
-      });
-    };
-    $scope.getUserStatus();
 
     $scope.getAcademics = function() {
       // return $http.get('/dummy/json/academics.json').success(function(data) {
       return $http.get('/api/my/academics').success(function(data) {
         $scope.academics = data;
-        $scope.semesters = data.semesters[0]; // Assuming just one semester for now
+        $scope.exam_schedule = data.exam_schedule;
+        $scope.semesters = data.semesters;
+
+        // Some users (e.g. test-xxx users) may be missing the "student" role but still need ability to view My Academics pages
+        $scope.can_view_academics = $scope.user.profile.roles.student || $scope.academics.college_and_level.standing == 'Undergraduate';
+
+        // Get selected semester from URL params and extract data from semesters array
+        if ($routeParams.semester_slug) {
+          angular.forEach(data.semesters, function(semester) {
+            if (semester.slug === $routeParams.semester_slug) {
+              $scope.selected_semester = semester;
+            }
+          });
+          $scope.selected_courses = $scope.selected_semester.schedule;
+        }
+
+        // Get selected course from URL params and extract data from selected semester schedule
+        if ($routeParams.ccn) {
+          angular.forEach($scope.selected_semester.schedule, function(course) {
+            if (course.ccn === $routeParams.ccn) {
+              $scope.selected_course = course;
+            }
+          });
+        }
+
+        $scope.gpaInit(); // Initialize GPA calculator with selected courses
       });
     };
     $scope.getAcademics();
@@ -29,6 +46,52 @@
     $scope.toggleBlockHistory = function() {
       $scope.show_block_history = !$scope.show_block_history;
       apiService.analytics.trackEvent(['Block history', 'Show history panel - ' + $scope.show_block_history ? 'Show' : 'Hide']);
+    };
+
+    $scope.gradeopts = [
+      {grade: 'A', weight: 4},
+      {grade: 'A-', weight: 3.7},
+      {grade: 'B+', weight: 3.3},
+      {grade: 'B', weight: 3},
+      {grade: 'B-', weight: 2.7},
+      {grade: 'C+', weight: 2.3},
+      {grade: 'C', weight: 2},
+      {grade: 'C-', weight: 1.7},
+      {grade: 'D+', weight: 1.3},
+      {grade: 'D', weight: 1},
+      {grade: 'D-', weight: 0.7},
+      {grade: 'F', weight: 0}
+    ];
+
+    $scope.gpaUpdateCourse = function(course, estimated_grade) {
+      // Update course object on scope and recalculate overall GPA
+      course.estimated_grade = estimated_grade;
+      $scope.gpaCalculate();
+    };
+
+    $scope.gpaCalculate = function() {
+      // Recalculate GPA on every dropdown change.
+      var total_units = 0;
+      var total_score = 0;
+
+      angular.forEach($scope.selected_courses, function(course) {
+        // Don't calculate for pass/no-pass courses!
+        if (course.grade_option === 'Letter') {
+          course.score = parseFloat(course.estimated_grade, 10) * course.units;
+          total_units += parseFloat(course.units, 10);
+          total_score += course.score;
+        }
+      });
+
+      $scope.estimated_gpa = total_score / total_units;
+    };
+
+    $scope.gpaInit = function() {
+      // On page load, set default values and calculate starter GPA
+      angular.forEach($scope.selected_courses, function(course) {
+        course.estimated_grade = 4;
+      });
+      $scope.gpaCalculate();
     };
 
   }]);

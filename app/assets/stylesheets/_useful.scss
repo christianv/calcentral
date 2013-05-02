@@ -30,6 +30,23 @@
   text-decoration: line-through !important;
 }
 
+/* Spinner */
+.cc-spinner {
+  div {
+    display: none;
+  }
+  &:after {
+    animation: spin 2s infinite linear;
+    -webkit-animation: spin 2s infinite linear;
+    content: '\f110';
+    display: block;
+    font-family: FontAwesome;
+    font-size: 20px;
+    margin: 20px 0;
+    text-align: center;
+  }
+}
+
 /* Scrollbar in webkit */
 .cc-scroll {
   &::-webkit-scrollbar {
@@ -66,7 +83,7 @@
 .cc-popover {
   background: #fff;
   border: 1px solid #cbcbcb;
-  border-radius: 4px;
+  border-radius: 5px;
   @include box-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
   padding: 15px;
   position: absolute;
