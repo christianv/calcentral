@@ -64,9 +64,9 @@
 
           <div class="cc-page-myfinances-account-activity">
             <div class="row cc-page-myfinances-terms">
-              <div class="small-4 small-offset-8 columns">
-                <select class="cc-right" data-ng-model="search.transTerm" data-ng-init="search.transTerm=currentTerm">
-                  <option value="">All Terms</option>
+              <div class="small-4 small-offset-8 columns" style="height: 20px;">
+                <select class="cc-right" data-ng-model="search.transTerm" data-ng-show="transStatusSearch==''">
+                  <option value="" data-ng-selected="term==''">All Terms</option>
                   <option value="{{term}}" data-ng-repeat="term in myfinances.terms" data-ng-selected="term==currentTerm">{{term}}</option>
                 </select>
               </div>
@@ -75,15 +75,15 @@
               <div class="small-7 small-centered columns">
                 <ul class="button-group radius {{countButtonsClass}}" data-ng-init="transStatusSearch=''">
                   <li data-ng-show="counts.minimumamountdue!=0">
-                    <button class="tiny button secondary" data-ng-click="transStatusSearch='minamountdue'" data-ng-class="{'secondary':(transStatusSearch!='minamountdue'),'selected':(transStatusSearch=='minamountdue')}">Minimum Amount Due
+                    <button class="tiny button secondary" data-ng-click="transStatusSearch='minamountdue';search.transTerm=''" data-ng-class="{'secondary':(transStatusSearch!='minamountdue'),'selected':(transStatusSearch=='minamountdue')}">Minimum Amount Due
                     </button>
                   </li>
                   <li data-ng-show="counts.open!=0">
-                    <button class="tiny button secondary" data-ng-click="transStatusSearch='open'" data-ng-class="{'secondary':(transStatusSearch!='open'),'selected':(transStatusSearch=='open')}">Current Transactions
+                    <button class="tiny button secondary" data-ng-click="transStatusSearch='open';search.transTerm=''" data-ng-class="{'secondary':(transStatusSearch!='open'),'selected':(transStatusSearch=='open')}">Current Transactions
                     </button>
                   </li>
                   <li>
-                    <button class="tiny button selected" data-ng-click="transStatusSearch=''" data-ng-class="{'secondary':(transStatusSearch!=''),'selected':(transStatusSearch=='')}">Transaction History
+                    <button class="tiny button selected" data-ng-click="transStatusSearch='';search.transTerm=''" data-ng-class="{'secondary':(transStatusSearch!=''),'selected':(transStatusSearch=='')}">Transaction History
                     </button>
                   </li>
                 </ul>
