@@ -49,7 +49,7 @@
       if (test) {
         obj.transDueDateShow = $filter('date')(item, 'MMM d');
         if (obj.transStatus === 'pastDue') {
-          obj.transDueDateShow = '<span class="cc-myfincances-red">' + obj.transDueDateShow + '</span>';
+          obj._isPastDueDate = true;
         }
       }
     };
@@ -90,6 +90,37 @@
       $scope.myfinances.terms = terms;
     };
 
+    var statuses = {
+      'open': ['current','pastDue','future'],
+      'minimumamountdue': ['current','pastDue'],
+      'all': ['current','pastDue','future', 'closed']
+    };
+
+    var createCount = function(statusArray) {
+      var count = 0;
+      for (var i = 0; i < $scope.myfinances.activity.length; i++){
+        var item = $scope.myfinances.activity[i];
+
+        if (statusArray.indexOf(item.transStatus) !== -1) {
+          count++;
+        }
+      }
+      if (count !== 0) {
+        $scope.countButtons++;
+      }
+      return count;
+    };
+
+    var createCounts = function() {
+      $scope.countButtons = 0;
+      $scope.counts = {
+        'open': createCount(statuses.open),
+        'minimumamountdue': createCount(statuses.minimumamountdue),
+        'all': createCount(statuses.all)
+      };
+      $scope.countButtonsClass = $scope.countButtons === 1 ? 'cc-myfinances-100' : 'even-' + $scope.countButtons;
+    };
+
     var findStudentDate = function(students, uid) {
       for (var i = 0; i < students.length; i++) {
         if (students[i].uid === uid) {
@@ -97,6 +128,16 @@
         }
       }
       return {};
+    };
+
+    var checkAllZero = function() {
+      var summary = $scope.myfinances.summary;
+      $scope.isAllZero = (summary.anticipatedAid === 0 &&
+        summary.lastStatementBalance === 0 &&
+        summary.unbilledActivity === 0 &&
+        summary.futureActivity === 0 &&
+        summary.totalPastDueAmount === 0 &&
+        summary.minimumAmountDue === 0);
     };
 
     /**
@@ -113,6 +154,10 @@
           parseData();
 
           createTerms();
+
+          createCounts();
+
+          checkAllZero();
         }
 
         apiService.util.setTitle('My Finances');
@@ -142,14 +187,15 @@
 
     $scope.$watch('transStatusSearch', function(status) {
       if (status === 'open') {
-        $scope.searchStatuses = ['current','pastDue','future'];
+        $scope.searchStatuses = statuses.open;
       } else if (status === 'minamountdue') {
-        $scope.searchStatuses = ['current','pastDue'];
+        $scope.searchStatuses = statuses.minimumamountdue;
       } else {
-        $scope.searchStatuses = ['current','pastDue','future', 'closed'];
+        $scope.searchStatuses = statuses.all;
       }
     });
 
+    $scope.currentTerm = 'Spring 2013';
     $scope.statusFilter = function(item) {
       return ($scope.searchStatuses.indexOf(item.transStatus) !== -1);
     };
