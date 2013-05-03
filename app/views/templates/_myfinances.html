@@ -28,7 +28,7 @@
               <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.totalCurrentBalanceShow"></div>
             </div>
             <div class="small-9 columns">
-              Total Current Balance <span class="cc-page-myfinances-light">includes charges not yet due</span>
+              Total Balance <span class="cc-page-myfinances-light">includes charges not yet due</span>
             </div>
             <div data-ng-hide="isAllZero" class="small-3 columns" data-ng-show="myfinances.summary.anticipatedAid!=0">
               <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.anticipatedAidShow"></div>
@@ -65,7 +65,7 @@
           <div class="cc-page-myfinances-account-activity">
             <div class="row cc-page-myfinances-terms">
               <div class="small-4 small-offset-8 columns" style="height: 20px;">
-                <select class="cc-right" data-ng-model="search.transTerm" data-ng-show="transStatusSearch==''">
+                <select class="cc-right" data-ng-model="search.transTerm" data-ng-show="transStatusSearch==''" id="cc-page-myfinances-select-term">
                   <option value="" data-ng-selected="term==''">All Terms</option>
                   <option value="{{term}}" data-ng-repeat="term in myfinances.terms" data-ng-selected="term==currentTerm">{{term}}</option>
                 </select>
@@ -79,7 +79,7 @@
                     </button>
                   </li>
                   <li data-ng-show="counts.open!=0">
-                    <button class="tiny button secondary" data-ng-click="transStatusSearch='open';search.transTerm=''" data-ng-class="{'secondary':(transStatusSearch!='open'),'selected':(transStatusSearch=='open')}">Current Transactions
+                    <button class="tiny button secondary" data-ng-click="transStatusSearch='open';search.transTerm=''" data-ng-class="{'secondary':(transStatusSearch!='open'),'selected':(transStatusSearch=='open')}">Total Balance
                     </button>
                   </li>
                   <li>
