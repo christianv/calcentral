@@ -55,7 +55,7 @@
                   Credit Balance <button class="button radius small cc-right">Pay Now</button>
                 </div>
                 <div data-ng-show="myfinances.summary.totalPastDueAmount > 0" class="cc-page-myfinances-total-pastdue">Includes Past Due Amount of {{myfinances.summary.totalPastDueAmountShow}}</div>
-                <button class="button radius small cc-right" style="clear:both">View MyFinAid</button>
+                <button class="button radius small cc-right" data-ng-show="myfinances.summary.anticipatedAid==0" style="clear:both">View MyFinAid</button>
               </div>
             </div>
           </div>
