@@ -60,6 +60,9 @@
       color: $cc-medium-grey;
       width: 150px;
     }
+    .cc-myfincances-green {
+      color: #474747;
+    }
     .cc-page-myfinances-amount {
       font-weight: bold;
     }
@@ -73,6 +76,12 @@
     .cc-page-myfinances-total-pastdue {
       color: #d62728;
       font-size: 12px;
+    }
+    .cc-page-myfinances-account-summary-click:hover {
+      cursor: pointer;
+      div {
+        text-decoration: underline;
+      }
     }
   }
   .cc-page-myfinances-account-activity {
@@ -92,10 +101,32 @@
       text-decoration: underline;
     }
   }
-  .cc-page-myfinances-table-row {
+  .cc-page-myfinances-table-row:hover {
     cursor: pointer;
+    & > div:not(:last-child) {
+      text-decoration: underline;
+    }
   }
   .cc-page-myfinances-table-row:nth-child(even) {
     background: #F1F1F1;
+  }
+  .cc-page-myfinances-table-row-blue {
+    background: #E7EFF8;
+  }
+  .cc-page-myfinances-table-row-selected {
+    color: #fff;
+    background: #666 !important;
+      .cc-myfincances-red {
+        color: #fff;
+      }
+      .cc-myfincances-normal {
+        color: #ccc;
+      }
+      .cc-myfincances-grey {
+        color: #fff;
+      }
+      .cc-myfincances-green {
+        color: #fff;
+      }
   }
 }
