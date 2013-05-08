@@ -16,6 +16,9 @@
     border: 1px solid #999;
     margin: 50px 1.1em 5px;
   }
+  .cc-myfincances-greyback {
+    background: #eee;
+  }
   .cc-myfinances-nofinaid {
     font-size: 12px;
     margin-bottom: 15px;
@@ -107,11 +110,8 @@
       text-decoration: underline;
     }
   }
-  .cc-page-myfinances-table-row:nth-child(even) {
-    background: #F1F1F1;
-  }
   .cc-page-myfinances-table-row-blue {
-    background: #E7EFF8;
+    background: #E7EFF8 !important;
   }
   .cc-page-myfinances-table-row-selected {
     color: #fff;

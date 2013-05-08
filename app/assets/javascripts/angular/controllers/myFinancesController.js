@@ -200,6 +200,14 @@
       return ($scope.searchStatuses.indexOf(item.transStatus) !== -1);
     };
 
+    $scope.notrefundFilter = function(item) {
+      if ($scope.notrefund && item.transType === 'refund') {
+        return false;
+      } else {
+        return true;
+      }
+    };
+
     // We need to wait until the user is loaded
     $scope.$watch('user.isLoaded', function(isLoaded) {
       if (isLoaded) {
