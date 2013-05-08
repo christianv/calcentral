@@ -20,14 +20,14 @@
             <div data-ng-show="myfinances._showinfo" style="font-size: 0.8em; padding-top: 10px;
 padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng-class="{'cc-myfincances-greyback':(myfinances._showinfo==true)}">
               <div data-ng-hide="isAllZero" class="small-2 small-offset-3 columns">
-                <div class="cc-page-myfinances-amount" style="text-align: left" data-ng-bind-html="myfinances.summary.lastStatementBalanceShow"></div>
+                <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.lastStatementBalanceShow"></div>
               </div>
               <div data-ng-hide="isAllZero" class="small-7 columns">
                 Last Statement Balance <span class="cc-page-myfinances-light">on {{myfinances.summary.lastStatementDate | date:'MMMM d'}}</span>
                 <button class="button radius small cc-right">View Statements</button>
               </div>
               <div data-ng-hide="isAllZero" class="small-2 small-offset-3 columns">
-                <div class="cc-page-myfinances-amount" style="text-align: left" data-ng-bind-html="myfinances.summary.unbilledActivityShow"></div>
+                <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.unbilledActivityShow"></div>
               </div>
               <div data-ng-hide="isAllZero" class="small-7 columns">
                 Activity Since Last Statement <span class="cc-page-myfinances-light">since {{myfinances.summary.lastStatementDate | date:'MMMM d'}}</span>
