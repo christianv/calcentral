@@ -7,7 +7,7 @@
     @include cc-column-sameheight;
   }
   .cc-page-dashboard-column-b, .cc-page-dashboard-column-c {
-    border-left: 5px solid $cc-color-column-border;
+    border-left: 1px solid $cc-color-widget-background;
   }
   .cc-page-dashboard-column-a, .cc-page-dashboard-column-c {
     background: #fafafa;

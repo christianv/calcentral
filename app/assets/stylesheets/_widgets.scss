@@ -48,10 +48,6 @@
   font-size: 14px;
   margin: 0;
 }
-.cc-widget-subtitle {
-  color: #515151;
-  font-size: 11px;
-}
 .cc-widget-list-selected {
   background: $cc-color-widget-more-background;
 }
@@ -59,18 +55,21 @@
   padding: 15px 20px 20px 20px;
 }
 .cc-widget-title {
-  border-bottom: 1px solid $cc-color-border;
   overflow: hidden;
 
   h2 {
+    background: $cc-color-widget-background;
     color: $cc-color-medium-grey;
-    margin: 4px 0 0;
-    padding: 1px 0;
-    font-size: 16px;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    margin: 0;
+    padding: 5px 10px;
   }
 }
-.cc-widget-title-small {
-  margin-top: 3px;
+.cc-widget-title-sub {
+  color: $cc-color-lighter-medium-grey;
   font-size: 13px;
-  font-weight: normal;
+  /* Margin will only kick in when there is a float on the span */
+  margin-top: 5px;
+  text-transform: uppercase;
 }
