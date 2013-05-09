@@ -111,11 +111,26 @@
       return count;
     };
 
+    var createCountRefund = function() {
+      var count = 0;
+      for (var i = 0; i < $scope.myfinances.activity.length; i++){
+        var item = $scope.myfinances.activity[i];
+
+        if (item.transType === 'refund') {
+          count++;
+        }
+      }
+      if (count !== 0) {
+        $scope.countButtons++;
+      }
+      return count;
+    };
+
     var createCounts = function() {
       $scope.countButtons = 0;
       $scope.counts = {
         'open': createCount(statuses.open),
-        'minimumamountdue': createCount(statuses.minimumamountdue),
+        'refunds': createCountRefund(),
         'all': createCount(statuses.all)
       };
       $scope.countButtonsClass = $scope.countButtons === 1 ? 'cc-myfinances-100' : 'even-' + $scope.countButtons;
