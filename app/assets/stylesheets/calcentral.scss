@@ -52,27 +52,34 @@ a {
 
 /* Form */
 form {
-  background: #eaeaea;
+  background: $cc-color-widget-more-background;
   border: 1px solid #dedede;
-  border-radius: 5px;
-  padding: 5px;
+  padding: 10px 5px;
 
   input {
+    background: #fff;
     font-family: Arial;
     &[type="text"] {
       border: 1px solid #aeaeae;
-      border-radius: 3px;
+      font-size: 12px;
       width: 100%;
     }
+  }
+  .cc-input-noborder {
+    border: none !important;
   }
 
   label {
     display: block;
+    font-size: 12px;
+    margin-right: 10px;
     margin-top: 5px;
     text-align: right;
   }
 
   textarea {
+    background: #fff;
+    font-size: 12px;
     resize: vertical;
   }
 
@@ -158,11 +165,21 @@ button {
     cursor: default;
   }
 }
+.cc-button-selected {
+  background: #fff;
+  @include background(linear-gradient(#bebebe, #949494));
+  color: #fff;
+  &:focus, &:hover {
+    @include background(linear-gradient(#bebebe, #949494));
+    color: #fff;
+  }
+  i {
+    color: #fff;
+  }
+}
 .cc-button-plus-icon {
   color: #51a351;
-  font-size: 11px;
 }
-
 .cc-button-link {
   padding: 0;
   &, &:hover, &:focus {
@@ -172,6 +189,36 @@ button {
     font-size: 13px;
     font-weight: bold;
     line-height: 1;
+  }
+}
+
+.cc-button-group {
+  list-style-type: none;
+  li {
+    float: left;
+    margin: 0 0 0 -1px;
+    &:first-child {
+      margin: 0;
+      .cc-button {
+        border-bottom-left-radius: 5px;
+        border-top-left-radius: 5px;
+      }
+    }
+    &:last-child {
+      .cc-button {
+        border-bottom-right-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+    }
+  }
+  .cc-button {
+    border-radius: 0;
+    width: 100%;
+  }
+}
+.cc-even-3 {
+  li {
+    width: 33.33333%;
   }
 }
 

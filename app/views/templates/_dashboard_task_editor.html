@@ -18,6 +18,7 @@
       </div>
       <div class="large-9 small-9 columns cc-widget-tasks-date-input">
         <input type="text"
+          class="cc-input-noborder"
           data-ng-model="add_edit_task.due_date"
           name="add_task_due_date"
           id="cc-widget-tasks-addtask-date-{{$index}}"
@@ -34,7 +35,7 @@
         <label for="cc-widget-tasks-addtask-note-{{$index}}">Notes:</label>
       </div>
       <div class="large-9 small-9 columns">
-        <textarea data-ng-model="add_edit_task.notes" id="cc-widget-tasks-addtask-note-{{$index}}" rows="2" /></textarea>
+        <textarea class="cc-input-noborder" data-ng-model="add_edit_task.notes" id="cc-widget-tasks-addtask-note-{{$index}}" rows="2" /></textarea>
       </div>
     </div>
     <div class="row collapse" data-ng-show="!editorEnabled && task_adder_is_processing">

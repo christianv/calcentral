@@ -1,6 +1,9 @@
 /* Tasks and Assigments widget */
 .cc-widget-tasks {
   padding: 0 10px;
+  .cc-widget-title .cc-button {
+    margin-top: 4px;
+  }
   .cc-widget-body {
     .cc-alert-text {
       margin-bottom: 5px;

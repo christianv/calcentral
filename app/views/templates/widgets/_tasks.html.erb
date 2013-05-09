@@ -4,9 +4,10 @@
       <h2 class="cc-left">Assignments and Tasks</h2>
       <button
           class="cc-button cc-right"
+          data-ng-class="{'cc-button-selected':(show_add_task)}"
           data-ng-show="user.profile.has_google_access_token"
           data-ng-click="toggleAddTask()">
-        <span class="cc-button-plus-icon">+</span>
+        <i class="icon-plus cc-button-plus-icon"></i>
         <span>New Task</span>
       </button>
     </div>
@@ -19,23 +20,23 @@
 
       <div class="row collapse cc-widget-tasks-button-top-margin">
         <div class="large-10 large-centered columns">
-          <ul class="button-group radius even-3">
+          <ul class="cc-button-group cc-even-3">
             <li>
-              <button class="tiny button"
+              <button class="cc-button"
                 data-ng-click="switchTasksMode('scheduled')"
-                data-ng-class="{'secondary':(tasks_mode!='scheduled'),'selected':(tasks_mode=='scheduled')}">Scheduled
+                data-ng-class="{'cc-button-selected':(tasks_mode=='scheduled')}">Scheduled
               </button>
             </li>
             <li>
-              <button class="tiny button"
+              <button class="cc-button"
                 data-ng-click="switchTasksMode('unscheduled')"
-                data-ng-class="{'secondary':(tasks_mode!='unscheduled'),'selected':(tasks_mode=='unscheduled')}">Unscheduled
+                data-ng-class="{'cc-button-selected':(tasks_mode=='unscheduled')}">Unscheduled
               </button>
             </li>
             <li>
-              <button class="tiny button"
+              <button class="cc-button"
                 data-ng-click="switchTasksMode('completed')"
-                data-ng-class="{'secondary':(tasks_mode!='completed'),'selected':(tasks_mode=='completed')}">Completed
+                data-ng-class="{'cc-button-selected':(tasks_mode=='completed')}">Completed
               </button>
             </li>
           </ul>
