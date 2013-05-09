@@ -19,7 +19,7 @@
   <div class="cc-tasks-list" data-cc-spinner-directive>
     <div data-ng-switch data-on="tasks_mode">
 
-      <div class="row cc-widget-tasks-button-top-margin">
+      <div class="row collapse cc-widget-tasks-button-top-margin">
         <div class="large-10 large-centered columns">
           <ul class="button-group radius even-3">
             <li>
@@ -45,7 +45,7 @@
       </div>
 
       <div data-ng-switch-when="scheduled">
-        <div class="row">
+        <div class="row collapse">
           <div class="large-8 columns small-6">
             <span class="cc-left cc-widget-section-label cc-widget-section-label-due">Overdue</span>
           </div>
@@ -102,7 +102,7 @@
       </div>
 
       <div data-ng-switch-when="unscheduled">
-        <div class="row">
+        <div class="row collapse">
           <div class="large-12 columns">
             <span class="cc-left cc-widget-section-label cc-widget-section-label-due">Unscheduled</span>
           </div>
@@ -120,7 +120,7 @@
       </div>
 
       <div data-ng-switch-when="completed">
-        <div class="row">
+        <div class="row collapse">
           <div class="large-12 columns cc-widget-section-label-due cc-widget-section-label-completed"><span class="cc-right">Completed</span></div>
         </div>
 
@@ -134,7 +134,7 @@
         <p data-ng-show="!filtered.length" class="cc-widget-text">
           There are currently no completed tasks/assignments.
         </p>
-        <div class="row cc-widget-clear-completed" data-ng-show="filtered.length">
+        <div class="row collapse cc-widget-clear-completed" data-ng-show="filtered.length">
           <div class="large-12 columns"><button class="button cc-right radius small" data-ng-click="clearCompletedTasks()">Delete completed tasks</button></div>
         </div>
       </div>

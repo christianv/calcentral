@@ -2,16 +2,10 @@
 <div data-ng-controller="TaskEditorController">
 
   <div
-    class="row cc-widget-list-hover"
+    class="row collapse cc-widget-list-hover"
     data-cc-accessible-focus-directive
-    data-ng-click="api.widget.toggleShow(task, 'Tasks')"
+    data-ng-click="api.widget.toggleShow(tasks, task, 'Tasks')"
     data-ng-hide="editorEnabled">
-
-    <div class="large-3 small-3 columns cc-emitter-col cc-mobile-task-emitter-column">
-      <div class="cc-emitter cc-emitter-{{task.color_class}}">
-        {{task.source || task.emitter}}
-      </div>
-    </div>
 
     <div class="large-1 small-3 columns cc-widget-tasks-checkbox-column cc-mobile-task-checkbox-column">
       <input type="checkbox"
@@ -24,10 +18,10 @@
       >
     </div>
 
-    <div class="large-6 small-3 columns cc-widget-tasks-title-column cc-mobile-task-title-column">
+    <div class="large-9 small-6 columns cc-widget-tasks-title-column cc-mobile-task-title-column">
       <div
         class="cc-widget-short-title cc-widget-list-hover-title cc-widget-tasks-status-{{task.status}}"
-        data-ng-class="{'cc-ellipsis':(!task.show),'cc-alert':(task.bucket=='Overdue' && tasks_mode!='completed'), 'cc-strikethrough':(task.editor_is_processing)}">
+        data-ng-class="{'cc-ellipsis':(!task._show),'cc-alert':(task.bucket=='Overdue' && tasks_mode!='completed'), 'cc-strikethrough':(task.editor_is_processing)}">
         {{task.title}}
       </div>
     </div>
@@ -48,8 +42,8 @@
     </div>
   </div>
 
-  <div data-ng-show="task.show">
-    <div class="row widget-tasks-activities-more" data-ng-hide="editorEnabled">
+  <div data-ng-show="task._show">
+    <div class="row collapse widget-tasks-activities-more" data-ng-hide="editorEnabled">
       <div class="large-9 columns large-offset-3 end cc-widget-tasks-more">
         <div data-ng-bind-html="task.notes" data-cc-truncate-directive="filter:'linky', length:180"></div>
       </div>

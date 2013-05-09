@@ -4,30 +4,20 @@
   </div>
   <div class="cc-widget-myclasses-container" data-cc-spinner-directive>
     <div class="cc-widget-mygroups-myclasses-list">
-      <ul class="cc-widget-list cc-scroll">
-        <li data-ng-repeat="class in classes" class="cc-widget-mygroups-myclasses-list-item" data-ng-show="class.emitter!='Campus'">
-          <div class="row cc-widget-mygroups-myclasses-row">
-            <div class="large-10 small-8 columns">
-              <div
-                class="cc-widget-list-icon cc-left cc-widget-mygroups-myclasses-icon"
-                data-ng-class="{true:'cc-icon-canvas',false:'cc-icon-bspace'}[class.emitter=='Canvas']">
-              </div>
-              <a
-                class="cc-ellipsis"
-                data-ng-click="api.analytics.trackExternalLink('My Classes', class.emitter, class.site_url)"
-                data-ng-href="{{class.site_url}}">
-                <span class="cc-widget-subtitle" data-ng-bind="class.course_code"></span>
-              </a>
-              <a class="cc-ellipsis cc-widget-mygroups-myclasses-title-link"
-                data-ng-click="api.analytics.trackExternalLink('My Classes', class.emitter, class.site_url)"
-                data-ng-href="{{class.site_url}}"
-                data-ng-show="!!class.name"
-                data-ng-bind="class.name"></a>
+      <ul class="cc-widget-list">
+        <li data-ng-repeat="class in classes" data-ng-show="class.emitter!='Campus'">
+          <a data-ng-click="api.analytics.trackExternalLink('My Classes', class.emitter, class.site_url)"
+            data-ng-href="{{class.site_url}}">
+            <div
+              class="cc-widget-list-icon cc-left cc-widget-mygroups-myclasses-icon"
+              data-ng-class="{true:'cc-icon-canvas',false:'cc-icon-bspace'}[class.emitter=='Canvas']">
             </div>
-            <div class="large-2 small-4 columns cc-widget-mygroups-myclasses-emitter-column">
-              <div class="cc-emitter-square cc-emitter-{{class.color_class}}" title="{{class.emitter}} class"></div>
+            <div class="cc-ellipsis">
+              <span class="cc-widget-subtitle" data-ng-bind="class.course_code"></span>
             </div>
-          </div>
+            <div class="cc-ellipsis cc-widget-mygroups-myclasses-title-link" data-ng-show="!!class.name" data-ng-bind="class.name">
+            </div>
+          </a>
         </li>
       </ul>
     </div>

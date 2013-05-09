@@ -42,23 +42,6 @@
     }
   }
 
-  .cc-widget-activities-list-hover {
-    overflow: hidden;
-    padding: 10px 0;
-    &:hover, &:focus {
-      background: #e6ebef;
-      cursor: pointer;
-      margin: 0 -15px;
-      padding: 10px 15px;
-      i {
-        color: #0a3361;
-      }
-      .cc-widget-list-hover-title {
-        text-decoration: underline;
-      }
-    }
-  }
-
   .cc-widget-activities-activity {
     border-bottom: 1px solid $cc-color-light-grey;
   }
