@@ -1,7 +1,8 @@
 @import "compass/css3";
 @import "compass/css3/user-interface";
 
-$cc-color-action-button: #72cb12;
+$cc-color-action-button: #2787b6;
+$cc-color-action-button-hover: #1f7099;
 $cc-color-alert: #fb0007;
 $cc-color-button: #80c7de;
 $cc-color-dark-grey: #2c2d2e;
@@ -18,7 +19,7 @@ $cc-color-shadow-color: #ccc;
 $cc-color-super-light-grey: #fbfbfb;
 $cc-color-widget-background: #ebebeb;
 $cc-color-widget-highlight-background: #f2fef3;
-$cc-color-widget-more-background: #c8dee9;
+$cc-color-widget-more-background: #f7f7f7;
 $cc-color-widget-section-label: #515151;
 
 /* Body */
@@ -120,39 +121,46 @@ button {
   }
 }
 
-@mixin cc-button-common {
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 500;
-  padding: 3px 15px;
-}
-.cc-button-submit-enabled {
-  @include cc-button-common;
-  background: $cc-color-action-button;
-  border: 2px solid transparent;
-  color: #fff;
-  cursor: pointer;
-}
-.cc-button-submit-disabled {
-  @include cc-button-common;
-  background: #e5e5e5 !important;
-  @include background(linear-gradient(#fff, #e5e5e5));
-  border: 2px solid #d2d2d2 !important;
-  color: #d2d2d2 !important;
-  cursor: default !important;
-  text-decoration: none !important;
-}
-.cc-button-reset {
-  @include cc-button-common;
+.cc-button {
   background: #fff;
   @include background(linear-gradient(#fff, #e5e5e5));
-  border: 2px solid #d2d2d2;
+  border: 1px solid #d2d2d2;
+  border-radius: 5px;
   color: $cc-color-medium-grey;
+  cursor: pointer;
+  display: inline;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 7px 10px;
   &:focus, &:hover {
     background: #fff;
-    @include background(linear-gradient(#fff, #e5e5e5));
+    @include background(linear-gradient(#fff, #d5d5d5));
     color: $cc-color-medium-grey;
+    text-decoration: none;
   }
+}
+.cc-button-blue {
+  background: $cc-color-action-button;
+  border: 1px solid transparent;
+  color: #fff;
+  &:focus, &:hover {
+    background: $cc-color-action-button-hover;
+    color: #fff;
+  }
+}
+.cc-button-disabled {
+  background: $cc-color-action-button;
+  border: 1px solid transparent;
+  color: #fff;
+  &:focus, &:hover {
+    background: $cc-color-action-button-hover;
+    color: #fff;
+    cursor: default;
+  }
+}
+.cc-button-plus-icon {
+  color: #51a351;
+  font-size: 11px;
 }
 
 .cc-button-link {
@@ -208,7 +216,6 @@ http://stackoverflow.com/questions/6269420
 @import "mycalendar";
 @import "activities";
 @import "tasks";
-@import "mygroups_myclasses";
 
 /* Academics */
 @import "academics";

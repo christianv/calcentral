@@ -9,9 +9,6 @@
   .cc-page-dashboard-column-b, .cc-page-dashboard-column-c {
     border-left: 1px solid $cc-color-widget-background;
   }
-  .cc-page-dashboard-column-a, .cc-page-dashboard-column-c {
-    background: #fafafa;
-  }
 
   .cc-widget-section-label-due {
     color: $cc-color-widget-section-label;
@@ -28,46 +25,6 @@
   }
   .cc-widget-tasks-activities-date-string {
     font-size: 12px;
-  }
-  .cc-widget-add-icon {
-    @include user-select("none");
-    background: #fff;
-    // Border color equals section bg color so button doesn't jump when hover border appears
-    border: 2px solid #fff;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    margin: 3px 0 0 5px;
-    padding: 1px 3px 0 2px;
-    text-align: center;
-    &:focus, &:hover {
-      background-color: #fff;
-      border: 2px solid $cc-color-action-button;
-      .cc-widget-add-icon-plus {
-        background-color: $cc-color-action-button;
-        float: left;
-      }
-      .cc-widget-add-icon-text {
-        color: $body-font-color;
-        display: inline-block;
-        font-weight: normal;
-        height: auto;
-        position: relative;
-        width: auto;
-      }
-    }
-  }
-  .cc-widget-add-icon-plus {
-    color: #fff;
-    background-color: #ccc;
-    border-color: #eaeff3;
-    border-radius: 3px;
-    display: inline-block;
-    margin-bottom: 2px;
-    padding: 2px 5px;
-  }
-  .cc-widget-add-icon-text {
-    margin: 2px 2px 0 5px;
   }
 
   /* Mobile styles */

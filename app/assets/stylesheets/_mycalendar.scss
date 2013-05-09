@@ -2,20 +2,17 @@
 .cc-widget-mycalendar {
   @include user-select("none");
 
-  &, p {
-    font-size: 12px;
-  }
-
   /* List */
   .cc-widget-mycalendar-datelist {
+    .cc-widget-mycalendar-datelist-time-allday {
+      text-transform: uppercase;
+    }
     .cc-widget-mycalendar-datelist-time {
       text-align: right;
     }
   }
   .cc-widget-mycalendar-list-attendees {
-    list-style-type: none;
-    margin-bottom: 5px;
-    padding: 0;
+    margin-bottom: 10px;
   }
   .cc-widget-mycalendar-indent {
     margin-left: 5px;
@@ -27,11 +24,16 @@
   /* Summary & location */
   .cc-widget-mycalendar-datelist-location {
     font-size: 10px;
+    margin-top: 2px;
     text-transform: uppercase;
   }
   .cc-widget-mycalendar-more {
     clear: both;
+    font-size: 0.9em;
     margin-top: 5px;
-    padding-left: 50px;
+    padding-left: 35px;
+    p {
+      margin-bottom: 10px;
+    }
   }
 }

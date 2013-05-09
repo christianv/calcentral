@@ -1,15 +1,5 @@
-.cc-widget-list-icon {
-  background-color: transparent;
-  background-position: 0 2px;
-  background-repeat: no-repeat;
-}
-.cc-widget-list-subtitle {
-  font-size: 11px;
-  line-height: 8px;
-  margin-left: 21px;
-  padding-bottom: 7px;
-}
 .cc-widget-list {
+  font-size: 12px;
   margin: 0;
   overflow-x: hidden;
   padding: 0 10px;
@@ -19,17 +9,28 @@
     &:last-child {
       border-bottom: none;
     }
-    a {
+    > a {
       display: block;
     }
   }
+  .cc-icon {
+    margin-left: 10px;
+  }
+}
+.cc-widget-list-subtitle {
+  font-size: 11px;
+  line-height: 8px;
+  margin-left: 21px;
+  padding-bottom: 7px;
 }
 .cc-widget-list-light {
   color: $cc-color-lighter-medium-grey;
 }
 .cc-widget-list-column-left {
   float: left;
-  width: 40px;
+  margin-right: 5px;
+  min-height: 20px;
+  width: 30px;
 }
 .cc-widget-short-title {
   display: inline-block;
@@ -50,8 +51,9 @@
   overflow: hidden;
   padding: 10px 15px;
   &:hover, &:focus {
-    background: #e6ebef;
+    background: #F2F9FE;
     cursor: pointer;
+    text-decoration: none;
     i {
       color: #0a3361;
     }
@@ -75,10 +77,20 @@
     padding: 5px 10px;
   }
 }
+.cc-widget-title-transparent {
+  background: transparent;
+  border-bottom: 1px solid $cc-color-widget-background;
+}
 .cc-widget-title-sub {
   color: $cc-color-lighter-medium-grey;
   font-size: 13px;
   /* Margin will only kick in when there is a float on the span */
   margin-top: 5px;
   text-transform: uppercase;
+}
+
+@media only screen and (max-width: 767px) {
+  .cc-widget-title-sub {
+    margin-top: 0;
+  }
 }

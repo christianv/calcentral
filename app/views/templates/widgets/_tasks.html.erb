@@ -1,15 +1,13 @@
 <div class="cc-widget-tasks" data-ng-controller="TasksController">
   <div data-ng-controller="TaskAdderController">
-    <div class="cc-widget-title">
+    <div class="cc-widget-title cc-widget-title-transparent">
       <h2 class="cc-left">Assignments and Tasks</h2>
       <button
-          class="cc-widget-add-icon cc-left"
-          title="Add a task"
+          class="cc-button cc-right"
           data-ng-show="user.profile.has_google_access_token"
           data-ng-click="toggleAddTask()">
-        <div class="cc-widget-add-icon-plus">+</div>
-        <div class="cc-widget-add-icon-text cc-visuallyhidden" aria-labelledby="addTaskLabel">Task</div>
-        <div id="addTaskLabel" class="cc-visuallyhidden">Add a task</div>
+        <span class="cc-button-plus-icon">+</span>
+        <span>New Task</span>
       </button>
     </div>
     <div class="cc-widget-body">
