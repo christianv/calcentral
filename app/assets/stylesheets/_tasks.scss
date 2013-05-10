@@ -4,16 +4,14 @@
   .cc-widget-title .cc-button {
     margin-top: 4px;
   }
-  .cc-widget-body {
-    .cc-alert-text {
-      margin-bottom: 5px;
-    }
-    .cc-widget-clear-completed {
-      margin-top: 10px;
-    }
-    .cc-widget-text {
-      margin-bottom: 0;
-    }
+  .cc-alert-text {
+    margin-bottom: 5px;
+  }
+  .cc-widget-clear-completed {
+    margin-top: 10px;
+  }
+  .cc-widget-text {
+    margin-bottom: 0;
   }
   .cc-widget-tasks-form {
     line-height: 1;
@@ -29,11 +27,6 @@
   }
   .cc-widget-tasks-date-input .ng-invalid {
     margin-bottom: 2px;
-  }
-  .cc-widget-tasks-section-top {
-    border-top: 1px solid $cc-color-list-border;
-    margin-top: 7px;
-    padding-top: 7px;
   }
   .cc-widget-tasks-taskslider {
     margin: 10px 0;
@@ -52,7 +45,22 @@
       margin-bottom: 10px;
     }
   }
+  .cc-widget-tasks-section-label {
+    clear: both;
+    color: $cc-color-widget-section-label;
+    font-size: 14px;
+    margin: 10px 0 0 0;
+    overflow: hidden;
+  }
+  .cc-widget-tasks-section-label-count {
+    background: #bebebe;
+    color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 5px;
+  }
   .cc-widget-tasks-list {
+    clear: both;
     list-style-type: none;
     margin: 0;
     padding: 0;
