@@ -45,11 +45,11 @@
 
       <div data-ng-switch-when="scheduled">
         <div data-ng-init="overdueTasks = (tasks | orderBy:'due_date.epoch' | filter:filterOverdue)">
-          <h3 class="cc-widget-tasks-section-label">Overdue <span class="cc-widget-tasks-section-label-count" data-ng-bind="overdueTasks.length"></span> <span class="cc-right">Due</span></h3>
-          <ul class="cc-widget-tasks-list">
+          <h3 class="cc-widget-tasks-section-label"><span class="cc-widget-tasks-section-label-red">Overdue</span> <span class="cc-widget-tasks-section-label-count cc-widget-tasks-section-label-count-red" data-ng-bind="overdueTasks.length"></span> <span class="cc-right">Due</span></h3>
+          <ul class="cc-widget-tasks-list cc-widget-tasks-list-red">
             <li
               data-ng-repeat="task in overdueTasks"
-              data-ng-class="{'cc-widget-list-selected': task.show}">
+              data-ng-class="{'cc-widget-list-selected': task._show}">
               <div data-ng-include src="'templates/dashboard_task_loop.html'"></div>
             </li>
           </ul>
@@ -59,11 +59,11 @@
         </div>
 
         <div data-ng-init="dueTodayTasks = (tasks | orderBy:'due_date.epoch' | filter:filterDueToday)">
-          <h3 class="cc-widget-tasks-section-label">Due Today <span class="cc-widget-tasks-section-label-count" data-ng-bind="dueTodayTasks.length"></span></h3>
-          <ul class="cc-widget-tasks-list">
+          <h3 class="cc-widget-tasks-section-label">Due Today <span class="cc-widget-tasks-section-label-count cc-widget-tasks-section-label-count-green" data-ng-bind="dueTodayTasks.length"></span></h3>
+          <ul class="cc-widget-tasks-list cc-widget-tasks-list-green">
             <li
               data-ng-repeat="task in dueTodayTasks"
-              data-ng-class="{'cc-widget-list-selected': task.show}">
+              data-ng-class="{'cc-widget-list-selected': task._show}">
                 <div data-ng-include src="'templates/dashboard_task_loop.html'"></div>
             </li>
           </ul>
@@ -77,7 +77,7 @@
           <ul class="cc-widget-tasks-list">
             <li
               data-ng-repeat="task in dueThisWeekTasks"
-              data-ng-class="{'cc-widget-list-selected': task.show}">
+              data-ng-class="{'cc-widget-list-selected': task._show}">
               <div data-ng-include src="'templates/dashboard_task_loop.html'"></div>
             </li>
           </ul>
@@ -91,7 +91,7 @@
           <ul class="cc-widget-tasks-list">
             <li
               data-ng-repeat="task in dueNextWeekTasks"
-              data-ng-class="{'cc-widget-list-selected': task.show}">
+              data-ng-class="{'cc-widget-list-selected': task._show}">
               <div data-ng-include src="'templates/dashboard_task_loop.html'"></div>
             </li>
           </ul>
@@ -102,11 +102,11 @@
       </div>
 
       <div data-ng-switch-when="unscheduled" data-ng-init="unscheduledTasks = (tasks | orderBy:'updated' | filter:filterUnScheduled)">
-        <h3 class="cc-widget-tasks-section-label">Unscheduled</h3>
+        <h3 class="cc-widget-tasks-section-label">Unscheduled <span class="cc-widget-tasks-section-label-count" data-ng-bind="unscheduledTasks.length"></span> </h3>
         <ul class="cc-widget-tasks-list">
           <li
             data-ng-repeat="task in unscheduledTasks"
-            data-ng-class="{'cc-widget-list-selected': task.show}">
+            data-ng-class="{'cc-widget-list-selected': task._show}">
             <div data-ng-include src="'templates/dashboard_task_loop.html'"></div>
           </li>
         </ul>
@@ -116,20 +116,20 @@
       </div>
 
       <div data-ng-switch-when="completed" data-ng-init="completedTasks = (tasks | orderBy:'completed_date.epoch':true | filter:{status:'completed'})">
-        <h3 class="cc-widget-tasks-section-label"><span class="cc-right">Completed</span></h3>
+        <h3 class="cc-widget-tasks-section-label">Total <span class="cc-widget-tasks-section-label-count" data-ng-bind="completedTasks.length"></span> <span class="cc-right">Completed</span></h3>
 
         <ul class="cc-widget-tasks-list">
           <li
             data-ng-repeat="task in completedTasks"
-            data-ng-class="{'cc-widget-list-selected': task.show}">
+            data-ng-class="{'cc-widget-list-selected': task._show}">
             <div data-ng-include src="'templates/dashboard_task_loop.html'"></div>
           </li>
         </ul>
         <p data-ng-show="!completedTasks.length" class="cc-widget-text">
           There are currently no completed tasks/assignments.
         </p>
-        <div class="row collapse cc-widget-clear-completed" data-ng-show="completedTasks.length">
-          <div class="large-12 columns"><button class="button cc-right radius small" data-ng-click="clearCompletedTasks()">Delete completed tasks</button></div>
+        <div class="cc-widget-tasks-clear-completed" data-ng-show="completedTasks.length">
+          <button class="cc-button" data-ng-click="clearCompletedTasks()">Delete completed tasks</button>
         </div>
       </div>
     </div>

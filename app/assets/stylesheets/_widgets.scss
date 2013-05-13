@@ -32,12 +32,6 @@
   min-height: 20px;
   width: 30px;
 }
-.cc-widget-short-title {
-  display: inline-block;
-  font-size: 14px;
-  line-height: 1.25;
-  width: 100%;
-}
 .cc-widget-list-selected {
   background: $cc-color-widget-more-background;
 }
@@ -51,9 +45,6 @@
     text-decoration: none;
     i {
       color: #0a3361;
-    }
-    .cc-widget-list-hover-title {
-      text-decoration: underline;
     }
   }
 }

@@ -10,16 +10,6 @@
     border-left: 1px solid $cc-color-widget-background;
   }
 
-  .cc-widget-tasks-activities-date, .cc-widget-tasks-activities-date-string {
-    color: #999999;
-    float: right;
-    text-align: right;
-    text-transform: uppercase;
-  }
-  .cc-widget-tasks-activities-date-string {
-    font-size: 12px;
-  }
-
   /* Mobile styles */
   @media only screen and (max-width: 767px) {
     .cc-page-dashboard-column-b, .cc-page-dashboard-column-c {

@@ -8,37 +8,14 @@
   .cc-widget-activities-list {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 0 10px;
 
     .cc-widget-list-selected {
-      margin-bottom: 1px; /* Effectively creates white line above selected tasks */
-
-      .row {
-        background: $cc-color-widget-more-background;
-        padding-bottom: 2px;
-      }
-    }
-
-    .cc-widget-tasks-activities-more {
-      p {
-        clear: left;
-        line-height: 1.2;
-        padding-top: 10px;
-        margin-bottom: 10px;
-      }
 
     }
-    .cc-widget-more-view-in {
-      text-align: right;
-      a {
-        background-color: #e8e8e8;
-        border: 1px solid #c3c3c3;
-        color: $body-font-color;
-        font-size: 11px;
-        font-weight: bold;
-        padding: 5px 10px;
-        text-align: right;
-      }
+
+    .cc-widget-activities-more div {
+      margin-bottom: 10px;
     }
   }
 
@@ -100,8 +77,7 @@
     }
   }
   .cc-widget-activities-summary {
-    padding-left: 30px;
-    width: 270px;
+    margin-top: 16px;
   }
   .cc-widget-activities-text-column {
     line-height: 1.4;

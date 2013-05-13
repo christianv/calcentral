@@ -3,7 +3,7 @@
 
 $cc-color-action-button: #2787b6;
 $cc-color-action-button-hover: #1f7099;
-$cc-color-alert: #fb0007;
+
 $cc-color-button: #80c7de;
 $cc-color-dark-grey: #2c2d2e;
 $cc-color-launcher-border: #114d80;
@@ -15,6 +15,7 @@ $cc-color-main-background: #f2f2f2;
 $cc-color-medium-grey: #424242;
 $cc-color-navigation: #366079;
 $cc-color-placeholder: #aaa;
+$cc-color-red: #cf1715;
 $cc-color-shadow-color: #ccc;
 $cc-color-super-light-grey: #fbfbfb;
 $cc-color-widget-background: #ebebeb;
@@ -187,7 +188,7 @@ button {
     border: none;
     color: $primary-color;
     font-size: 13px;
-    font-weight: bold;
+    font-weight: normal;
     line-height: 1;
   }
 }

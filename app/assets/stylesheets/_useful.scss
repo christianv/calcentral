@@ -6,10 +6,13 @@
 
 /* Useful classes */
 .cc-alert {
-  color: $cc-color-alert !important;
+  color: $cc-color-red !important;
 }
 .cc-break-word {
   word-wrap: break-word;
+}
+.cc-clearfix {
+  clear: both;
 }
 .cc-ellipsis {
   display: block;
