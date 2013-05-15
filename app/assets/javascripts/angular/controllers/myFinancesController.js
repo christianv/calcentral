@@ -101,7 +101,7 @@
       for (var i = 0; i < $scope.myfinances.activity.length; i++){
         var item = $scope.myfinances.activity[i];
 
-        if (statusArray.indexOf(item.transStatus) !== -1) {
+        if (statusArray.indexOf(item.transStatus) !== -1 && item.transType !== 'refund') {
           count++;
         }
       }

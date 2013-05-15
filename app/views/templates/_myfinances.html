@@ -3,7 +3,7 @@
   <div class="cc-page-myfinances" data-ng-cloak>
     <div class="row">
       <div class="small-12 large-8 small-centered columns">
-        <h1>My Finances</h1>
+        <h1>My Account</h1>
         <div data-ng-show="myfinances.uid">
           <h2>Account Summary</h2>
 
@@ -67,7 +67,10 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
 
           <div class="cc-page-myfinances-account-activity">
             <div class="row cc-page-myfinances-terms">
-              <div class="small-4 small-offset-8 columns" style="height: 20px;">
+              <div class="small-4 columns">
+                <input placeholder="Search..." data-ng-model="search.transDesc">
+              </div>
+              <div class="small-4 small-offset-4 columns" style="height: 20px;">
                 <select class="cc-right" data-ng-model="search.transTerm" data-ng-show="transStatusSearch=='' && search.transType!='refund'" id="cc-page-myfinances-select-term">
                   <option value="" data-ng-selected="term==''">All Terms</option>
                   <option value="{{term}}" data-ng-repeat="term in myfinances.terms" data-ng-selected="term==currentTerm">{{term}}</option>
@@ -85,8 +88,8 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
                     <button class="tiny button selected" data-ng-click="transStatusSearch='';search.transTerm='';search.transType='';notrefund=true" data-ng-class="{'secondary':(transStatusSearch!='' || search.transType=='refund'),'selected':(transStatusSearch=='' && search.transType!='refund')}">Transaction History
                     </button>
                   </li>
-                  <li>
-                    <button class="tiny button secondary" data-ng-click="transStatusSearch='';search.transTerm='';search.transType='refund';notrefund=false" data-ng-class="{'secondary':(search.transType!='refund'),'selected':(search.transType=='refund')}">Refunds
+                  <li data-ng-show="counts.refunds!=0">
+                    <button class="tiny button secondary" data-ng-click="transStatusSearch='';search.transTerm='';search.transType='refund';notrefund=false" data-ng-class="{'secondary':(search.transType!='refund'),'selected':(search.transType=='refund')}">$ Paid Out
                     </button>
                   </li>
                 </ul>
@@ -97,13 +100,16 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
                 <div class="small-2 columns" data-ng-click="changeSorting('transDate')" >
                   Date <i data-ng-class="getSortClass('transDate')"></i>
                 </div>
-                <div class="small-5 columns" data-ng-click="changeSorting('transDesc')">
+                <div class="small-4 columns" data-ng-click="changeSorting('transDesc')">
                   Description <i data-ng-class="getSortClass('transDesc')"></i>
                 </div>
                 <div class="small-2 columns cc-page-myfinances-amount"  data-ng-click="changeSorting('transAmount')">
                   <i data-ng-class="getSortClass('transAmount')"></i> Amount
                 </div>
-                <div class="small-3 columns"  data-ng-click="changeSorting('transDueDate')">
+                <div class="small-2 columns" data-ng-click="changeSorting('transType')">
+                  <i data-ng-class="getSortClass('transType')"></i> Type
+                </div>
+                <div class="small-2 columns"  data-ng-click="changeSorting('transDueDate')">
                   Due Date <i data-ng-class="getSortClass('transDueDate')"></i>
                 </div>
               </div>
@@ -115,15 +121,27 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
                 <div class="small-2 columns" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
                   {{item.transDate | date:'MMM dd, yyyy'}}
                 </div>
-                <div class="small-5 columns" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
-                  {{item.transType}}: {{item.transDesc}}
+                <div class="small-4 columns" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
+                  {{item.transDesc}}
                 </div>
                 <div class="small-2 columns cc-page-myfinances-amount" data-ng-bind-html="item.transAmountShow" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
                 </div>
-                <div class="small-3 columns" data-ng-bind-html="item.transDueDateShow" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}"></div>
-                <div class="cc-myfincances-normal" data-ng-show="item._showdetail">
-                  <div class="small-2 small-offset-2 columns">Department:</div><div class="small-8 columns"> <span data-ng-bind="item.transDept"></span></div>
-                  <div class="small-2 small-offset-2 columns">Term:</div><div class="small-8 columns"> <span data-ng-bind="item.transTerm"></span></div>
+                <div class="small-2 columns" data-ng-bind-html="item.transType" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
+                </div>
+                <div class="small-2 columns">
+                  <span data-ng-show="item.transStatus!='closed'" data-ng-bind-html="item.transDueDateShow" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}"></span>
+                </div>
+                <div class="cc-myfincances-normal" style="clear:both;" data-ng-show="item._showdetail">
+                  <div class="small-2 small-offset-2 columns">Department:</div>
+                  <div class="small-8 columns">&nbsp;<span data-ng-bind="item.transDept"></span></div>
+                  <div data-ng-show="item.transTerm">
+                    <div class="small-2 small-offset-2 columns">Term:</div>
+                    <div class="small-8 columns">&nbsp;<span data-ng-bind="item.transTerm"></span></div>
+                  </div>
+                  <div data-ng-show="item.transDueDateShow">
+                    <div class="small-2 small-offset-2 columns">Due Date:</div>
+                    <div class="small-8 columns">&nbsp;<span data-ng-bind="item.transDueDateShow"></span></div>
+                  </div>
                 </div>
               </div>
             </div>
