@@ -43,6 +43,15 @@
       }
     };
 
+    var parseTransBalanceAmount = function(element) {
+      if (element.transStatus !== 'closed' && element.transBalance !== element.transAmount) {
+        element['originalAmount'] = element.transAmount;
+        element['transBalanceAmount'] = element.transBalance;
+      } else {
+        element['transBalanceAmount'] = element.transAmount;
+      }
+    };
+
     var parseDueDate = function(obj, i) {
       var item = obj[i];
       var test = Object.prototype.toString.call(item) === '[object Date]';
@@ -64,6 +73,7 @@
       }
 
       finances.activity.forEach(function(element) {
+        parseTransBalanceAmount(element);
         for (var j in element) {
           if (element.hasOwnProperty(j)){
 
