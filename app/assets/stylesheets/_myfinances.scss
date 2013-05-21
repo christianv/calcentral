@@ -119,17 +119,20 @@
   .cc-page-myfinances-table-row-selected {
     color: #fff;
     background: #666 !important;
-      .cc-myfincances-red {
-        color: #fff;
-      }
-      .cc-myfincances-normal {
-        color: #ccc;
-      }
-      .cc-myfincances-grey {
-        color: #fff;
-      }
-      .cc-myfincances-green {
-        color: #fff;
-      }
+    a, a:hover, a:focus {
+      color: #7ec9df;
+    }
+    .cc-myfincances-red {
+      color: #fff;
+    }
+    .cc-myfincances-normal {
+      color: #ccc;
+    }
+    .cc-myfincances-grey {
+      color: #fff;
+    }
+    .cc-myfincances-green {
+      color: #fff;
+    }
   }
 }

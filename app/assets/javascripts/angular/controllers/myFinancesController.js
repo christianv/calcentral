@@ -18,6 +18,14 @@
       $scope,
       apiService) {
 
+    var linkMapper = {
+      'Housing & Dining': 'http://www.housing.berkeley.edu/',
+      'University Health Services': 'http://www.uhs.berkeley.edu/home/contact/',
+      'Recreational Sports Facility': 'http://recsports.berkeley.edu/about/contact-us/customer-service-center/',
+      'Graduate Division': 'http://grad.berkeley.edu/financial/index.shtml',
+      'other': 'http://studentcentral.berkeley.edu/contact'
+    };
+
     var isNumber = function(n) {
       return !isNaN(parseFloat(n)) && isFinite(n);
     };
@@ -44,11 +52,19 @@
     };
 
     var parseTransBalanceAmount = function(element) {
-      if (element.transStatus !== 'closed' && element.transBalance !== element.transAmount) {
-        element['originalAmount'] = element.transAmount;
-        element['transBalanceAmount'] = element.transBalance;
+      if (linkMapper[element.transDept]) {
+        element.transDeptUrl = linkMapper[element.transDept];
       } else {
-        element['transBalanceAmount'] = element.transAmount;
+        element.transDeptUrl = linkMapper.other;
+      }
+    };
+
+    var parseDepartmentUrls = function(element) {
+      if (element.transStatus !== 'closed' && element.transBalance !== element.transAmount) {
+        element.originalAmount = element.transAmount;
+        element.transBalanceAmount = element.transBalance;
+      } else {
+        element.transBalanceAmount = element.transAmount;
       }
     };
 
@@ -74,6 +90,7 @@
 
       finances.activity.forEach(function(element) {
         parseTransBalanceAmount(element);
+        parseDepartmentUrls(element);
         for (var j in element) {
           if (element.hasOwnProperty(j)){
 

@@ -134,10 +134,10 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
                 <div class="cc-myfincances-normal" style="clear:both;" data-ng-show="item._showdetail">
                   <div data-ng-show="item.originalAmount">
                     <div class="small-2 small-offset-2 columns">Original Amount:</div>
-                    <div class="small-8 columns">&nbsp;<span class="cc-page-myfinances-amount" data-ng-bind="item.originalAmountShow"></span></div>
+                    <div class="small-8 columns">&nbsp;<span class="cc-page-myfinances-amount" data-ng-bind-html="item.originalAmountShow"></span></div>
                   </div>
                   <div class="small-2 small-offset-2 columns">Department:</div>
-                  <div class="small-8 columns">&nbsp;<span data-ng-bind="item.transDept"></span></div>
+                  <div class="small-8 columns">&nbsp;<a data-ng-bind="item.transDept" data-ng-click="api.util.preventBubble($event)" data-ng-href="{{item.transDeptUrl}}"></a></div>
                   <div data-ng-show="item.transTerm">
                     <div class="small-2 small-offset-2 columns">Term:</div>
                     <div class="small-8 columns">&nbsp;<span data-ng-bind="item.transTerm"></span></div>
