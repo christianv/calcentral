@@ -65,7 +65,7 @@
       var value = scope.completeText;
 
       // Overwrite the default options
-      options = angular.extend(options, default_options);
+      options = angular.extend(default_options, options);
 
       var shouldTruncate = needTruncation(value, options.length, options.end);
 
@@ -124,7 +124,10 @@
 
           //Set the opened variable - default to false
           scope.opened = false;
-          update(scope, element, options);
+          setTimeout(function() {
+            update(scope, element, options);
+          }, 1);
+
         });
       }
     };
