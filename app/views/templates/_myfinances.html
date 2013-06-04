@@ -127,7 +127,7 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
                 <div class="small-2 columns cc-page-myfinances-amount" data-ng-bind-html="item.transBalanceAmountShow" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
                 </div>
                 <div class="small-1 columns" title="{{item.transType}}" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
-                  <img src="/assets/cfv/cfv-{{item.transType}}.png" height="16" width="16" style="margin: 2px 0 0 7px" />
+                  <img src="/assets/cfv/cfv-{{item.transType}}.png" height="30" width="30" style="margin: 2px 0 0 3px; opacity: 0.8" />
                 </div>
                 <div class="small-2 columns">
                   <span data-ng-show="item._showdetail || item.transStatus!='closed'" data-ng-bind-html="item.transDueDateShow" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}"></span>
