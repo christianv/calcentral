@@ -147,6 +147,15 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
               </div>
             </div>
           </div>
+          <h2>Transaction Types</h2>
+          <div class="cc-myfincances-legend" style="overflow:hidden; margin-bottom: 30px;">
+            <ul style="list-style-type:none;">
+              <li data-ng-repeat="item in transTypes" style="clear:both;">
+                <img src="/assets/cfv/cfv-{{item}}.png" height="30" width="30" style="float:left; opacity: 0.8" />
+                <div style="font-size:14px; float:left; margin: 5px 0 0 10px">{{item}}</div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

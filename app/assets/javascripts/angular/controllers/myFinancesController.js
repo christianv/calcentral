@@ -18,6 +18,8 @@
       $scope,
       apiService) {
 
+    var transTypes = [];
+
     var linkMapper = {
       'Housing & Dining': 'http://www.housing.berkeley.edu/',
       'University Health Services': 'http://www.uhs.berkeley.edu/home/contact/',
@@ -79,7 +81,14 @@
       }
     };
 
+    var addToTranstypes = function(element) {
+      if (transTypes.indexOf(element.transType) === -1) {
+        transTypes.push(element.transType);
+      }
+    };
+
     var parseData = function() {
+      transTypes = [];
       var finances = angular.copy($scope.myfinances);
       for (var i in finances.summary) {
         if (finances.summary.hasOwnProperty(i)){
@@ -96,6 +105,7 @@
 
             parseDate(element, j);
             parseAmount(element, j);
+            addToTranstypes(element);
             if (j === 'transDueDate') {
               parseDueDate(element, j);
             }
@@ -103,6 +113,7 @@
         }
       });
       $scope.myfinances = finances;
+      $scope.transTypes = transTypes.sort();
     };
 
     var createTerms = function() {
