@@ -100,13 +100,13 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
                 <div class="small-2 columns" data-ng-click="changeSorting('transDate')" >
                   Date <i data-ng-class="getSortClass('transDate')"></i>
                 </div>
-                <div class="small-4 columns" data-ng-click="changeSorting('transDesc')">
+                <div class="small-5 columns" data-ng-click="changeSorting('transDesc')">
                   Description <i data-ng-class="getSortClass('transDesc')"></i>
                 </div>
                 <div class="small-2 columns cc-page-myfinances-amount"  data-ng-click="changeSorting('transBalanceAmount')">
                   <i data-ng-class="getSortClass('transBalanceAmount')"></i> Amount
                 </div>
-                <div class="small-2 columns" data-ng-click="changeSorting('transType')">
+                <div class="small-1 columns" data-ng-click="changeSorting('transType')">
                   <i data-ng-class="getSortClass('transType')"></i> Type
                 </div>
                 <div class="small-2 columns"  data-ng-click="changeSorting('transDueDate')">
@@ -121,12 +121,13 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
                 <div class="small-2 columns" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
                   {{item.transDate | date:'MMM dd, yyyy'}}
                 </div>
-                <div class="small-4 columns" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
+                <div class="small-5 columns" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
                   {{item.transDesc}}
                 </div>
                 <div class="small-2 columns cc-page-myfinances-amount" data-ng-bind-html="item.transBalanceAmountShow" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
                 </div>
-                <div class="small-2 columns" data-ng-bind-html="item.transType" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
+                <div class="small-1 columns" title="{{item.transType}}" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
+                  <img src="/assets/cfv/cfv-{{item.transType}}.png" height="16" width="16" />
                 </div>
                 <div class="small-2 columns">
                   <span data-ng-show="item._showdetail || item.transStatus!='closed'" data-ng-bind-html="item.transDueDateShow" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}"></span>

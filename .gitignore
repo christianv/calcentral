@@ -38,3 +38,4 @@ app/assets/stylesheets/application.css
 /fixtures/vcr_cassettes/*.json
 
 student_financials.json
+app/assets/images/cfv
