@@ -49,7 +49,7 @@ class CampusData < OracleDatabase
           :code => result["reg_status_cd"],
           :summary => self.reg_status_translator.status(result["reg_status_cd"]),
           :explanation => self.reg_status_translator.status_explanation(result["reg_status_cd"]),
-          :needsAction => !self.reg_status_translator.is_registered(result["reg_status_cd"])
+          :needsAction => result["reg_status_cd"].nil? ? false : !self.reg_status_translator.is_registered(result["reg_status_cd"])
       }
       result[:reg_block] = self.reg_block_translator.translate(result["acad_blk_flag"], result["admin_blk_flag"], result["fin_blk_flag"], result["reg_blk_flag"])
       result[:units_enrolled] = result["tot_enroll_unit"]
