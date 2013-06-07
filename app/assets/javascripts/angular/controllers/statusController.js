@@ -14,7 +14,7 @@
         $scope.user.profile.student_info.reg_block.needsAction);
     };
 
-    $scope.$watch('user.isAuthenticated', function(isAuthenticated) {
+    $scope.$watch('user._isAuthenticated', function(isAuthenticated) {
       if (isAuthenticated) {
         showStatusError();
       }

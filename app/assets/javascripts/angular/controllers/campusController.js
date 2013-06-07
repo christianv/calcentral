@@ -120,7 +120,7 @@
     };
 
     // We need to wait until the user is loaded
-    $scope.$watch('user.isAuthenticated', function(isAuthenticated) {
+    $scope.$watch('user._isAuthenticated', function(isAuthenticated) {
       if (isAuthenticated) {
         getLinks();
       }
