@@ -54,7 +54,7 @@ describe('CalCentral controller', function() {
     var status = getJSONFixture('status_first_login.json');
 
     // We need to fake out the redirect so it doesn't actually happen
-    $scope.user._redirectToSettingsPage = angular.noop;
+    $scope.util.redirect = angular.noop;
     $scope.user._handleUserLoaded(status);
     $scope.$digest();
     $httpBackend.flush();
