@@ -25,7 +25,7 @@
 <body
   data-ng-class="{'cc-page-splash':(_controller_name=='SplashController'),'cc-offcanvas-show':(off_canvas_menu._show)}"
   data-ng-click="api.popover.closeAll()"
-  data-ng-show="api.user.events._isLoaded">
+  data-ng-show="api.user.events.isLoaded">
 
   <%= yield %>
 </body>

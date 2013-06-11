@@ -15,7 +15,7 @@
       analyticsService,
       utilService) {
 
-    var user = {};
+    var profile = {};
     var events = {};
 
     // Private methods that are only exposed for testing but shouldn't be used within the views
@@ -24,7 +24,7 @@
      * Set the user first_login_at attribute and redirect to the settings page
      */
     var _setFirstLogin = function() {
-      user.profile.first_login_at = (new Date()).getTime();
+      profile.first_login_at = (new Date()).getTime();
       utilService.redirect('settings');
     };
 
@@ -36,15 +36,15 @@
      */
     var _handleAccessToPage = function() {
       // Redirect to the login page when the page is private and you aren't authenticated
-      if (!$route.current.isPublic && !events._isAuthenticated) {
+      if (!$route.current.isPublic && !events.isAuthenticated) {
         analyticsService.trackEvent(['Authentication', 'Sign in - redirect to login']);
         signIn();
       // Record that you've already visited the calcentral once and redirect to the settings page on the first login
-      } else if (events._isAuthenticated && !user.profile.first_login_at) {
+      } else if (events.isAuthenticated && !profile.first_login_at) {
         analyticsService.trackEvent(['Authentication', 'First login']);
         $http.post('/api/my/record_first_login').success(_setFirstLogin);
       // Redirect to the dashboard when you're accessing the root page and are authenticated
-      } else if (events._isAuthenticated && $location.path() === '/') {
+      } else if (events.isAuthenticated && $location.path() === '/') {
         analyticsService.trackEvent(['Authentication', 'Redirect to dashboard']);
         utilService.redirect('dashboard');
       }
@@ -54,10 +54,13 @@
      * Set the current user information
      */
     var _handleUserLoaded = function(data) {
-      user.profile = data;
-      events._isLoaded = true;
+      angular.extend(profile, data);
+
+      events.isLoaded = true;
       // Check whether the current user is authenticated or not
-      events._isAuthenticated = user.profile && user.profile.is_logged_in;
+      events.isAuthenticated = profile && profile.is_logged_in;
+      // Check whether the current user is authenticated and has a google access token
+      events.isAuthenticatedAndHasGoogle = profile.is_logged_in && profile.has_google_access_token;
       _handleAccessToPage();
     };
 
@@ -74,7 +77,7 @@
     };
 
     var handleRouteChange = function() {
-      if(!user.profile) {
+      if(!profile.features) {
         _fetch();
       } else {
         _handleAccessToPage();
@@ -108,7 +111,7 @@
       // Only when the request was successful, we update the UI
       $http.post('/api/' + authorizationService + '/remove_authorization').success(function(){
         analyticsService.trackEvent(['OAuth', 'Remove', 'service: ' + authorizationService]);
-        user.profile['has_' + authorizationService + '_access_token'] = false;
+        profile['has_' + authorizationService + '_access_token'] = false;
       });
     };
 
@@ -134,7 +137,7 @@
       events: events,
       handleRouteChange: handleRouteChange,
       optOut: optOut,
-      profile: user.profile,
+      profile: profile,
       removeOAuth: removeOAuth,
       signIn: signIn,
       signOut: signOut

@@ -19,13 +19,14 @@
       });
     };
 
-    $scope.$watch('user.profile', function(profile) {
+    $scope.$watch('api.user.profile', function(profile) {
       if (profile) {
+        console.log(profile);
         refreshServices(profile);
       }
     }, true);
 
-    $scope.user._fetch();
+    $scope.api.user._fetch();
 
   }]);
 

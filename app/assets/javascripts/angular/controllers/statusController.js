@@ -8,10 +8,10 @@
 
     var showStatusError = function() {
       $scope.showStatusError =
-        $scope.user.profile.student_info &&
-        ($scope.user.profile.student_info.reg_status.needsAction ||
-        $scope.user.profile.student_info.california_residency.needsAction ||
-        $scope.user.profile.student_info.reg_block.needsAction);
+        $scope.api.user.profile.student_info &&
+        ($scope.api.user.profile.student_info.reg_status.needsAction ||
+        $scope.api.user.profile.student_info.california_residency.needsAction ||
+        $scope.api.user.profile.student_info.reg_block.needsAction);
     };
 
     $scope.$watch('user._isAuthenticated', function(isAuthenticated) {
