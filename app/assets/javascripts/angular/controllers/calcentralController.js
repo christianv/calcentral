@@ -17,7 +17,6 @@
      * @param {Object} data Data that you want to send with the event
      */
     var broadcastApiEvent = function(apiName, eventName, data) {
-      console.log('calcentral.api.' + apiName + '.' + eventName, data)
       $scope.$broadcast('calcentral.api.' + apiName + '.' + eventName, data);
     };
 
@@ -32,7 +31,11 @@
       }, true);
     };
 
-    var fireEvents = function() {
+    /**
+     * Fire the events for the API
+     * @return {[type]} [description]
+     */
+    var fireApiEvents = function() {
       for (var i in $scope.api) {
         if ($scope.api.hasOwnProperty(i) && $scope.api[i].events) {
           for (var j in $scope.api[i].events) {
@@ -51,7 +54,7 @@
      *  - Send the right controller name
      */
     $scope.$on('$routeChangeSuccess', function() {
-      fireEvents();
+      fireApiEvents();
       apiService.user.handleRouteChange();
       apiService.util.changeControllerName($route.current.controller);
     });
