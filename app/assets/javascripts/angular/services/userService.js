@@ -16,7 +16,12 @@
       utilService) {
 
     var profile = {};
-    var events = {};
+    var events = {
+      isLoaded: false,
+      isAuthenticated: false,
+      isAuthenticatedAndHasGoogle: false,
+      profile: false
+    };
 
     // Private methods that are only exposed for testing but shouldn't be used within the views
 
@@ -61,6 +66,9 @@
       events.isAuthenticated = profile && profile.is_logged_in;
       // Check whether the current user is authenticated and has a google access token
       events.isAuthenticatedAndHasGoogle = profile.is_logged_in && profile.has_google_access_token;
+      // Expose the profile into events
+      events.profile = profile;
+
       _handleAccessToPage();
     };
 

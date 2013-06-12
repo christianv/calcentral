@@ -14,7 +14,7 @@
         $scope.api.user.profile.student_info.reg_block.needsAction);
     };
 
-    $scope.$watch('user._isAuthenticated', function(isAuthenticated) {
+    $scope.$on('calcentral.api.user.isAuthenticated', function(event, isAuthenticated) {
       if (isAuthenticated) {
         showStatusError();
       }

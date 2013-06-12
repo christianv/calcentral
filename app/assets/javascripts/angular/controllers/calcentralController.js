@@ -13,30 +13,33 @@
      * Broadcast an API event
      * in order for an API to broadcast events, it need to have an 'events' property
      * @param {String} apiName The name of the event
-     * @param {Object} events Events that we should broadcast
+     * @param {String} eventName The name of the event
+     * @param {Object} data Data that you want to send with the event
      */
-    var broadcastApiEvent = function(apiName, events) {
-      for (var i in events) {
-        if (events.hasOwnProperty(i)) {
-          $scope.$broadcast('calcentral.api.' + apiName + '.' + i, events[i]);
-        }
-      }
+    var broadcastApiEvent = function(apiName, eventName, data) {
+      console.log('calcentral.api.' + apiName + '.' + eventName, data)
+      $scope.$broadcast('calcentral.api.' + apiName + '.' + eventName, data);
     };
 
     /**
-     * Watch the events for a certain part of the API
+     * Watch the event for a certain part of the API
      * @param {String} apiName The name of the API you want to watch (e.g. user)
+     * @param {String} eventName The name of the event (isUserLoaded)
      */
-    var watchEvents = function(apiName) {
-      $scope.$watch('api.' + apiName + '.events', function(events) {
-        broadcastApiEvent(apiName, events);
+    var watchEvent = function(apiName, eventName) {
+      $scope.$watch('api.' + apiName + '.events.' + eventName, function(data) {
+        broadcastApiEvent(apiName, eventName, data);
       }, true);
     };
 
     var fireEvents = function() {
       for (var i in $scope.api) {
         if ($scope.api.hasOwnProperty(i) && $scope.api[i].events) {
-          watchEvents(i);
+          for (var j in $scope.api[i].events) {
+            if ($scope.api[i].events.hasOwnProperty(j)) {
+              watchEvent(i, j);
+            }
+          }
         }
       }
     };
