@@ -48,3 +48,11 @@ campusdb:
   pool: <%=Settings.campusdb.pool %>
   timeout: <%=Settings.campusdb.timeout %>
 
+edwqa:
+  adapter: <%= Settings.edwqa.adapter %>
+  driver: <%=Settings.edwqa.driver %>
+  url: <%=Settings.edwqa.url %>
+  username: <%=Settings.edwqa.username %>
+  password: <%=Settings.edwqa.password %>
+  pool: <%=Settings.edwqa.pool %>
+  timeout: <%=Settings.edwqa.timeout %>
