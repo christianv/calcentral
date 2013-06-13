@@ -24,7 +24,8 @@
             <li>
               <button class="cc-button"
                 data-ng-click="switchTasksMode('scheduled')"
-                data-ng-class="{'cc-button-selected':(tasks_mode=='scheduled')}">Scheduled
+                data-ng-class="{'cc-button-selected':(tasks_mode=='scheduled')}"
+                aria-pressed="{'true':(tasks_mode=='scheduled')}">Scheduled
               </button>
             </li>
             <li>
