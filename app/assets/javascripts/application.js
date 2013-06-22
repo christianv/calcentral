@@ -15,5 +15,5 @@
 //= require raven
 //= require pikaday
 //= require angular-unstable
-//= require angular-sanitize-unstable
+//= require angular-sanitize
 //= require_tree .
