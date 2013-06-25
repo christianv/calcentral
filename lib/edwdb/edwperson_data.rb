@@ -6,6 +6,10 @@ class EdwpersonData < EdwDatabase
     Settings.edwqa.edwqa_prefix || ''
   end
 
+  def self.edwperson_translator
+    @edwperson_translator ||= EdwpersonTranslator.new
+  end
+
   def self.get_cars_id(person_id)
     result = {}
     use_pooled_connection {
@@ -49,11 +53,12 @@ class EdwpersonData < EdwDatabase
 
   def self.get_awards(cars_id)
     result = {}
+    response = {}
     use_pooled_connection {
       log_access(connection, connection_handler, name)
       sql = <<-SQL
       select      A.CUST_NUM,
-                  A.RCVB_ITEM_NUM as transID,
+                  trim(A.RCVB_ITEM_NUM) as transId,
                   to_char(A.RCVB_ITEM_DT, 'mm/dd/yyyy') as transDate,
                   trim(B.DESC_FLD) as transDesc,
                   trim(A.SUB_ACCT) as transDept,
@@ -74,15 +79,24 @@ class EdwpersonData < EdwDatabase
       result = connection.select_all(sql)
     }
 
-    puts result
+    if result
+      response = result.map { |item|
+        item = self.edwperson_translator.translateTransaction(item)
+      }
+    end
 
+    # puts result
+
+    # puts "xxxxxxx\n"
+
+    # puts response
     # if result
     #   result[:transID] = result["RCVB_ITEM_NUM"]
     # end
 
     # puts result
 
-    result
+    response
   end
 
   def self.database_alive?
