@@ -174,7 +174,8 @@
       $scope.countButtonsClass = $scope.countButtons === 1 ? 'cc-myfinances-100' : 'even-' + $scope.countButtons;
     };
 
-    var findStudentDate = function(students, uid) {
+    var findStudentData = function(students, uid) {
+      console.log(uid);
       for (var i = 0; i < students.length; i++) {
         if (students[i].uid === uid) {
           return students[i];
@@ -201,7 +202,7 @@
       // Data contains "students"
       $http.get('/json/student_financials.json').success(function(data) {
         // TODO select the right user
-        $scope.myfinances = findStudentDate(data.students, $scope.user.profile.uid);
+        $scope.myfinances = findStudentData(data.students, $scope.api.user.profile.uid);
 
         if ($scope.myfinances.uid) {
           parseData();
@@ -262,8 +263,8 @@
     };
 
     // We need to wait until the user is loaded
-    $scope.$watch('user.isLoaded', function(isLoaded) {
-      if (isLoaded) {
+    $scope.$on('calcentral.api.user.isAuthenticated', function(event, isAuthenticated) {
+      if (isAuthenticated) {
         getStudentInfo();
       }
     });
