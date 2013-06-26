@@ -29,7 +29,7 @@ class EdwpersonTranslator
     amount
   end
 
-  def translateType(typeCode, transId)
+  def translateType(typeCode, transId, transTermYr)
     transType = ''
     if (typeCode == 'C')
       transType = 'credit'
@@ -47,15 +47,66 @@ class EdwpersonTranslator
         # What if RCVB_ITEM_NUM == 0000625453 or DM0000574240? What is the transType in this case?
         puts transId
       end
+    elsif (typeCode == 'P')
+      if transTermYr == '00'
+        transType = 'payment'
+      else
+        transType = 'dispursement'
+      end
     end
     if transType == ''
-      puts "EDW Person couldn't translate the following type code: #{typeCode}"
+      puts "EDW Person - couldn't translate the following type: typeCode: #{typeCode} - transId: #{transId} - transTermYr: #{transTermYr}"
     end
     transType
   end
 
+  def translateStatus(status)
+    transStatus = ''
+    if status == 'C' || status == 'R' || status == 'A'
+      transStatus = 'closed'
+    elsif status == 'O'
+      # Todo - look at the aging opt
+      transStatus = 'pastDue/current/future'
+    else
+      puts "EDW Person - unknown transstatus: #{status}"
+    end
+    transStatus
+  end
+
+  def translateTerm(termcd, termyr)
+
+    if termyr == '00'
+      return ''
+    end
+
+    termcode = ''
+    if termcd == 'B'
+      termcode = 'Spring'
+    elsif termcd == 'C'
+      termcode = 'Summer'
+    elsif termcd == 'D'
+      termcode = 'Fall'
+    else
+      puts "EDW Person - unknown term code: #{termcd}"
+    end
+
+    termyear = ''
+    termyr = termyr.to_i
+
+    if (termyr < 10)
+      termyear = '200' + termyr.to_s
+    else
+      termyear = '20' + termyr.to_s
+    end
+
+    # TODO - use transDate to calculate Term
+    termstring = termcode + ' ' + termyear
+
+    termstring
+  end
+
   def translateTransaction(transaction)
-    transType = translateType(transaction["transtype"], transaction["transid"])
+    transType = translateType(transaction["transtype"], transaction["transid"], transaction["transtermyr"])
     response = {
       :transId => transaction["transid"],
       :transDate => transaction["transdate"],
@@ -65,7 +116,8 @@ class EdwpersonTranslator
       :transAmount => translateAmount(transaction["transamount"], transType),
       :transBalance => translateAmount(transaction["transbalance"], transType),
       :transType => transType,
-      :transStatus => transaction["transstatus"],
+      :transTerm => translateTerm(transaction["transtermcd"], transaction["transtermyr"]),
+      :transStatus => translateStatus(transaction["transstatus"])
     }
     response
   end

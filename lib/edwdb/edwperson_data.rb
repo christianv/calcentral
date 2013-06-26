@@ -29,52 +29,53 @@ class EdwpersonData < EdwDatabase
 
     puts result
 
-    # if result
-    #   result[:reg_status] = {
-    #       :code => result["reg_status_cd"],
-    #       :summary => self.reg_status_translator.status(result["reg_status_cd"]),
-    #       :explanation => self.reg_status_translator.status_explanation(result["reg_status_cd"]),
-    #       :needsAction => !self.reg_status_translator.is_registered(result["reg_status_cd"])
-    #   }
-    #   result[:reg_block] = self.reg_block_translator.translate(result["acad_blk_flag"], result["admin_blk_flag"], result["fin_blk_flag"], result["reg_blk_flag"])
-    #   result[:units_enrolled] = result["tot_enroll_unit"]
-    #   result[:education_level] = self.educ_level_translator.translate(result["educ_level"])
-    #   result[:california_residency] = self.cal_residency_translator.translate(result["cal_residency_flag"])
-    #   result['affiliations'] ||= ""
-    #   result[:roles] = {
-    #       :student => result['affiliations'].include?("STUDENT-TYPE-"),
-    #       :faculty => result['affiliations'].include?("EMPLOYEE-TYPE-ACADEMIC"),
-    #       :staff => result['affiliations'].include?("EMPLOYEE-TYPE-STAFF")
-    #   }
-    # end
-
     result
   end
 
-  def self.get_awards(cars_id)
+  def self.get_activity(cars_id)
     result = {}
     response = {}
     use_pooled_connection {
       log_access(connection, connection_handler, name)
       sql = <<-SQL
-      select      A.CUST_NUM,
-                  trim(A.RCVB_ITEM_NUM) as transId,
-                  to_char(A.RCVB_ITEM_DT, 'mm/dd/yyyy') as transDate,
-                  trim(B.DESC_FLD) as transDesc,
-                  trim(A.SUB_ACCT) as transDept,
-                  to_char(A.PMT_DUE_DT, 'mm/dd/yyyy') as transDueDate,
-                  A.RCVB_ITEM_AMT as transAmount,
-                  A.RCVB_ITEM_BAL as transBalance,
-                  A.RCVB_ITEM_TYP as transType,
-                  trim(A.TRM_CD) as transTermCd,
-                  trim(A.TRM_YR) as transTermYr,
-                  A.RCVB_ITEM_STA as transStatus
-      from        CARSSTG.WK_TCAR_RCVB_ITEM A
-      JOIN        CARSSTG.WK_TCAR_AR_INV_HDR B
-      ON          A.RCVB_ITEM_NUM = B.RCVB_ITEM_NUM
-      AND         A.CUST_NUM = B.CUST_NUM
-      where       A.CUST_NUM  IN   (#{connection.quote(cars_id)})
-      order by    A.CUST_NUM, A.RCVB_ITEM_DT desc
+select * from
+((select
+            trim(A.RCVB_ITEM_NUM) as transId,
+            to_char(A.RCVB_ITEM_DT, 'mm/dd/yyyy') as transDate,
+            trim(B.DESC_FLD) as transDesc,
+            trim(A.SUB_ACCT) as transDept,
+            to_char(A.PMT_DUE_DT, 'mm/dd/yyyy') as transDueDate,
+            A.RCVB_ITEM_AMT as transAmount,
+            A.RCVB_ITEM_BAL as transBalance,
+            A.RCVB_ITEM_TYP as transType,
+            trim(A.TRM_CD) as transTermCd,
+            trim(A.TRM_YR) as transTermYr,
+            A.RCVB_ITEM_STA as transStatus,
+            '' as agingOpt
+from        CARSSTG.WK_TCAR_RCVB_ITEM A
+JOIN        CARSSTG.WK_TCAR_AR_INV_HDR B
+ON          A.RCVB_ITEM_NUM = B.RCVB_ITEM_NUM
+AND         A.CUST_NUM = B.CUST_NUM
+where       A.CUST_NUM  IN   (#{connection.quote(cars_id)}))
+
+UNION ALL
+
+(select     C.LKBX_NUM as transId,
+            to_char(A.RCVB_ITEM_DT, 'mm/dd/yyyy') as transDate,
+            trim(C.DESC_FLD) as transDesc,
+            trim(A.SUB_ACCT) as transDept,
+            to_char(A.PMT_DUE_DT, 'mm/dd/yyyy') as transDueDate,
+            A.RCVB_ITEM_AMT as transAmount,
+            A.RCVB_ITEM_BAL as transBalance,
+            A.RCVB_ITEM_TYP as transType,
+            trim(A.TRM_CD) as transTermCd,
+            trim(A.TRM_YR) as transTermYr,
+            A.RCVB_ITEM_STA as transStatus,
+            A.AGING_OPT as agingOpt
+from        CARSSTG.WK_TCAR_RCVB_ITEM A
+JOIN        CARSSTG.WK_TCAR_LOCKBOX C
+ON          A.LKBX_NUM = C.LKBX_NUM
+where       A.CUST_NUM  IN   (#{connection.quote(cars_id)})))
       SQL
       result = connection.select_all(sql)
     }
@@ -85,16 +86,106 @@ class EdwpersonData < EdwDatabase
       }
     end
 
-    # puts result
+    response
+  end
 
-    # puts "xxxxxxx\n"
+  def self.get_summary(cars_id)
+    result = {}
+    use_pooled_connection {
+      log_access(connection, connection_handler, name)
+      sql = <<-SQL
 
-    # puts response
-    # if result
-    #   result[:transID] = result["RCVB_ITEM_NUM"]
-    # end
+select  a.lastStatementBalance,
+        a.lastStatementDate,
+        a.minimumAmountDueDate,
+        b.totalPastDueAmount,
+        c.futureActivity,
+        d.totalCurrentBalance,
+        e.unbilledActivity,
+        f.minimumAmountDue from
+(select LAST_STMT_AMT1 as lastStatementBalance,
+       to_char(LAST_STMT_DT1, 'mm/dd/yyyy') as lastStatementDate,
+       to_char(NEXT_STMT_DT, 'mm/dd/yyyy') as minimumAmountDueDate,
+       CUST_NUM
+from CARSSTG.WK_TCAR_CUST
+where CUST_NUM = #{connection.quote(cars_id)}) a
 
-    # puts result
+LEFT OUTER JOIN
+
+(select  sum(RCVB_ITEM_BAL) as totalPastDueAmount,
+        CUST_NUM
+from    CARSSTG.WK_TCAR_RCVB_ITEM
+where   trim(RCVB_ITEM_STA) = 'O'
+and     trim(AGING_OPT) in ('1','2','3','4','5','6','7' )
+and     CUST_NUM = #{connection.quote(cars_id)}
+group by CUST_NUM) b
+
+ON a.CUST_NUM = b.CUST_NUM
+
+LEFT OUTER JOIN
+
+(select  sum(RCVB_ITEM_BAL) as futureActivity,
+        CUST_NUM
+from    CARSSTG.WK_TCAR_RCVB_ITEM
+where   trim(RCVB_ITEM_STA) = 'O'
+and     AGING_OPT = 'F'
+and     CUST_NUM = #{connection.quote(cars_id)}
+group by CUST_NUM) c
+
+ON a.CUST_NUM = c.CUST_NUM
+
+LEFT OUTER JOIN
+
+(select  sum(RCVB_ITEM_BAL) as totalCurrentBalance,
+        CUST_NUM
+from    CARSSTG.WK_TCAR_RCVB_ITEM
+where   trim(RCVB_ITEM_STA) = 'O'
+AND     CUST_NUM = #{connection.quote(cars_id)}
+group by CUST_NUM) d
+
+ON a.CUST_NUM = d.CUST_NUM
+
+LEFT OUTER JOIN
+
+(select  sum(I.RCVB_ITEM_BAL) as unbilledActivity,
+        I.CUST_NUM
+from    CARSSTG.WK_TCAR_RCVB_ITEM I
+join    CARSSTG.WK_TCAR_CUST C
+on      I.CUST_NUM = C.CUST_NUM
+where   trim(I.RCVB_ITEM_STA) = 'O'
+and     I.RCVB_ITEM_DT > C.LAST_STMT_DT1
+and     I.CUST_NUM = #{connection.quote(cars_id)}
+group by I.CUST_NUM) e
+
+ON a.CUST_NUM = e.CUST_NUM
+
+LEFT OUTER JOIN
+
+(select  sum(RCVB_ITEM_BAL) as minimumAmountDue,
+        CUST_NUM
+from    CARSSTG.WK_TCAR_RCVB_ITEM
+where   trim(RCVB_ITEM_STA) = 'O'
+and     trim(AGING_OPT) in ('C','1','2','3','4','5','6','7' )
+and     CUST_NUM = #{connection.quote(cars_id)}
+group by CUST_NUM) f
+
+ON a.CUST_NUM = f.CUST_NUM
+      SQL
+      result = connection.select_one(sql)
+    }
+
+    if result
+      response = {
+        :lastStatementBalance => result['laststatementbalance'].to_i,
+        :lastStatementDate => result['laststatementdate'],
+        :unbilledActivity =>  result['unbilledactivity'].to_i,
+        :totalCurrentBalance => result['totalcurrentbalance'].to_i,
+        :futureActivity =>  result['futureactivity'].to_i,
+        :minimumAmountDue => result['minimumamountdue'].to_i,
+        :minimumAmountDueDate => result['minimumamountduedate'],
+        :totalPastDueAmount => result['totalpastdueamount'].to_i
+      }
+    end
 
     response
   end
