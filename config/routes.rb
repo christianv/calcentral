@@ -1,4 +1,7 @@
 Calcentral::Application.routes.draw do
+
+  mount RailsAdmin::Engine => '/ccadmin', :as => 'rails_admin'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -18,6 +21,11 @@ Calcentral::Application.routes.draw do
   match '/api/my/activities' => 'my_activities#get_feed', :as => :my_activities, :defaults => { :format => 'json' }
   match '/api/my/badges' => 'my_badges#get_feed', :as => :my_badges, :defaults => { :format => 'json' }
   match '/api/my/academics' => 'my_academics#get_feed', :as => :my_academics, :defaults => { :format => 'json' }
+  match '/api/my/campuslinks' => 'my_campus_links#get_feed', :as => :my_campus_links, :defaults => { :format => 'json' }
+  match '/api/my/campuslinks/expire' => 'my_campus_links#expire'
+  match '/api/my/refresh' => 'my_refresh#refresh', :defaults => { :format => 'json' }
+
+  match '/api/smoke_test_routes' => 'routes_list#smoke_test_routes', :as => :all_routes, :defaults => { :format => 'json' }
 
   match '/api/blog/release_notes/latest' => 'blog_feed#get_latest_release_notes', :as => :blog_latest_release_notes, :defaults => { :format => 'json' }
 
@@ -31,6 +39,11 @@ Calcentral::Application.routes.draw do
   match '/api/google/request_authorization'=> 'google_auth#request_authorization'
   match '/api/google/handle_callback' => 'google_auth#handle_callback'
   match '/api/google/remove_authorization' => 'google_auth#remove_authorization', :via => :post
+
+  match '/api/tools/styles' => 'tools#get_styles', :via => :get
+
+  match '/api/server_info' => 'server_runtime#get_info', :via => :get
+  match '/api/stats' => 'stats#get_stats', :via => :get, :defaults => { :format => 'json' }
 
   match '/auth/cas/callback' => 'sessions#lookup'
   match '/auth/failure' => 'sessions#failure'
@@ -50,5 +63,5 @@ Calcentral::Application.routes.draw do
   # We need this because we use html5mode=true
   #
   # This should ALWAYS be the last rule on the routes list!
-  match '/*url' => 'bootstrap#index'
+  match '/*url' => 'bootstrap#index', :defaults => { :format => 'html' }
 end

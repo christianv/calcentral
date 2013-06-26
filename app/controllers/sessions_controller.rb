@@ -44,10 +44,8 @@ class SessionsController < ApplicationController
 
   def destroy
     begin
-      Calcentral::USER_CACHE_EXPIRATION.notify session[:user_id]
       reset_session
     ensure
-      Rails.logger.debug "Clearing connections for thread and other dead threads due to user logout: #{self.object_id}"
       ActiveRecord::Base.clear_active_connections!
     end
     render :json => {
@@ -69,7 +67,6 @@ class SessionsController < ApplicationController
 
   def continue_login_success(uid)
     session[:user_id] = uid
-    Calcentral::USER_CACHE_WARMER.warm session[:user_id]
     redirect_to '/dashboard', :notice => "Signed in!"
   end
 
@@ -95,7 +92,7 @@ class SessionsController < ApplicationController
     use_pooled_connection {
       never_logged_in_before = UserData.where(:uid => act_as_uid).first.blank?
     }
-    if never_logged_in_before
+    if never_logged_in_before && Settings.application.layer == "production"
       Rails.logger.warn "ACT-AS: User #{user_uid} FAILS to login to #{act_as_uid}, #{act_as_uid} hasn't logged in before."
       return false
     end

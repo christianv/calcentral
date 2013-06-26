@@ -7,7 +7,7 @@ class AuthController < ApplicationController
     nil
   end
 
-  def get_client(final_redirect = "")
+  def get_client(final_redirect = '', force_domain = true)
     nil
   end
 
@@ -18,7 +18,10 @@ class AuthController < ApplicationController
   def request_authorization
     expire
     final_redirect = params[:final_redirect] || "/settings"
-    client = get_client final_redirect
+    if params[:force_domain].present? && params[:force_domain] == 'false'
+      client = get_client(final_redirect, force_domain = false)
+    end
+    client ||= get_client final_redirect
     url = client.authorization_uri.to_s
     Rails.logger.debug "Initiating Oauth2 authorization request for user #{session[:user_id]} - redirecting to #{url}"
     redirect_to url
@@ -48,7 +51,7 @@ class AuthController < ApplicationController
       Oauth2Data.remove(session[:user_id], app_id)
     end
 
-    expire_then_warm_cache
+    expire
 
     final_redirect = params[:state] || "/settings"
     final_redirect = Base64.decode64 final_redirect
@@ -58,17 +61,12 @@ class AuthController < ApplicationController
   def remove_authorization
     Rails.logger.debug "Deleting #{app_id} token for user #{session[:user_id]}"
     Oauth2Data.remove(session[:user_id], app_id)
-    expire_then_warm_cache
+    expire
     render :nothing => true, :status => 204
   end
 
   def expire
     Calcentral::USER_CACHE_EXPIRATION.notify session[:user_id]
-  end
-
-  def expire_then_warm_cache
-    expire
-    Calcentral::USER_CACHE_WARMER.warm session[:user_id]
   end
 
 end

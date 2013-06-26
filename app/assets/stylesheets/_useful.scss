@@ -6,12 +6,19 @@
 
 /* Useful classes */
 .cc-alert {
-  color: $cc-alert-color !important;
+  color: $cc-color-red !important;
 }
 .cc-break-word {
   word-wrap: break-word;
 }
+.cc-capitalize {
+  text-transform: capitalize;
+}
+.cc-clearfix {
+  clear: both;
+}
 .cc-ellipsis {
+  display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -26,7 +33,7 @@
   float: right;
 }
 .cc-strikethrough {
-  color: $cc-list-border-color !important;
+  color: $cc-color-list-border !important;
   text-decoration: line-through !important;
 }
 
@@ -47,45 +54,12 @@
   }
 }
 
-/* Scrollbar in webkit */
-.cc-scroll {
-  &::-webkit-scrollbar {
-    height: 7px;
-    width: 7px;
-  }
-  &::-webkit-scrollbar-button:start:decrement {
-    display: block;
-    height: 5px;
-  }
-  &::-webkit-scrollbar-button:end:increment {
-    display: block;
-    height: 5px;
-  }
-  &::-webkit-scrollbar-button:vertical:increment {
-    background-color: transparent
-  }
-  &::-webkit-scrollbar-track:enabled {
-    background-color: rgba(113,112,107,0.1);
-    border-radius: 5px;
-  }
-  &::-webkit-scrollbar-thumb:vertical {
-    background-color: rgba(0,0,0,.2);
-    border-radius: 5px;
-    height: 50px;
-  }
-  &::-webkit-scrollbar-thumb:horizontal {
-    background-color: rgba(0,0,0,.2);
-    border-radius: 5px;
-    width: 50px;
-  }
-}
 /* Popover */
 .cc-popover {
-  background: #fff;
-  border: 1px solid #cbcbcb;
+  background: #ececec;
   border-radius: 5px;
   @include box-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
-  padding: 15px;
+  padding: 0;
   position: absolute;
   z-index: 1;
 
@@ -99,11 +73,12 @@
     line-height: 1;
     margin: 10px 0 0;
   }
-
+}
+.cc-popover-arrow {
   &:after, &:before {
     bottom: 100%;
     content: "";
-    left: 50%;
+    right: 10%;
     position: absolute;
   }
 
@@ -129,16 +104,13 @@
 }
 
 .cc-dropdown {
-  background: #fff;
-  border: 1px solid $cc-launcher-border-color;
-  border-top: none;
+  min-width: 80px;
   position: absolute;
-  right: -1px;
-  width: 100%;
+  right: 0;
+  width: auto;
   z-index: 1;
   button {
     display: block;
-    padding: 5px;
   }
 }
 
@@ -167,11 +139,4 @@
   padding: 0;
   position: absolute;
   width: 1px;
-}
-
-@media only screen and (max-width: 767px) {
-  .cc-dropdown {
-    min-width: 80px;
-    width: auto;
-  }
 }

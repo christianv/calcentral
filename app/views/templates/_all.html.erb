@@ -5,14 +5,13 @@
   <%= render 'templates/academics_classinfo' %>
 <% end %>
 <%= render 'templates/dashboard' %>
-<%= render 'templates/dashboard_task_loop' %>
 <%= render 'templates/dashboard_task_editor' %>
+<%= render 'templates/dashboard_task_loop' %>
+<%= render 'templates/dashboard_task_noitems' %>
 <%= render 'templates/error_404' %>
 <%= render 'templates/myfinances' %>
 <%= render 'templates/settings' %>
 <%= render 'templates/settings_service_loop' %>
 <%= render 'templates/splash' %>
-<% if Rails.env == 'development' %>
-  <%= render 'templates/tools/index' %>
-  <%= render 'templates/tools/styles' %>
-<% end %>
+<%= render 'templates/tools_index' %>
+<%= render 'templates/tools_styles' %>

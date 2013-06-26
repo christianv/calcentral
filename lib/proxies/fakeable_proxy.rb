@@ -5,7 +5,7 @@ module FakeableProxy
     c.cassette_library_dir = 'fixtures/vcr_cassettes'
     c.hook_into :webmock, :faraday
     c.allow_http_connections_when_no_cassette = true
-    c.debug_logger = File.open(Rails.root.join("log", "vcr-debug.log"), 'w')
+    c.debug_logger = File.open("#{CalcentralLogging.log_root}/vcr-debug.log", 'w')
     c.after_http_request do |request, response|
       # so we don't record sensitive auth headers
       if !response.blank?
@@ -35,7 +35,7 @@ module FakeableProxy
   private
 
   def record_new_responses(proxy_id, extra_cassette_options, proc_block)
-    Rails.logger.warn "#{self.class.name}  Recording new response for #{proxy_id}"
+    Rails.logger.info "#{self.class.name}  Recording new response for #{proxy_id}"
     VCR.configure do |c|
       c.cassette_library_dir = 'fixtures/pretty_vcr_recordings'
     end

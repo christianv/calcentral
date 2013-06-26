@@ -31,7 +31,7 @@ class UserApi < MyMergedModel
   end
 
   def self.delete(uid)
-    logger.debug "#{self.class.name} removing user #{uid} from UserData"
+    logger.info "#{self.class.name} removing user #{uid} from UserData"
     user = nil
     use_pooled_connection {
       user = UserData.where(:uid => uid).first
@@ -52,15 +52,16 @@ class UserApi < MyMergedModel
 
   def save
     use_pooled_connection {
-      if !@calcentral_user_data
-        @calcentral_user_data = UserData.create(uid: @uid, preferred_name: @override_name)
-      else
-        stored_override = @calcentral_user_data.preferred_name
-        if stored_override != @override_name
-          @calcentral_user_data.update_attributes(preferred_name: @override_name)
-        end
+      # Avoid race condition problems, UserData could have been modified or already instantiated
+      # by another thread.
+      @calcentral_user_data = UserData.where(uid: @uid).first_or_create do |record|
+        Rails.logger.debug "#{self.class.name} recording first login for #{@uid}"
+        record.preferred_name = @override_name
+        record.first_login_at = @first_login_at
       end
-      @calcentral_user_data.update_attribute(:first_login_at, @first_login_at)
+      if @calcentral_user_data.preferred_name != @override_name
+        @calcentral_user_data.update_attribute(:preferred_name, @override_name)
+      end
     }
     Calcentral::USER_CACHE_EXPIRATION.notify @uid
   end
@@ -87,7 +88,6 @@ class UserApi < MyMergedModel
       :first_login_at => @first_login_at,
       :first_name => @first_name,
       :full_name => @first_name + ' ' + @last_name,
-      :has_canvas_access_token => CanvasProxy.access_granted?(@uid),
       :has_canvas_account => CanvasProxy.has_account?(@uid),
       :has_google_access_token => GoogleProxy.access_granted?(@uid),
       :google_email => google_mail,

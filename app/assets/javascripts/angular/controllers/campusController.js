@@ -38,7 +38,7 @@
       for (var i in link.roles) {
         if (link.roles.hasOwnProperty(i) &&
             link.roles[i] === true &&
-            link.roles[i] ===  $scope.user.profile.roles[i]) {
+            link.roles[i] ===  $scope.api.user.profile.roles[i]) {
           addToTopCategories(link);
           return true;
         }
@@ -102,7 +102,12 @@
      */
     var getLinks = function() {
       // Data contains "links" and "navigation"
-      $http.get('/json/campuslinks.json').success(function(campusdata) {
+      var link_data_url = '/json/campuslinks.json';
+      if ($scope.api.user.profile.features.live_campus_links_data) {
+        link_data_url = '/api/my/campuslinks';
+      }
+      $http.get(link_data_url).success(function(campusdata) {
+      //$http.get('/json/campuslinks.json').success(function(campusdata) {
         $scope.campusdata = campusdata;
 
         var title = 'Campus';
@@ -120,8 +125,8 @@
     };
 
     // We need to wait until the user is loaded
-    $scope.$watch('user.isLoaded', function(isLoaded) {
-      if (isLoaded) {
+    $scope.$on('calcentral.api.user.isAuthenticated', function(event, isAuthenticated) {
+      if(isAuthenticated) {
         getLinks();
       }
     });

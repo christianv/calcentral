@@ -1,6 +1,10 @@
 Calcentral::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+  # enable threadsafe
+  config.threadsafe!
+  config.dependency_loading = true if $rails_rake_task
+
   # Code is not reloaded between requests
   config.cache_classes = true
 
@@ -47,9 +51,6 @@ Calcentral::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
-  # Enable threaded mode
-  # config.threadsafe!
-
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found)
   config.i18n.fallbacks = true
@@ -71,7 +72,7 @@ Calcentral::Application.configure do
           :race_condition_ttl => Settings.cache.race_condition_ttl
       }
   )
-  config.cache_store.logger = Logger.new("#{Rails.root}/log/cache_#{Time.now.strftime('%Y-%m-%d')}.log")
+  config.cache_store.logger = Logger.new("#{CalcentralLogging.log_root}/cache_#{Time.now.strftime('%Y-%m-%d')}.log")
   config.cache_store.logger.level = Logger::DEBUG
 
 end

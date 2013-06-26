@@ -20,7 +20,7 @@ class MyUpNext < MyMergedModel
     results = fetch_events(@uid, opts)
     up_next[:items] = process_events(results)
 
-    logger.debug "MyUpNext get_feed is #{up_next.inspect}"
+    Rails.logger.debug "#{self.class.name}::get_feed: #{up_next.inspect}"
     up_next
   end
 
@@ -55,7 +55,7 @@ class MyUpNext < MyMergedModel
       if entry_location
         location_subset[:location] = entry_location
         uri = Addressable::URI.new
-        uri.query_values = {:q => entry["location"]}
+        uri.query_values = {:q => entry_location}
         location_subset[:location_url] = "https://maps.google.com/maps?" + uri.query
       end
     rescue Exception => e

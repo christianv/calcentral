@@ -12,6 +12,7 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
+/log/*.gz
 /tmp
 
 # Ignore local settings.
@@ -37,5 +38,18 @@ app/assets/stylesheets/application.css
 # Ignore processed VCR files
 /fixtures/vcr_cassettes/*.json
 
+# My Finances
 student_financials.json
 app/assets/images/cfv
+
+# Ignore git version stamp
+/versions/git.txt
+
+# Ignore torquebox build files
+*.knob
+
+# Ignore pesky Oracle jars
+/lib/ojdbc*.jar
+
+# Ignore deploy directory
+/deploy

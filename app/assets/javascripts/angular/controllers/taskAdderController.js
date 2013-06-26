@@ -14,6 +14,7 @@
       $scope.task_adder_is_processing = false;
       $scope.show_add_task = false;
       $scope.tasks.push(data);
+      $scope.updateTaskLists();
     };
 
     $scope.addTask = function() {
@@ -44,6 +45,9 @@
 
     $scope.toggleAddTask = function() {
       $scope.show_add_task = !$scope.show_add_task;
+      if ($scope.show_add_task) {
+        $scope.add_edit_task._focusInput = true;
+      }
       apiService.analytics.trackEvent(['Tasks', 'Add panel - ' + $scope.show_add_task ? 'Show' : 'Hide']);
     };
 

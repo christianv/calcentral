@@ -1,7 +1,6 @@
 <script type="text/ng-template" id="templates/academics_semester.html">
   <div
     class="cc-page-academics"
-    data-ng-controller="AcademicsController"
     data-ng-show="can_view_academics"
   >
     <div class="column">
@@ -36,71 +35,70 @@
       </div>
 
       <h2>Final Exam Schedule</h2>
-
+      <div data-ng-hide="exam_schedule.size">No exam schedules listed.</div>
       <div data-ng-repeat="(day, day_data) in exam_schedule" class="cc-academics-exam-block">
         <div class="row">
-          <div class="large-12 small-12 columns cc-academics-column-labels" data-ng-bind="day"></div>
+          <div class="large-12 small-12 columns cc-academics-column-labels" data-ng-bind="day * 1000 | date:'EEE MMM d'"></div>
         </div>
         <div class="row" data-ng-repeat="exam in day_data">
-          <div class="large-1 small-2 columns" data-ng-bind="exam.time"></div>
-          <div class="large-3 small-6 columns cc-academics-empasize" data-ng-bind="exam.course_number"></div>
-          <div class="large-3 small-4 columns end">
+          <div class="large-2 small-2 columns" data-ng-bind="exam.time"></div>
+          <div class="large-4 small-6 columns cc-academics-empasize" data-ng-bind="exam.course_number"></div>
+          <div class="large-6 small-4 columns end">
             <div data-cc-map-link-builder-directive></div>
           </div>
         </div>
       </div>
-      <p><em>Click building name for map.</em></p>
     </div>
 
     <div class="large-6 columns cc-academics-page-right">
       <h2>GPA Calculator</h2>
-        <div class="large-7 small-12 columns end cc-academics-calculator-panel">
-
-          <div class="row">
-            <div class="large-12 small-12 columns">
-              <h4>Estimate your grades for <span data-ng-bind="selected_semester.name"></span></h4>
-            </div>
-          </div>
-          <div data-ng-show="selected_courses.length">
-            <div class="row cc-academics-calculator-grid-section">
-              <div class="large-5 small-5 columns cc-academics-column-labels">Class</div>
-              <div class="large-3 small-3 columns cc-academics-column-labels">Units</div>
-              <div class="large-3 small-3 columns end cc-academics-column-labels">Grade</div>
-            </div>
-
-            <div
-              class="row cc-academics-calculator-row "
-              data-ng-repeat="course in selected_courses"
-            >
-              <div class="large-5 small-5 columns" data-ng-bind="course.course_number"></div>
-              <div class="large-3 small-3 columns" data-ng-bind="course.units"></div>
-              <div class="large-3 small-3 columns end">
-                <select
-                  data-ng-show="course.grade_option=='Letter'"
-                  data-ng-model="course.estimated_grade"
-                  data-ng-change="gpaUpdateCourse(course, course.estimated_grade)"
-                  data-ng-options="g.weight as g.grade for g in gradeopts"
-                >
-                </select>
-              </div>
-              <div
-                data-ng-show="course.grade_option!='Letter'"
-                class="large-3 small-3 columns end"
-                data-ng-bind="course.grade_option">
-              </div>
-            </div>
-            <div class="row cc-academics-calculator-row cc-academics-empasize">
-              <div class="large-8 small-8 columns">Estimated semester GPA:</div>
-              <div class="large-4 small-4 columns" data-ng-bind="(estimated_gpa | number:2) || 'N/A'"></div>
-            </div>
-          </div>
-          <div data-ng-show="!selected_courses.length">
-            <p>To calculate your GPA, you must be enrolled in one or more classes for the selected semester.</p>
+      <div class="large-8 small-12 columns end cc-academics-calculator-panel">
+        <div class="row">
+          <div class="large-12 small-12 columns">
+            <h4>Estimate your grades for <span data-ng-bind="selected_semester.name"></span></h4>
           </div>
         </div>
+        <div data-ng-show="selected_courses.length">
+          <div class="row cc-academics-calculator-grid-section">
+            <div class="large-5 small-5 columns cc-academics-column-labels">Class</div>
+            <div class="large-3 small-3 columns cc-academics-column-labels">Units</div>
+            <div class="large-3 small-3 columns end cc-academics-column-labels">Grade</div>
+          </div>
+
+          <div
+            class="row cc-academics-calculator-row "
+            data-ng-repeat="course in selected_courses"
+          >
+            <div class="large-5 small-5 columns" data-ng-bind="course.course_number"></div>
+            <div class="large-3 small-3 columns" data-ng-bind="course.units" data-ng-show="course.units"></div>
+            <div class="large-3 small-3 columns" data-ng-show="!course.units">--</div>
+            <div class="large-3 small-3 columns end">
+              <select
+                data-ng-show="course.grade_option=='Letter' && course.units"
+                data-ng-model="course.estimated_grade"
+                data-ng-change="gpaUpdateCourse(course, course.estimated_grade)"
+                data-ng-options="g.weight as g.grade for g in gradeopts"
+              >
+              </select>
+            </div>
+            <div
+              data-ng-show="course.grade_option!='Letter'"
+              class="large-3 small-3 columns end"
+              data-ng-bind="course.grade_option">
+            </div>
+          </div>
+          <div class="row cc-academics-calculator-row cc-academics-empasize">
+            <div class="large-8 small-8 columns">Estimated semester GPA:</div>
+            <div class="large-4 small-4 columns" data-ng-bind="(estimated_gpa | number:2) || 'N/A'"></div>
+          </div>
+        </div>
+        <div data-ng-show="!selected_courses.length">
+          <p>To calculate your GPA, you must be enrolled in one or more classes for the selected semester.</p>
+        </div>
+      </div>
     </div>
 
-    <div class="cc-page-academics" data-ng-hide="user.profile.roles.student">
+    <div class="cc-page-academics" data-ng-hide="api.user.profile.roles.student">
       <div class="large-12 small-12 columns">
         <h2>Data not available</h2>
         <p>

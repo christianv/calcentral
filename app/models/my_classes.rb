@@ -9,7 +9,7 @@ class MyClasses < MyMergedModel
     if CampusUserCoursesProxy.access_granted?(@uid)
       response[:classes].concat(CampusUserCoursesProxy.new({:user_id => @uid}).get_campus_courses)
     end
-    logger.debug "MyClasses get_feed is #{response.inspect}"
+    Rails.logger.debug "MyClasses get_feed is #{response.inspect}"
     response
   end
 
@@ -22,7 +22,7 @@ class MyClasses < MyMergedModel
 
   def process_canvas_courses
     response = []
-    canvas_proxy = CanvasCoursesProxy.new(user_id: @uid)
+    canvas_proxy = CanvasUserCoursesProxy.new(user_id: @uid)
     canvas_courses = canvas_proxy.courses
     return response unless (canvas_courses && canvas_courses.status == 200)
     begin

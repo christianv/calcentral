@@ -1,9 +1,9 @@
 .cc-page-academics {
   h1, h2, h3, h4 {
-    color: $cc-medium-grey;
+    color: $cc-color-medium-grey;
   }
   h1 {
-    border-bottom: 1px solid $cc-light-grey;
+    border-bottom: 1px solid $cc-color-light-grey;
     font-size: 22px;
     font-weight: normal;
     margin-bottom: 0;
@@ -37,10 +37,14 @@
     margin-top: 10px;
   }
   .cc-academics-calculator-panel {
-    border: 1px solid $cc-medium-grey;
+    border: 1px solid $cc-color-medium-grey;
+    min-width: 290px;
   }
   .cc-academics-calculator-row {
     line-height: 2;
+    select {
+      min-width: 50px;
+    }
   }
   .cc-academics-calendar {
     font-size: 11px;
@@ -56,25 +60,29 @@
     margin-top: 0;
   }
   .cc-academics-column-labels {
-    color: $cc-light-medium-grey;
+    color: $cc-color-light-medium-grey;
     font-weight: bold;
   }
   .cc-academics-empasize {
     font-weight: bold;
   }
   .cc-academics-exam-block {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    max-width: 400px;
+    .icon-map-marker {
+      margin-left: 5px;
+    }
   }
   .cc-academics-nolink {
-    color: $cc-light-medium-grey;
+    color: $cc-color-light-medium-grey;
     font-size: 14px;
   }
   .cc-academics-orderlink {
     font-size: 12px;
   }
   .cc-academics-page-left {
-    border-right: 1px solid $cc-light-grey;
-    color: $cc-medium-grey;
+    border-right: 1px solid $cc-color-light-grey;
+    color: $cc-color-medium-grey;
     padding-bottom: 50px;
       h3 {
         &:first-of-type {
@@ -89,9 +97,13 @@
     }
   }
   .cc-academics-page-right {
-    background-color: $cc-super-light-grey;
+    background-color: $cc-color-super-light-grey;
     margin-bottom: -99969px;
     padding-bottom: 99999px;
+  }
+  .cc-academics-schedule-room {
+    line-height: 1.3;
+    margin-bottom: 5px;
   }
   .cc-academics-showhide-block-history {
     margin-top: 10px;
@@ -103,7 +115,8 @@
     font-size: 14px;
   }
   .cc-academics-status-and-blocks {
+    border: 2px solid $cc-color-shadow-color;
     margin-top: 20px;
-    padding-top: 0;
+    padding: 0 10px 10px 10px;
   }
 }

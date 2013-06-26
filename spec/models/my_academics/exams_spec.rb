@@ -9,13 +9,49 @@ describe "MyAcademics::Exams" do
     feed = {}
     MyAcademics::Exams.new("61889").merge(feed)
 
-    Rails.logger.info "feed[:exam_schedule] = #{feed[:exam_schedule].inspect}"
     feed[:exam_schedule].should_not be_nil
-    feed[:exam_schedule]["Tue May 14"][0][:course_number].should == "Psychology C120"
-    feed[:exam_schedule]["Tue May 14"][0][:time].should == "8:00A"
-    feed[:exam_schedule]["Tue May 14"][0][:location][:raw_location].should == "390 HEARST MIN"
-    feed[:exam_schedule]["Tue May 14"][0][:location]["room_number"].should == "390"
-    feed[:exam_schedule]["Tue May 14"][0][:location]["display"].should == "Hearst Memorial Mining Building"
+    feed[:exam_schedule][0][:course_number].should == "Psychology C120"
+    feed[:exam_schedule][0][:time].should == "8:00A"
+    feed[:exam_schedule][0][:location][:raw_location].should == "390 HEARST MIN"
+    feed[:exam_schedule][0][:location]["room_number"].should == "390"
+    feed[:exam_schedule][0][:location]["display"].should == "Hearst Memorial Mining Building"
+    # making sure sorting works in right order
+    feed[:exam_schedule][0][:date][:epoch].should == 1368489600
+    feed[:exam_schedule][1][:date][:epoch].should == 1368576000
+    feed[:exam_schedule][2][:date][:epoch].should == 1368662400
   end
 
+  it "should properly handle a student with an exam in an unparseable room" do
+    proxy = BearfactsExamsProxy.new({:user_id => "865826", :fake => true})
+    BearfactsExamsProxy.stub(:new).and_return(proxy)
+
+    feed = {}
+    MyAcademics::Exams.new("865826").merge(feed)
+
+    feed[:exam_schedule].should_not be_nil
+    feed[:exam_schedule][0][:location][:raw_location].should == "F295 HAAS"
+  end
+
+  it "should not return any exam schedules for exam information not matching current_year and term" do
+    CampusData.stub(:current_term).and_return("B")
+    CampusData.stub(:current_year).and_return("1984")
+    proxy = BearfactsExamsProxy.new({:user_id => "865826", :fake => true})
+    BearfactsExamsProxy.stub(:new).and_return(proxy)
+
+    feed = {}
+    MyAcademics::Exams.new("865826").merge(feed)
+
+    feed[:exam_schedule].should be_nil
+  end
+
+  it "should handle badly formatted BearfactsExamProxy XML responses" do
+    proxy = BearfactsExamsProxy.new({:user_id => "865826", :fake => true})
+    BearfactsExamsProxy.stub(:new).and_return(proxy)
+    BearfactsExamsProxy.any_instance.stub(:get).and_return({body: 'gobbly gook', status_code: 200})
+
+    feed = {}
+    MyAcademics::Exams.new("865826").merge(feed)
+    
+    feed[:exam_schedule].should be_nil
+  end
 end

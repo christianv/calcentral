@@ -1,6 +1,13 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  before_filter :get_settings
   after_filter :access_log
+
+  # Disable most of the default headers provided by secure_headers gem, leaving just x-frame for now
+  # http://rubydoc.info/gems/secure_headers/0.5.0/frames
+  # Rails 4 will DENY X-Frame by default
+  ensure_security_headers
+  skip_before_filter :set_csp_header, :set_hsts_header, :set_x_content_type_options_header, :set_x_xss_protection_header
 
   def authenticate
     redirect_to login_url unless session[:user_id]
@@ -18,7 +25,7 @@ class ApplicationController < ActionController::Base
   # callback URLs, we need to override.
   def default_url_options
     if defined?(Settings.application.protocol) && !Settings.application.protocol.blank?
-      logger.debug("Setting default URL protocol to #{Settings.application.protocol}")
+      Rails.logger.debug("Setting default URL protocol to #{Settings.application.protocol}")
       {protocol: Settings.application.protocol}
     else
       {}
@@ -36,6 +43,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def get_settings
+    @server_settings = ServerRuntime.get_settings
+  end
 
   def access_log
     # HTTP_X_FORWARDED_FOR is the client's IP when we're behind Apache; REMOTE_ADDR otherwise

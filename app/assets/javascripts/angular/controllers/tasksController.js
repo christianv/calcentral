@@ -4,17 +4,44 @@
   /**
    * Tasks controller
    */
-  calcentral.controller('TasksController', ['$http', '$scope', 'apiService', function($http, $scope, apiService) {
+  calcentral.controller('TasksController', ['$filter', '$http', '$scope', 'apiService', function($filter, $http, $scope, apiService) {
 
     // Initial mode for Tasks view
     $scope.tasks_mode = 'scheduled';
 
+    var calculateCounts = function() {
+      $scope.counts = {
+        scheduled: $scope.overdueTasks.length + $scope.dueTodayTasks.length + $scope.futureTasks.length,
+        unscheduled: $scope.unscheduledTasks.length
+      };
+      setCounts();
+    };
+
+    var setCounts = function() {
+      var isScheduled = ($scope.tasks_mode === 'scheduled');
+      $scope.counts.current = isScheduled ? $scope.counts.scheduled : $scope.counts.unscheduled;
+      $scope.counts.opposite = isScheduled ? $scope.counts.unscheduled : $scope.counts.scheduled;
+    };
+
+    $scope.updateTaskLists = function() {
+      $scope.overdueTasks = $filter('orderBy')($scope.tasks.filter(filterOverdue), 'due_date.epoch');
+      $scope.dueTodayTasks = $filter('orderBy')($scope.tasks.filter(filterDueToday), 'due_date.epoch');
+      $scope.futureTasks = $filter('orderBy')($scope.tasks.filter(filterFuture), 'due_date.epoch');
+      $scope.unscheduledTasks = $filter('orderBy')($scope.tasks.filter(filterUnScheduled), 'updated');
+      $scope.completedTasks = $filter('orderBy')($scope.tasks.filter(filterCompleted), 'completed_date.epoch', true);
+      calculateCounts();
+    };
+
     $scope.getTasks = function() {
       return $http.get('/api/my/tasks').success(function(data) {
         angular.extend($scope, data);
+        $scope.updateTaskLists();
       });
     };
-    $scope.getTasks();
+
+    $scope.$on('calcentral.api.refresh.refreshed', function() {
+      $scope.getTasks();
+    });
 
     var toggleStatus = function(task) {
       if (task.status === 'completed') {
@@ -53,6 +80,7 @@
       $http.post('/api/my/tasks', changedTask).success(function(data) {
         task.editor_is_processing = false;
         angular.extend(task, data);
+        $scope.updateTaskLists();
       }).error(function() {
         apiService.analytics.trackEvent(['Error', 'Set completed failure', 'completed: ' + !!changedTask.completed_date]);
         //Some error notification would be helpful.
@@ -62,7 +90,7 @@
     $scope.clearCompletedTasks = function() {
       apiService.analytics.trackEvent(['Tasks', 'Clear completed tasks', 'Clear completed tasks']);
       $http.post('/api/my/tasks/clear_completed', {"emitter": "Google"}).success(function(data) {
-        if(data.tasks_cleared) {
+        if (data.tasks_cleared) {
           $scope.getTasks();
         } else {
           // Again, some error handling?
@@ -78,6 +106,7 @@
     $scope.switchTasksMode = function(tasks_mode) {
       apiService.analytics.trackEvent(['Tasks', 'Switch mode', tasks_mode]);
       $scope.tasks_mode = tasks_mode;
+      setCounts();
     };
 
     // Delete Google tasks
@@ -97,10 +126,10 @@
         for(var i = 0; i < $scope.tasks.length; i++) {
           if($scope.tasks[i].id === task.id) {
             $scope.tasks.splice(i, 1);
-            return;
+            break;
           }
         }
-
+        $scope.updateTaskLists();
         apiService.analytics.trackEvent(['Tasks', 'Delete', task]);
       }).error(function() {
         apiService.analytics.trackEvent(['Error', 'Delete task failure']);
@@ -109,25 +138,26 @@
 
     };
 
-    $scope.filterOverdue = function(task) {
+    var filterOverdue = function(task) {
       return (task.status !== 'completed' && task.bucket === 'Overdue');
     };
 
-    $scope.filterDueToday = function(task) {
-      return (task.status !== 'completed' && task.bucket === 'Due Today');
+    var filterDueToday = function(task) {
+      return (task.status !== 'completed' && task.bucket === 'Today');
     };
 
-    $scope.filterDueThisWeek = function(task) {
-      return (task.status !== 'completed' && task.bucket === 'Due This Week');
+    var filterFuture = function(task) {
+      return (task.status !== 'completed' && task.bucket === 'Future');
     };
 
-    $scope.filterDueNextWeek = function(task) {
-      return (task.status !== 'completed' && task.bucket === 'Due Next Week');
-    };
-
-    $scope.filterUnScheduled = function(task) {
+    var filterUnScheduled = function(task) {
       return (!task.due_date && task.status !== 'completed');
     };
+
+    var filterCompleted = function(task) {
+      return (task.status === 'completed');
+    };
+
   }]);
 
 })(window.calcentral, window.angular);

@@ -5,14 +5,23 @@
     }
   }
   h1 {
-    color: $cc-dark-grey;
+    color: $cc-color-dark-grey;
     font-size: 24px;
     font-weight: normal;
     margin-top: 20px;
   }
   h2 {
-    color: $cc-medium-grey;
+    color: $cc-color-medium-grey;
     font-size: 18px;
+  }
+  .cc-settings-apitest-list {
+    margin-left: 20px;
+    .cc-settings-apitest-failed {
+      color: $cc-color-red;
+    }
+    .cc-settings-apitest-success {
+      color: $cc-color-green-plus;
+    }
   }
   .cc-settings-dashboard-link {
     display: block;
@@ -29,7 +38,7 @@
     padding-left: 0;
   }
   .cc-settings-service-row {
-    border-top: 1px solid $cc-light-grey;
+    border-top: 1px solid $cc-color-light-grey;
     margin-bottom: 20px;
     padding-top: 10px;
   }

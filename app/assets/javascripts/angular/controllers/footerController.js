@@ -4,11 +4,23 @@
   /**
    * Footer controller
    */
-  calcentral.controller('FooterController', ['$scope', function($scope) {
+  calcentral.controller('FooterController', ['$http', '$scope', function($http, $scope) {
 
-    $scope.currentTime = function() {
-      return new Date();
+    $scope.footer = {
+      showInfo: false
     };
+
+    var loadServerInformation = function() {
+      $http.get('/api/server_info').success(function(data) {
+        angular.extend($scope, data);
+      });
+    };
+
+    $scope.$watch('footer.showInfo', function(showInfo) {
+      if (showInfo && !$scope.versions) {
+        loadServerInformation();
+      }
+    });
 
   }]);
 

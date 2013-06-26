@@ -17,6 +17,7 @@ describe "MyBadges" do
     GoogleProxy.stub(:access_granted?).and_return(true)
     GoogleDriveListProxy.stub(:new).and_return(@fake_drive_list)
     GoogleEventsListProxy.stub(:new).and_return(@fake_events_list)
+    Oauth2Data.stub(:get_google_email).and_return("tammi.chang.clc@gmail.com")
     badges = MyBadges::Merged.new @user_id
     filtered_feed = badges.get_feed
     filtered_feed[:badges].empty?.should_not be_true
@@ -28,16 +29,17 @@ describe "MyBadges" do
     mangled_feed = badges.get_feed
     mangled_feed[:badges].empty?.should_not be_true
     mangled_feed[:badges]["bdrive"][:count].should == 10
-    mangled_feed[:badges]["bdrive"][:items].size.should == 5
-    descending_modified_first = mangled_feed[:badges]["bcal"][:items].map {|x| x[:modified_time][:epoch]}
-    descending_modified_first.should == descending_modified_first.sort.reverse
+    mangled_feed[:badges]["bdrive"][:items].size.should == 10
     mangled_feed[:badges]["bcal"][:count].should == 6
-    mangled_feed[:badges]["bcal"][:items].size.should == 5
+    mangled_feed[:badges]["bcal"][:items].size.should == 6
     mangled_feed[:badges]["bcal"][:items].select { |entry|
       entry[:all_day_event]
     }.size.should == 1
     mangled_feed[:badges]["bcal"][:items].select { |entry|
       entry[:change_state] if entry[:change_state] == "new"
+    }.size.should == 1
+    mangled_feed[:badges]["bcal"][:items].select { |entry|
+      entry[:change_state] if entry[:change_state] == "created"
     }.size.should == 1
   end
 
@@ -103,6 +105,12 @@ describe "MyBadges" do
     badges.get_feed[:badges].each do |key, value|
       value[:count].should == 0
     end
+  end
+
+  it "should ignore non png icons for bdrive" do
+    proxy = MyBadges::GoogleDrive.new(@user_id)
+    icon_class_result = proxy.send(:process_icon, "http://www.google.com/lol_cat.gif")
+    icon_class_result.present?.should_not be_true
   end
 
 end

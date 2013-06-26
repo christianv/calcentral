@@ -1,5 +1,5 @@
 logger:
-  level: <%= ENV['logger.level'] || WARN %>
+  stdout: <%= ENV['LOGGER_STDOUT'] %>
 
 application:
   # Set to true if testing production env without Apache/Nginx
@@ -19,13 +19,15 @@ postgres:
   password: secret
   host: localhost
   port: 5432
+  pool: 30
+
 campusdb:
   adapter: h2
   driver: org.h2.Driver
   url: jdbc:h2:mem:h2CampusDataSource;DB_CLOSE_DELAY=-1;MODE=Oracle
   username: sa
   password: sa
-  pool: 5
+  pool: 30
   # Needed when the bSpace application tables are in a different namespace.
   bspace_prefix:
 test_sqlite:
@@ -49,6 +51,8 @@ canvas_proxy:
   client_secret: "someMumboJumbo"
   token_credential_uri: "http://localhost:12345/login/oauth2/token"
   authorization_uri: "http://localhost:12345/login/oauth2/auth"
+  account_id: '90242'
+  export_directory: 'tmp/canvas'
   # Only used for testing + recording responses
   test_user_id: "300846"
   test_user_access_token: "someMumboJumbo"
@@ -64,10 +68,10 @@ sakai_proxy:
   host: "https://sakai-dev.berkeley.edu"
   fake: false
   fake_user_id: "300939"
-  current_terms: ["Spring 2013"]
+  current_terms: ["Summer 2013"]
   current_terms_codes: [ {
     term_yr: "2013",
-    term_cd: "B"
+    term_cd: "C"
   }]
   # Timestamp in UTC, needed when testing against older DB snapshot
   fake_now:
@@ -79,8 +83,10 @@ cal_link_proxy:
 
 bearfacts_proxy:
   fake: false
-  token: secret set in production
-  base_url: "https://bearfacts-dev.berkeley.edu/bearfacts-apis"
+  token: secret set per deployment layer
+  app_id: ''
+  app_key: ''
+  base_url: "https://apis-dev.berkeley.edu/bearfacts-apis"
 
 blog_latest_release_notes_feed_proxy:
   fake: false
@@ -98,29 +104,22 @@ sentry_url: "https://facf7ad7bd7047f0a356e9322107ce50@app.getsentry.com/7185"
 cache:
   # Array of server addresses in cluster (for memcached)
   servers: ["localhost"]
-  maximum_expires_in: <%= 48.hours %>
+  maximum_expires_in: <%= 1.year %>
   race_condition_ttl: <%= 10.seconds %>
+  stale_connection_flush_interval: <%= 5.minutes %>
   expiration:
-    default: <%= 20.minutes %>
-    BearfactsRegblocksProxy: <%= 24.hours %>
-    BlogFeed: <%= 1.hour %>
-    CalLinkMembershipsProxy: <%= 24.hours %>
-    CalLinkOrganizationProxy: <%= 48.hours %>
-    CampusUserClassesProxy: <%= 4.hours %>
-    CanvasComingUpProxy: <%= 1.hour %>
-    CanvasCoursesProxy: <%= 8.hours %>
-    CanvasGroupsProxy: <%= 8.hours %>
-    CanvasTodoProxy: <%= 1.hour %>
-    CanvasUserProfileProxy: <%= 1.hour %>
-    GoogleDriveListProxy: <%= 1.hour %>
-    GoogleEventsListProxy: <%= 1.hour %>
-    GoogleEventsProxy: <%= 1.hour %>
-    GoogleTasksListProxy: <%= 1.hour %>
-    GoogleTasksProxy: <%= 1.hour %>
-    MyRegBlocks: <%= 24.hours %>
-    SakaiProxy: <%= 24.hours %>
-    SakaiSiteAnnouncementsProxy: <%= 30.minutes %>
-    SakaiUserSitesProxy: <%= 4.hours %>
+    default: <%= 35.minutes %>
+    MyAcademics::Merged: <%= 1.year %>
+    MyActivities: <%= 1.year %>
+    MyBadges::Merged: <%= 1.year %>
+    MyCampusLinks: <%= 1.year %>
+    MyClasses: <%= 1.year %>
+    MyGroups: <%= 1.year %>
+    MyTasks::Merged: <%= 1.year %>
+    MyUpNext: <%= 1.year %>
+    MyRefreshController: <%= 30.seconds %>
+    UserApi: <%= 1.year %>
+    UserApiController: <%= 4.hours %>
 
 # Cache warmer settings
 cache_warmer:
@@ -135,6 +134,7 @@ ist_jms:
 #  password: PASSWORD
   freshen_recording: false
   fake: true
+  enabled: true
 
 # This will enable http basic auth for the app and should NEVER be enabled in production
 developer_auth:
@@ -143,9 +143,11 @@ developer_auth:
 
 hot_plate:
   startup_delay: <%= 15.seconds %>
-  warmup_interval: <%= 10.minutes %>
-  last_visit_cutoff: <%= 30.days %>
+  warmup_interval: <%= 12.hours %>
+  last_visit_cutoff: <%= 10.days %>
+  enabled: true
 
 # feature toggles. If a feature's key is false OR nil, it's disabled.
 features:
   bearfacts: false
+  live_campus_links_data: false

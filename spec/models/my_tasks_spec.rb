@@ -17,7 +17,7 @@ describe "MyTasks" do
                                                                             :refresh_token => Settings.google_proxy.test_user_refresh_token,
                                                                             :expiration_time => 0)
     @fake_canvas_proxy = CanvasProxy.new({fake: true})
-    @fake_canvas_coming_up_proxy = CanvasComingUpProxy.new({fake: true})
+    @fake_canvas_upcoming_events_proxy = CanvasUpcomingEventsProxy.new({fake: true})
     @fake_canvas_todo_proxy = CanvasTodoProxy.new({fake: true})
 
   end
@@ -29,22 +29,21 @@ describe "MyTasks" do
       GoogleProxy.stub(:access_granted?).and_return(true)
       CanvasProxy.stub(:access_granted?).and_return(true)
       GoogleTasksListProxy.stub(:new).and_return(@fake_google_tasks_list_proxy)
-      CanvasComingUpProxy.stub(:new).and_return(@fake_canvas_coming_up_proxy)
+      CanvasUpcomingEventsProxy.stub(:new).and_return(@fake_canvas_upcoming_events_proxy)
       CanvasTodoProxy.stub(:new).and_return(@fake_canvas_todo_proxy)
       my_tasks_model = MyTasks::Merged.new(@user_id)
       valid_feed = my_tasks_model.get_feed
 
       # Counts for task types in VCR recording
       overdue_counter = 5
-      # On Sundays, no "Due This Week" tasks can escape the "Due Today" bucket.
+      # On Sundays, no "Future" tasks can escape the "Today" bucket.
       if Time.zone.today.sunday?
         today_counter = 7
-        this_week_counter = 0
+        future_counter = 7
       else
         today_counter = 2
-        this_week_counter = 5
+        future_counter = 10
       end
-      next_week_counter = 7
       unscheduled_counter = 1
 
       valid_feed["tasks"].each do |task|
@@ -52,18 +51,16 @@ describe "MyTasks" do
         task["source_url"].blank?.should == false
 
         # Whitelist allowed property strings
-        whitelist = task["bucket"] =~ (/(Overdue|Due\ Today|Due\ This\ Week|Due\ Next\ Week|Unscheduled)$/i)
+        whitelist = task["bucket"] =~ (/(Overdue|Today|Future|Unscheduled)$/i)
         whitelist.should_not be_nil
 
         case task["bucket"]
           when "Overdue"
             overdue_counter -= 1
-          when "Due Today"
+          when "Today"
             today_counter -= 1
-          when "Due This Week"
-            this_week_counter -= 1
-          when "Due Next Week"
-            next_week_counter -= 1
+          when "Future"
+            future_counter -= 1
           when "Unscheduled"
             unscheduled_counter -= 1
         end
@@ -87,8 +84,7 @@ describe "MyTasks" do
 
       overdue_counter.should == 0
       today_counter.should == 0
-      this_week_counter.should == 0
-      next_week_counter.should == 0
+      future_counter.should == 0
       unscheduled_counter.should == 0
     ensure
       Time.zone = original_time_zone

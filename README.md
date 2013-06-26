@@ -90,22 +90,27 @@ Settings live outside of the project dir to prevent accidental commits to the re
 You can also create Ruby configuration files like "settings.local.rb" and "development.local.rb" to amend the standard `config/environments/*.rb` files.
 
 9. Install JDBC driver (for Oracle connection)
-You may already have an Oracle driver from MyBerkeley-OAE development, in which case you just need to copy it to your local JRuby installation:
-```cp ~/.m2/repository/com/oracle/ojdbc6/11.2.0.3/ojdbc6-11.2.0.3.jar ~/.rvm/rubies/jruby-1.7.3/lib/```
+You may already have an Oracle driver from MyBerkeley-OAE development, in which case you just need to copy it to your project ./lib directory:
+```cp ~/.m2/repository/com/oracle/ojdbc6/11.2.0.3/ojdbc6-11.2.0.3.jar ./lib/```
   * Otherwise, download [ojdbc6.jar](http://www.oracle.com/technetwork/database/enterprise-edition/jdbc-112010-090769.html)
-  * Copy ojdbc6.jar to your local JRuby installation; e.g. ```~/.rvm/rubies/jruby-1.7.3/lib/```
+  * Copy ojdbc6.jar to your project's lib folder```
 
 10. Initialize PostgreSQL database tables
 ```bash
 rake db:schema:load
 ```
 
-11. Start the server
+11. Deploy into TorqueBox
 ```bash
-rails s
+bundle exec torquebox deploy .
 ```
 
-12. Access your development server at [localhost:3000](http://localhost:3000/).
+12. Start the server
+```bash
+bundle exec torquebox run -p=3000
+```
+
+13. Access your development server at [localhost:3000](http://localhost:3000/).
 Do not use 127.0.0.1:3000, as you will not be able to grant access to bApps.
 
 ## Front-end Testing
@@ -198,6 +203,15 @@ To become yourself again, access
 ```
 https://[hostname]/stop_act_as
 ```
+
+### Logging
+
+Logging behavior and destination can be controlled from the command line or shell scripts via env variables:
+
+* `LOGGER_STDOUT=false` - Only log to the default files
+* `LOGGER_STDOUT=true` - Log to standard output as well as the default files
+* `LOGGER_STDOUT=only` - Only log to standard output
+* `LOGGER_LEVEL=DEBUG` - Set logging level; acceptable values are 'FATAL', 'ERROR', 'WARN', 'INFO', and 'DEBUG'
 
 ### Tips
 

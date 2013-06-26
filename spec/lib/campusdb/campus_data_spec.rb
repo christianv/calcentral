@@ -48,7 +48,7 @@ describe CampusData do
   end
 
   it "should find some students in Biology 1a" do
-    students = CampusData.get_enrolled_students("7309", "2013", "B")
+    students = CampusData.get_enrolled_students("7309", "2013", "C")
     students.should_not be_nil
     if CampusData.test_data?
       # we will only have predictable enrollments in our fake Oracle db.
@@ -68,7 +68,7 @@ describe CampusData do
   end
 
   it "should find courses from sections" do
-    courses = CampusData.get_courses_from_sections("2013", "B", ["7309", "7366", "7372", "16171"])
+    courses = CampusData.get_courses_from_sections("2013", "C", ["7309", "7366", "7372", "16171"])
     pp courses
     courses.should_not be_nil
     if CampusData.test_data?
@@ -82,7 +82,7 @@ describe CampusData do
   end
 
   it "should find sections from course" do
-    sections = CampusData.get_sections_from_course('BIOLOGY', '1A', 2013, 'B')
+    sections = CampusData.get_sections_from_course('BIOLOGY', '1A', 2013, 'C')
     sections.empty?.should be_false
     if CampusData.test_data?
       # Should not include canceled section
@@ -93,15 +93,15 @@ describe CampusData do
   end
 
   it "should find where a person is enrolled" do
-    sections = CampusData.get_enrolled_sections('300939', 2013, 'B')
+    sections = CampusData.get_enrolled_sections('300939', 2013, 'C')
     sections.should_not be_nil
     sections.length.should == 2 if CampusData.test_data?
   end
 
   it "should find where a person is teaching" do
-    sections = CampusData.get_instructing_sections('192517', 2013, 'B')
+    sections = CampusData.get_instructing_sections('192517', 2013, 'C')
     sections.should_not be_nil
-    sections.length.should == 1 if CampusData.test_data?
+    sections.length.should == 3 if CampusData.test_data?
   end
 
   it "should check whether the db is alive" do
@@ -124,6 +124,36 @@ describe CampusData do
     data[:roles].each do |role_name, role_value|
       role_value.should be_false
     end
+  end
+
+  it "should return class schedule data" do
+    data = CampusData.get_section_schedules("2013", "C", "16171")
+    data.should_not be_nil
+    if CampusData.test_data?
+      data[0]["building_name"].should == "WHEELER"
+      data[1]["building_name"].should == "DWINELLE"
+    end
+  end
+
+  it "should return instructor data given a course control number" do
+    data = CampusData.get_section_instructors("2013", "C", "7309")
+    data.should_not be_nil
+    if CampusData.test_data?
+      data.length.should == 2
+      data[0]["person_name"].should == "Yu-Hung Lin"
+      data[1]["person_name"].should == "Chris Tweney"
+    end
+  end
+
+  it "should be able to get a whole lot of user records" do
+    known_uids = ['192517', '238382', '2040', '3060', '211159', '322279']
+    lotsa_uids = Array.new(1000 - known_uids.length) {|i| i + 1 }
+    lotsa_uids.concat(known_uids)
+    user_data = CampusData.get_basic_people_attributes(lotsa_uids)
+    user_data.each do |row|
+      known_uids.delete(row['ldap_uid'])
+    end
+    known_uids.empty?.should be_true
   end
 
 end
