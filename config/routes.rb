@@ -27,6 +27,8 @@ Calcentral::Application.routes.draw do
 
   match '/api/smoke_test_routes' => 'routes_list#smoke_test_routes', :as => :all_routes, :defaults => { :format => 'json' }
 
+  match '/api/my/cars' => 'cars_api#get_feed', :as => :cars_api, :defaults => { :format => 'json' }
+
   match '/api/blog/release_notes/latest' => 'blog_feed#get_latest_release_notes', :as => :blog_latest_release_notes, :defaults => { :format => 'json' }
 
   match '/api/my/opt_out'=> 'user_api#delete', :via => :post
