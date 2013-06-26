@@ -4,7 +4,7 @@
     <div class="row">
       <div class="small-12 large-8 small-centered columns">
         <h1>My Account</h1>
-        <div data-ng-show="myfinances.uid">
+        <div data-ng-show="myfinances.person_id">
           <h2>Account Summary</h2>
 
           <div class="row cc-page-myfinances-account-summary">
@@ -127,7 +127,7 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
                 <div class="small-2 columns cc-page-myfinances-amount" data-ng-bind-html="item.transBalanceAmountShow" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
                 </div>
                 <div class="small-1 columns" title="{{item.transType}}" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
-                  <img src="/assets/cfv/cfv-{{item.transType}}.png" height="30" width="30" style="margin: 2px 0 0 3px; opacity: 0.8" />
+                  <img data-ng-src="/assets/cfv/cfv-{{item.transType}}.png" height="30" width="30" style="margin: 2px 0 0 3px; opacity: 0.8" />
                 </div>
                 <div class="small-2 columns">
                   <span data-ng-show="item._showdetail || item.transStatus!='closed'" data-ng-bind-html="item.transDueDateShow" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}"></span>
@@ -151,7 +151,7 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
           <div class="cc-myfincances-legend" style="overflow:hidden; margin-bottom: 30px;">
             <ul style="list-style-type:none;">
               <li data-ng-repeat="item in transTypes" style="clear:both;">
-                <img src="/assets/cfv/cfv-{{item}}.png" height="30" width="30" style="float:left; opacity: 0.8" />
+                <img data-ng-src="/assets/cfv/cfv-{{item}}.png" height="30" width="30" style="float:left; opacity: 0.8" />
                 <div style="font-size:14px; float:left; margin: 5px 0 0 10px">{{item}}</div>
               </li>
             </ul>

@@ -63,6 +63,7 @@ class CampusData < OracleDatabase
       }
 
     end
+    puts result
     result
   end
 

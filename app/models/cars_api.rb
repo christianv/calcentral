@@ -9,7 +9,10 @@ class CarsApi < MyMergedModel
     # Todo - replace with @uid
     # 21159906
     # 24094654
-    @edw_person_id ||= EdwpersonData.get_cars_id('21159906') || {}
+
+    @person_attr = CampusData.get_person_attributes(@uid) || {}
+
+    @edw_person_id ||= EdwpersonData.get_cars_id(@person_attr['student_id']) || {}
     @edw_activity ||= EdwpersonData.get_activity(@edw_person_id) || {}
     @edw_summary ||= EdwpersonData.get_summary(@edw_person_id) || {}
   end

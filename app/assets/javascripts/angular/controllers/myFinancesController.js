@@ -174,7 +174,7 @@
       $scope.countButtonsClass = $scope.countButtons === 1 ? 'cc-myfinances-100' : 'even-' + $scope.countButtons;
     };
 
-    var findStudentData = function(students, uid) {
+    /*var findStudentData = function(students, uid) {
       console.log(uid);
       for (var i = 0; i < students.length; i++) {
         if (students[i].uid === uid) {
@@ -182,7 +182,7 @@
         }
       }
       return {};
-    };
+    };*/
 
     var checkAllZero = function() {
       var summary = $scope.myfinances.summary;
@@ -200,11 +200,13 @@
     var getStudentInfo = function() {
 
       // Data contains "students"
-      $http.get('/json/student_financials.json').success(function(data) {
+      $http.get('/api/my/cars').success(function(data) {
         // TODO select the right user
-        $scope.myfinances = findStudentData(data.students, $scope.api.user.profile.uid);
+        //$scope.myfinances = findStudentData(data.students, $scope.api.user.profile.uid);
 
-        if ($scope.myfinances.uid) {
+        $scope.myfinances = data.edw;
+
+        if ($scope.myfinances.person_id) {
           parseData();
 
           createTerms();

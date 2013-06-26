@@ -51,7 +51,7 @@ class EdwpersonTranslator
       if transTermYr == '00'
         transType = 'payment'
       else
-        transType = 'dispursement'
+        transType = 'disbursement'
       end
     end
     if transType == ''

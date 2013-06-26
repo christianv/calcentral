@@ -2,7 +2,6 @@ class EdwpersonData < EdwDatabase
   include ActiveRecordHelper
 
   def self.table_prefix
-    puts "prefixxxxx - #{Settings.edwqa.edwqa_prefix}"
     Settings.edwqa.edwqa_prefix || ''
   end
 
