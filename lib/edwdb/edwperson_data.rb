@@ -175,14 +175,14 @@ ON a.CUST_NUM = f.CUST_NUM
 
     if result
       response = {
-        :lastStatementBalance => result['laststatementbalance'].to_i,
+        :lastStatementBalance => result['laststatementbalance'].to_f,
         :lastStatementDate => result['laststatementdate'],
-        :unbilledActivity =>  result['unbilledactivity'].to_i,
-        :totalCurrentBalance => result['totalcurrentbalance'].to_i,
-        :futureActivity =>  result['futureactivity'].to_i,
-        :minimumAmountDue => result['minimumamountdue'].to_i,
+        :unbilledActivity =>  result['unbilledactivity'].to_f,
+        :totalCurrentBalance => result['totalcurrentbalance'].to_f,
+        :futureActivity =>  result['futureactivity'].to_f,
+        :minimumAmountDue => result['minimumamountdue'].to_f,
         :minimumAmountDueDate => result['minimumamountduedate'],
-        :totalPastDueAmount => result['totalpastdueamount'].to_i
+        :totalPastDueAmount => result['totalpastdueamount'].to_f
       }
     end
 

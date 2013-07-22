@@ -33,13 +33,13 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
                 Activity Since Last Statement <span class="cc-page-myfinances-light">since {{myfinances.summary.lastStatementDate | date:'MMMM d'}}</span>
               </div>
             </div>
-            <div data-ng-hide="isAllZero" class="small-3 columns" data-ng-show="myfinances.summary.anticipatedAid!=0">
+            <!--<div data-ng-hide="isAllZero" class="small-3 columns" data-ng-show="myfinances.summary.anticipatedAid!=0">
               <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.anticipatedAidShow"></div>
             </div>
             <div data-ng-hide="isAllZero" class="small-9 columns" data-ng-show="myfinances.summary.anticipatedAid!=0">
               Anticipated Aid <span class="cc-page-myfinances-light">not yet disbursed</span>
               <button class="button radius small cc-right">View in MyFinAid</button>
-            </div>
+            </div>-->
             <div data-ng-hide="isAllZero" class="small-3 columns" data-ng-show="myfinances.summary.futureActivity!=0">
               <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.futureActivityShow"></div>
             </div>
