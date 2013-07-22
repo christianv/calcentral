@@ -76,7 +76,20 @@
 
       // Apply the filter when there is one - e.g. 'linky'
       if (options.filter) {
-        value = $filter(options.filter)(value);
+        if (options.filter === 'linky') {
+          // Get the last word in the value and if it starts with http(s)://,... don't make it a link
+          var URL_REGEXP = /((ftp|https?):\/\/|(mailto:)?[A-Za-z0-9._%+-]+@)\S*[^\s\.\;\,\(\)\{\}\<\>]\.\.\./;
+          var matches = value.match(URL_REGEXP);
+          var beforeEndUrl = value;
+          var afterEndUrl = '';
+          if (matches && matches[0]) {
+            beforeEndUrl = value.substr(0, matches.index);
+            afterEndUrl = value.substr(matches.index);
+          }
+          value = $filter(options.filter)(beforeEndUrl) + afterEndUrl;
+        } else {
+          value = $filter(options.filter)(value);
+        }
       }
 
       // Wrap everything in a div
