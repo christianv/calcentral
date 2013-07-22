@@ -31,6 +31,7 @@ class EdwpersonTranslator
 
   def translateType(typeCode, transId, transTermYr)
     transType = ''
+    # Use switch/case here
     if (typeCode == 'C')
       transType = 'credit'
     elsif (typeCode == 'I')

@@ -13,6 +13,7 @@ class EdwpersonData < EdwDatabase
     result = {}
     use_pooled_connection {
       log_access(connection, connection_handler, name)
+      # Select the columns instead of doing *
       sql = <<-SQL
       select  *
       from    CARSSTG.WK_TCAR_ALIAS_CODE
@@ -175,6 +176,7 @@ ON a.CUST_NUM = f.CUST_NUM
 
     if result
       response = {
+        # Check if null in utility function
         :lastStatementBalance => result['laststatementbalance'].to_f,
         :lastStatementDate => result['laststatementdate'],
         :unbilledActivity =>  result['unbilledactivity'].to_f,
@@ -189,6 +191,7 @@ ON a.CUST_NUM = f.CUST_NUM
     response
   end
 
+  # Move up to parent class
   def self.database_alive?
     is_alive = false
     begin
