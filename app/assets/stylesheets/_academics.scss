@@ -1,11 +1,9 @@
 .cc-page-academics {
-  background: $cc-color-white;
   overflow: hidden;
   h1, h2, h3, h4 {
     color: $cc-color-medium-grey;
   }
   h1 {
-    border-bottom: 1px solid $cc-color-light-grey;
     font-size: 22px;
     font-weight: normal;
     margin-bottom: 0;
@@ -105,11 +103,6 @@
     .row {
       margin-bottom: 5px;
     }
-  }
-  .cc-academics-page-right {
-    background-color: $cc-color-super-light-grey;
-    margin-bottom: -99969px;
-    padding-bottom: 99999px;
   }
   .cc-academics-schedule-room {
     line-height: 1.3;
