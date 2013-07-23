@@ -12,7 +12,7 @@ class MyAcademics::CollegeAndLevel
     general_profile = doc.css("studentGeneralProfile")
 
     if general_profile
-      puts "dddd"
+      puts "qwerqwerqwer"
       puts general_profile
       puts to_text(general_profile.css("collegePrimary"))
       ug_grad_flag = to_text doc.css("ugGradFlag")
