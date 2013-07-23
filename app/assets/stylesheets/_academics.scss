@@ -8,11 +8,6 @@
     font-weight: normal;
     margin-bottom: 0;
     margin-top: 10px;
-    padding-bottom: 5px;
-  }
-  h2 {
-    font-size: 20px;
-    margin-top: 20px;
   }
   h3 {
     font-size: 16px;
@@ -86,20 +81,18 @@
     font-size: 14px;
   }
   .cc-academics-orderlink {
-    font-size: 12px;
+    margin-top: 5px;
   }
   .cc-academics-page-left {
-    border-right: 1px solid $cc-color-light-grey;
-    color: $cc-color-medium-grey;
     padding-bottom: 50px;
-      h3 {
-        &:first-of-type {
+    h3 {
+      &:first-of-type {
         margin-top: 10px;
       }
       &:not(:first-of-type) {
         margin-top: 30px;
       }
-  }
+    }
     .row {
       margin-bottom: 5px;
     }
