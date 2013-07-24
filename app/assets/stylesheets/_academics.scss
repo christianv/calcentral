@@ -7,6 +7,7 @@
     font-size: 22px;
     font-weight: normal;
     margin-bottom: 0;
+    margin-left: 10px;
     margin-top: 10px;
   }
   h3 {
@@ -85,14 +86,6 @@
   }
   .cc-academics-page-left {
     padding-bottom: 50px;
-    h3 {
-      &:first-of-type {
-        margin-top: 10px;
-      }
-      &:not(:first-of-type) {
-        margin-top: 30px;
-      }
-    }
     .row {
       margin-bottom: 5px;
     }
@@ -112,6 +105,7 @@
   }
   .cc-academics-status-and-blocks {
     border: 2px solid $cc-color-shadow-color;
+    margin-bottom: 10px;
     margin-top: 20px;
     padding: 0 10px 10px 10px;
 
