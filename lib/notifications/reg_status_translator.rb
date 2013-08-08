@@ -98,7 +98,7 @@ class RegStatusTranslator
     registered = "You are officially registered for this term and are entitled to access campus services."
 
     case reg_status.upcase
-      when ""
+      when " "
         unregistered
       when "A"
         unregistered
