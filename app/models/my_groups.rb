@@ -46,7 +46,7 @@ class MyGroups < MyMergedModel
           response.push({
             name: group["organizationName"],
             id: group["organizationId"].to_s,
-            emitter: CalLinkProxy::APP_ID,
+            emitter: CalLinkProxy::APP_NAME,
             color_class: "callink-group",
             site_url: site_url
           })
