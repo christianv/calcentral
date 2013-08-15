@@ -285,4 +285,20 @@ class CampusData < OracleDatabase
         /STUDENT-TYPE-/.match(person_attributes['affiliations'])
   end
 
+  def self.get_student_transcript(ldap_uid)
+    result = []
+    use_pooled_connection {
+      sql = <<-SQL
+        select t.dept_cd, t.course_num, t.grade, t.unit, t.term_yr, t.term_cd
+        from calcentral_transcript_vw t
+        where t.student_ldap_uid = #{connection.quote(ldap_uid)}
+          and t.term_yr <> 0
+          and length(trim(t.dept_cd)) > 0
+        order by t.term_yr desc, t.term_cd desc
+      SQL
+      result = connection.select_all(sql)
+    }
+    result
+  end
+
 end

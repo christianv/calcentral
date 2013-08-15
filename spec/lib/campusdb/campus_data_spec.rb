@@ -197,4 +197,10 @@ describe CampusData do
     ).should be_true
   end
 
+  it "should get Oski's transcript" do
+    transcript = CampusData.get_student_transcript "61889"
+    transcript.should_not be_nil
+    transcript.size.should_not == 0
+  end
+
 end

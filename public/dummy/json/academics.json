@@ -550,5 +550,142 @@
         "course_number": "Education 140"
       }
     ]
-  }
+  },
+  "past_semesters": [
+    {
+      "name": "Fall 2012",
+      "slug": "fall-2012",
+      "courses": [
+        {
+          "dept_cd": "ARCH   ",
+          "course_num": " 170A",
+          "grade": "  ",
+          "unit": "4",
+          "term_yr": "2012",
+          "term_cd": "D"
+        },
+        {
+          "dept_cd": "JOURN  ",
+          "course_num": "  39K",
+          "grade": "  ",
+          "unit": "3",
+          "term_yr": "2012",
+          "term_cd": "D"
+        },
+        {
+          "dept_cd": "COLWRIT",
+          "course_num": "  R4A",
+          "grade": "  ",
+          "unit": "4",
+          "term_yr": "2012",
+          "term_cd": "D"
+        }
+      ]
+    },
+    {
+      "name": "Spring 2012",
+      "slug": "spring-2012",
+      "courses": [
+        {
+          "dept_cd": "HISTORY",
+          "course_num": "   7A",
+          "grade": "C ",
+          "unit": "4",
+          "term_yr": "2012",
+          "term_cd": "B"
+        },
+        {
+          "dept_cd": "HISTORY",
+          "course_num": " 156B",
+          "grade": "A-",
+          "unit": "3",
+          "term_yr": "2012",
+          "term_cd": "B"
+        },
+        {
+          "dept_cd": "SPANISH",
+          "course_num": "  123",
+          "grade": "B ",
+          "unit": "4",
+          "term_yr": "2012",
+          "term_cd": "B"
+        }
+      ]
+    },
+    {
+      "name": "Spring 2009",
+      "slug": "spring-2009",
+      "courses": [
+        {
+          "dept_cd": "INTEGBI",
+          "course_num": "  400",
+          "grade": "  ",
+          "unit": "1",
+          "term_yr": "2009",
+          "term_cd": "B"
+        }
+      ]
+    },
+    {
+      "name": "Summer 2007",
+      "slug": "summer-2007",
+      "courses": [
+        {
+          "dept_cd": "SOCIOL ",
+          "course_num": "  110",
+          "grade": "B ",
+          "unit": "3",
+          "term_yr": "2007",
+          "term_cd": "C"
+        }
+      ]
+    },
+    {
+      "name": "Spring 2007",
+      "slug": "spring-2007",
+      "courses": [
+        {
+          "dept_cd": "SOCIOL ",
+          "course_num": "  110",
+          "grade": "I ",
+          "unit": "3",
+          "term_yr": "2007",
+          "term_cd": "B"
+        },
+        {
+          "dept_cd": "POL SCI",
+          "course_num": " 136A",
+          "grade": "  ",
+          "unit": "4",
+          "term_yr": "2007",
+          "term_cd": "B"
+        },
+        {
+          "dept_cd": "MATH   ",
+          "course_num": "   1B",
+          "grade": "  ",
+          "unit": "4",
+          "term_yr": "2007",
+          "term_cd": "B"
+        },
+        {
+          "dept_cd": "SLAVIC ",
+          "course_num": " 120B",
+          "grade": "  ",
+          "unit": "2",
+          "term_yr": "2007",
+          "term_cd": "B"
+        },
+        {
+          "dept_cd": "BIOLOGY",
+          "course_num": "  1AL",
+          "grade": "  ",
+          "unit": "2",
+          "term_yr": "2007",
+          "term_cd": "B"
+        }
+      ]
+    }
+  ]
+
 }
