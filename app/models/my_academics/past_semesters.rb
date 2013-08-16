@@ -12,6 +12,9 @@ class MyAcademics::PastSemesters
         :slug => make_slug(semester_name),
         :courses => []
       }
+      course.keys.each do |key|
+        course[key] = course[key].strip
+      end
       semesters[semester_name][:courses] << course
     end
     data[:past_semesters] = semesters.values

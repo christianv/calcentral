@@ -160,6 +160,29 @@ class CampusData < OracleDatabase
     result
   end
 
+  # TODO CLC-2134
+  # query to get enrollments with grades where available:
+  sql = <<-SQL
+  select t.grade, t.unit, r.term_yr, r.term_cd, r.course_cntl_num, r.enroll_status, r.wait_list_seq_num, r.unit, r.pnp_flag,
+         c.course_title, c.dept_name, c.catalog_id, c.primary_secondary_cd, c.section_num, c.instruction_format,
+         c.catalog_root, c.catalog_prefix, c.catalog_suffix_1, c.catalog_suffix_2, c.enroll_limit
+  from bspace_class_roster_vw r
+  join bspace_course_info_vw c on c.term_yr = r.term_yr and c.term_cd = r.term_cd and c.course_cntl_num = r.course_cntl_num
+  left outer join calcentral_transcript_vw t
+  on (
+       t.student_ldap_uid = r.student_ldap_uid
+  and trim(t.dept_cd) = c.dept_name
+  and trim(t.course_num) = c.catalog_id
+  )
+  where r.student_ldap_uid = 'XXX'
+  --and r.term_yr = 2013
+  --and r.term_cd = 'B'
+  order by r.term_yr, r.term_cd, c.dept_name,
+           c.catalog_root, c.catalog_prefix nulls first, c.catalog_suffix_1 nulls first, c.catalog_suffix_2 nulls first,
+                                                                                                                  c.primary_secondary_cd, c.instruction_format, c.section_num;
+
+  SQL
+
   # Catalog ID sorting is: "99", "101L", "C103", "C107L", "110", "110L", "C112", "C112L"
   def self.get_enrolled_sections(person_id, term_yr, term_cd)
     result = []
