@@ -160,43 +160,28 @@ class CampusData < OracleDatabase
     result
   end
 
-  # TODO CLC-2134
-  # query to get enrollments with grades where available:
-  sql = <<-SQL
-  select t.grade, t.unit, r.term_yr, r.term_cd, r.course_cntl_num, r.enroll_status, r.wait_list_seq_num, r.unit, r.pnp_flag,
-         c.course_title, c.dept_name, c.catalog_id, c.primary_secondary_cd, c.section_num, c.instruction_format,
-         c.catalog_root, c.catalog_prefix, c.catalog_suffix_1, c.catalog_suffix_2, c.enroll_limit
-  from bspace_class_roster_vw r
-  join bspace_course_info_vw c on c.term_yr = r.term_yr and c.term_cd = r.term_cd and c.course_cntl_num = r.course_cntl_num
-  left outer join calcentral_transcript_vw t
-  on (
-       t.student_ldap_uid = r.student_ldap_uid
-  and trim(t.dept_cd) = c.dept_name
-  and trim(t.course_num) = c.catalog_id
-  )
-  where r.student_ldap_uid = 'XXX'
-  --and r.term_yr = 2013
-  --and r.term_cd = 'B'
-  order by r.term_yr, r.term_cd, c.dept_name,
-           c.catalog_root, c.catalog_prefix nulls first, c.catalog_suffix_1 nulls first, c.catalog_suffix_2 nulls first,
-                                                                                                                  c.primary_secondary_cd, c.instruction_format, c.section_num;
-
-  SQL
-
   # Catalog ID sorting is: "99", "101L", "C103", "C107L", "110", "110L", "C112", "C112L"
-  def self.get_enrolled_sections(person_id, term_yr, term_cd)
+  def self.get_enrolled_sections(person_id)
     result = []
     use_pooled_connection {
       sql = <<-SQL
       select r.term_yr, r.term_cd, r.course_cntl_num, r.enroll_status, r.wait_list_seq_num, r.unit, r.pnp_flag,
         c.course_title, c.dept_name, c.catalog_id, c.primary_secondary_cd, c.section_num, c.instruction_format,
-        c.catalog_root, c.catalog_prefix, c.catalog_suffix_1, c.catalog_suffix_2, c.enroll_limit
+        c.catalog_root, c.catalog_prefix, c.catalog_suffix_1, c.catalog_suffix_2, c.enroll_limit,
+        t.grade, t.unit as transcript_unit
       from bspace_class_roster_vw r
-      join bspace_course_info_vw c on c.term_yr = r.term_yr and c.term_cd = r.term_cd and c.course_cntl_num = r.course_cntl_num
+      join bspace_course_info_vw c on (
+        c.term_yr = r.term_yr
+          and c.term_cd = r.term_cd
+          and c.course_cntl_num = r.course_cntl_num )
+      left outer join calcentral_transcript_vw t on (
+        t.student_ldap_uid = r.student_ldap_uid
+          and t.term_yr = r.term_yr
+          and t.term_cd = r.term_cd
+          and trim(t.dept_cd) = c.dept_name
+          and trim(t.course_num) = c.catalog_id )
       where r.student_ldap_uid = #{connection.quote(person_id)}
-        and r.term_yr = #{connection.quote(term_yr)}
-        and r.term_cd = #{connection.quote(term_cd)}
-      order by r.term_yr, r.term_cd, c.dept_name,
+      order by r.term_yr desc, r.term_cd desc, c.dept_name,
         c.catalog_root, c.catalog_prefix nulls first, c.catalog_suffix_1 nulls first, c.catalog_suffix_2 nulls first,
         c.primary_secondary_cd, c.instruction_format, c.section_num
       SQL
@@ -205,7 +190,7 @@ class CampusData < OracleDatabase
     result
   end
 
-  def self.get_instructing_sections(person_id, term_yr, term_cd)
+  def self.get_instructing_sections(person_id)
     result = []
     use_pooled_connection {
       sql = <<-SQL
@@ -215,9 +200,7 @@ class CampusData < OracleDatabase
       from bspace_course_instructor_vw i
       join bspace_course_info_vw c on c.term_yr = i.term_yr and c.term_cd = i.term_cd and c.course_cntl_num = i.course_cntl_num
       where i.instructor_ldap_uid = #{connection.quote(person_id)}
-        and i.term_yr = #{connection.quote(term_yr)}
-        and i.term_cd = #{connection.quote(term_cd)}
-      order by c.term_yr, c.term_cd, c.dept_name,
+      order by c.term_yr desc, c.term_cd desc, c.dept_name,
         c.catalog_root, c.catalog_prefix nulls first, c.catalog_suffix_1 nulls first, c.catalog_suffix_2 nulls first,
         c.primary_secondary_cd, c.instruction_format, c.section_num
       SQL
@@ -306,22 +289,6 @@ class CampusData < OracleDatabase
   def self.is_student?(person_attributes)
     !person_attributes['student_id'].blank? &&
         /STUDENT-TYPE-/.match(person_attributes['affiliations'])
-  end
-
-  def self.get_student_transcript(ldap_uid)
-    result = []
-    use_pooled_connection {
-      sql = <<-SQL
-        select t.dept_cd, t.course_num, t.grade, t.unit, t.term_yr, t.term_cd
-        from calcentral_transcript_vw t
-        where t.student_ldap_uid = #{connection.quote(ldap_uid)}
-          and t.term_yr <> 0
-          and length(trim(t.dept_cd)) > 0
-        order by t.term_yr desc, t.term_cd desc
-      SQL
-      result = connection.select_all(sql)
-    }
-    result
   end
 
 end
