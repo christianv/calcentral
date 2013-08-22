@@ -6,6 +6,7 @@ class MyAcademics::Semesters
     proxy = CampusUserCoursesProxy.new({:user_id => @uid})
     feed = proxy.get_all_campus_courses
     current_semester_index = 0
+    is_past = false
     semesters = []
 
     feed.keys.each do |semester_key|
@@ -74,9 +75,12 @@ class MyAcademics::Semesters
         :name => semester_name,
         :slug => make_slug(semester_name),
         :is_current => is_current,
+        :is_past => is_past,
         :schedule => schedule
       }
-
+      if is_current
+        is_past = true # so the next semesters in the loop show up as past
+      end
     end
 
     data[:semesters] = semesters
