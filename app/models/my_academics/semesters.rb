@@ -7,6 +7,7 @@ class MyAcademics::Semesters
     feed = proxy.get_all_campus_courses
     current_semester_index = 0
     is_past = false
+    is_future = true
     semesters = []
 
     feed.keys.each do |semester_key|
@@ -70,12 +71,14 @@ class MyAcademics::Semesters
       is_current = Settings.sakai_proxy.current_terms.include?(semester_name)
       if is_current
         current_semester_index = semesters.size
+        is_future = false
       end
       semesters << {
         :name => semester_name,
         :slug => make_slug(semester_name),
         :is_current => is_current,
         :is_past => is_past,
+        :is_future => is_future,
         :schedule => schedule
       }
       if is_current

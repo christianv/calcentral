@@ -16,12 +16,15 @@ describe "MyAcademics::Semesters" do
     oski_semesters[0][:name].should == "Spring 2014"
     oski_semesters[0][:is_current].should be_false
     oski_semesters[0][:is_past].should be_false
+    oski_semesters[0][:is_future].should be_true
     oski_semesters[1][:name].should == "Fall 2013"
     oski_semesters[1][:is_current].should be_true
     oski_semesters[1][:is_past].should be_false
+    oski_semesters[1][:is_future].should be_false
     oski_semesters[2][:name].should == "Spring 2012"
     oski_semesters[2][:is_current].should be_false
     oski_semesters[2][:is_past].should be_true
+    oski_semesters[2][:is_future].should be_false
     oski_semesters[1][:schedule].length.should == 3
     oski_semesters[1][:schedule][0][:schedules][0][:schedule].should == "M 4:00P-5:00P"
     oski_semesters[1][:schedule][0][:course_number].should == "BIOLOGY 1A"
