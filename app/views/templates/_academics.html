@@ -239,6 +239,27 @@
           </div>
 
           <div class="cc-widget-padding">
+
+            <div class="cc-table" data-ng-repeat="semester in semesters">
+              <a data-ng-href="/academics/semester/{{semester.slug}}" data-ng-bind="semester.name"></a>
+              <table>
+                <thead>
+                  <tr>
+                    <th width="25%" scope="col">Class</th>
+                    <th width="55%" scope="col">Title</th>
+                    <th width="20%" scope="col">Units</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-ng-repeat="sem in semester.schedule" data-ng-show="sem.is_primary_section">
+                    <td><a data-ng-href="/academics/semester/{{semester.slug}}/class/{{sem.ccn}}" data-ng-bind="sem.course_number"></a></td>
+                    <td data-ng-bind="sem.title"></td>
+                    <td data-ng-bind="sem.units | number:1"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
             <div class="row collapse">
               <div class="small-12 columns end" data-ng-repeat="semester in semesters">
                 <div
