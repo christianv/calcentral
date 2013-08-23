@@ -232,7 +232,7 @@
       <div class="large-4 columns">
         <div class="cc-widget cc-widget-last">
           <div class="cc-widget-title">
-            <h2 class="cc-left">Current Semester</h2>
+            <h2 class="cc-left">Semesters</h2>
             <a href="https://telebears.berkeley.edu/tranreq/" class="cc-right cc-academics-orderlink">
               <strong>Order transcripts</strong>
             </a>
@@ -248,12 +248,12 @@
                       <a data-ng-href="/academics/semester/{{semester.slug}}" data-ng-bind="semester.name"></a>
                   </div>
                   <div class="row collapse cc-academics-empasize">
-                    <div class="small-3 columns cc-academics-label-col">Class</div>
+                    <div class="small-3 columns">Class</div>
                     <div class="small-7 columns">Title</div>
                     <div class="small-2 columns">Units</div>
                   </div>
                   <div class="row collapse" data-ng-repeat="sem in semester.schedule" data-ng-show="sem.is_primary_section">
-                    <div class="small-3 columns cc-academics-label-col">
+                    <div class="small-3 columns">
                       <a data-ng-href="/academics/semester/{{semester.slug}}/class/{{sem.ccn}}" data-ng-bind="sem.course_number"></a>
                     </div>
                     <div class="small-7 columns" data-ng-bind="sem.title"></div>
