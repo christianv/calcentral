@@ -73,12 +73,21 @@ class MyAcademics::Semesters
         current_semester_index = semesters.size
         is_future = false
       end
+      time_bucket = ''
+
+      if is_current
+        time_bucket = 'current'
+      elsif is_past
+        time_bucket = 'past'
+      elsif is_future
+        time_bucket = 'future'
+      end
+
+
       semesters << {
         :name => semester_name,
         :slug => make_slug(semester_name),
-        :is_current => is_current,
-        :is_past => is_past,
-        :is_future => is_future,
+        :time_bucket => time_bucket,
         :schedule => schedule
       }
       if is_current

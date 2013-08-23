@@ -240,8 +240,8 @@
 
           <div class="cc-widget-padding">
 
-            <div class="cc-table" data-ng-repeat="semester in semesters">
-              <a data-ng-href="/academics/semester/{{semester.slug}}" data-ng-bind="semester.name"></a>
+            <div class="cc-table cc-academics-semester" data-ng-repeat="semester in semesters">
+              <h3><a data-ng-href="/academics/semester/{{semester.slug}}" data-ng-bind="semester.name"></a></h3>
               <table>
                 <thead>
                   <tr>
@@ -260,29 +260,6 @@
               </table>
             </div>
 
-            <div class="row collapse">
-              <div class="small-12 columns end" data-ng-repeat="semester in semesters">
-                <div
-                  class="cc-academics-calendar"
-                  data-ng-class="{'cc-academics-current-semester':(semester.is_current==true)}">
-                  <div class="cc-academics-calendar-link">
-                      <a data-ng-href="/academics/semester/{{semester.slug}}" data-ng-bind="semester.name"></a>
-                  </div>
-                  <div class="row collapse cc-academics-empasize">
-                    <div class="small-3 columns">Class</div>
-                    <div class="small-7 columns">Title</div>
-                    <div class="small-2 columns">Units</div>
-                  </div>
-                  <div class="row collapse" data-ng-repeat="sem in semester.schedule" data-ng-show="sem.is_primary_section">
-                    <div class="small-3 columns">
-                      <a data-ng-href="/academics/semester/{{semester.slug}}/class/{{sem.ccn}}" data-ng-bind="sem.course_number"></a>
-                    </div>
-                    <div class="small-7 columns" data-ng-bind="sem.title"></div>
-                    <div class="small-2 columns" data-ng-bind="sem.units | number:1"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
