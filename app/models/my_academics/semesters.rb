@@ -20,7 +20,8 @@ class MyAcademics::Semesters
         course_number = course[:course_code]
         next unless course_number.strip.length
 
-        units = course[:unit]
+        # If we have a transcript unit, it needs to trump the unit.
+        units = course[:transcript_unit] ? course[:transcript_unit] : course[:unit]
         title = course[:name]
         if course[:pnp_flag].present?
           grade_option = course[:pnp_flag].upcase == "Y" ? "P/NP" : "Letter"
@@ -30,7 +31,6 @@ class MyAcademics::Semesters
         end
         waitlist_pos = course[:waitlist_pos] if course[:waitlist_pos].present?
         grade = course[:grade] ? course[:grade].strip : nil
-        transcript_unit = course[:transcript_unit]
         i = 0
         course[:sections].each do |this_section|
           Rails.logger.info "this_section schedules = #{this_section[:schedules]}"
@@ -55,8 +55,7 @@ class MyAcademics::Semesters
             :schedules => schedules,
             :instructors => instructors,
             :is_primary_section => is_primary_section,
-            :grade => grade,
-            :transcript_unit => transcript_unit
+            :grade => grade
           }
           if waitlist_pos.present?
             entry[:waitlist_pos] = waitlist_pos
@@ -73,8 +72,8 @@ class MyAcademics::Semesters
         current_semester_index = semesters.size
         is_future = false
       end
-      time_bucket = ''
 
+      time_bucket = ''
       if is_current
         time_bucket = 'current'
       elsif is_past
@@ -82,7 +81,6 @@ class MyAcademics::Semesters
       elsif is_future
         time_bucket = 'future'
       end
-
 
       semesters << {
         :name => semester_name,

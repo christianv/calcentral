@@ -450,7 +450,7 @@
     {
       "name": "Spring 2014",
       "slug": "spring-2014",
-      "is_current": false,
+      "time_bucket": "future",
       "schedule": [
         {
           "course_number": "BIOLOGY 1A",
@@ -465,15 +465,14 @@
           "schedules": [],
           "instructors": [],
           "is_primary_section": true,
-          "grade": null,
-          "transcript_unit": null
+          "grade": null
         }
       ]
     },
     {
       "name": "Fall 2013",
       "slug": "fall-2013",
-      "is_current": true,
+      "time_bucket": "current",
       "schedule": [
         {
           "course_number": "BIOLOGY 1A",
@@ -503,8 +502,7 @@
             }
           ],
           "is_primary_section": true,
-          "grade": null,
-          "transcript_unit": null
+          "grade": null
         },
         {
           "course_number": "BIOLOGY 1A",
@@ -530,8 +528,7 @@
             }
           ],
           "is_primary_section": false,
-          "grade": null,
-          "transcript_unit": null
+          "grade": null
         },
         {
           "course_number": "COG SCI C147",
@@ -562,15 +559,14 @@
             }
           ],
           "is_primary_section": true,
-          "grade": null,
-          "transcript_unit": null
+          "grade": null
         }
       ]
     },
     {
       "name": "Spring 2012",
       "slug": "spring-2012",
-      "is_current": false,
+      "time_bucket": "past",
       "schedule": [
         {
           "course_number": "BIOLOGY 1A",
@@ -590,8 +586,7 @@
             }
           ],
           "is_primary_section": true,
-          "grade": "B",
-          "transcript_unit": "4"
+          "grade": "B"
         },
         {
           "course_number": "COG SCI C147",
@@ -611,8 +606,7 @@
             }
           ],
           "is_primary_section": true,
-          "grade": "C+",
-          "transcript_unit": "3"
+          "grade": "C+"
         }
       ]
     }
