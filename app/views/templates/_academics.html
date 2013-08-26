@@ -238,26 +238,33 @@
             </a>
           </div>
 
-          <div class="cc-widget-padding">
+          <div class="cc-academics-semesters">
 
             <div class="cc-table cc-academics-semester cc-academics-semester-{{semester.time_bucket}}" data-ng-repeat="semester in semesters">
-              <h3><a data-ng-href="/academics/semester/{{semester.slug}}" data-ng-bind="semester.name"></a></h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th width="25%" scope="col">Class</th>
-                    <th width="55%" scope="col">Title</th>
-                    <th width="20%" scope="col">Units</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr data-ng-repeat="sem in semester.schedule" data-ng-show="sem.is_primary_section">
-                    <td><a data-ng-href="/academics/semester/{{semester.slug}}/class/{{sem.ccn}}" data-ng-bind="sem.course_number"></a></td>
-                    <td data-ng-bind="sem.title"></td>
-                    <td data-ng-bind="sem.units | number:1"></td>
-                  </tr>
-                </tbody>
-              </table>
+              <div>
+                <h3><a data-ng-href="/academics/semester/{{semester.slug}}" data-ng-bind="semester.name"></a></h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th width="25%" scope="col">Class</th>
+                      <th width="55%" scope="col" data-ng-show="{{semester.time_bucket == 'current'}}">Title</th>
+                      <th width="20%" scope="col">
+                        <span data-ng-show="{{semester.time_bucket == 'current'}}">Units</span>
+                        <span data-ng-show="{{semester.time_bucket != 'current'}}" title="Units">Un.</span>
+                      </th>
+                      <th width="25%" scope="col" data-ng-show="{{semester.time_bucket == 'past'}}" title="Grades">Gr.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr data-ng-repeat="sem in semester.schedule" data-ng-show="sem.is_primary_section">
+                      <td><a data-ng-href="/academics/semester/{{semester.slug}}/class/{{sem.ccn}}" data-ng-bind="sem.course_number"></a></td>
+                      <td data-ng-bind="sem.title" data-ng-show="{{semester.time_bucket == 'current'}}"></td>
+                      <td data-ng-bind="sem.units | number:1"></td>
+                      <td data-ng-bind="sem.grade" data-ng-show="{{semester.time_bucket == 'past'}}">Gr.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
           </div>
