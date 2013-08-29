@@ -16,7 +16,8 @@
     }).
     when('/academics', {
       templateUrl: 'templates/academics.html',
-      controller: 'AcademicsController'
+      controller: 'AcademicsController',
+      reloadOnSearch: true
     }).
     when('/academics/semester/:semester_slug', {
       templateUrl: 'templates/academics_semester.html',

@@ -67,7 +67,7 @@
             break;
           }
         }
-      };
+      }
       $scope.previous_semester = previous_semester;
       $scope.next_semester = next_semester;
     };
@@ -75,6 +75,7 @@
     $scope.getAcademics = function() {
       $http.get('/api/my/academics').success(function(data) {
         angular.extend($scope, data);
+        apiService.controllerLoaded.add('AcademicsController');
         $scope.exam_schedule = data.exam_schedule;
         $scope.semesters = data.semesters;
         $scope.selected_course_sections = [];
@@ -132,7 +133,8 @@
 
     // Wait until user profile is fully loaded before hitting academics data
     $scope.$on('calcentral.api.user.isAuthenticated', function(event, isAuthenticated) {
-      if (isAuthenticated) {
+      if (isAuthenticated && !apiService.controllerLoaded.hasLoaded()) {
+        console.log(1);
         $scope.getAcademics();
       }
     });

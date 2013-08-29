@@ -6,6 +6,7 @@
     'analyticsService',
     'authService',
     'apiEventService',
+    'controllerLoadedService',
     'dateService',
     'errorService',
     'popoverService',
@@ -17,6 +18,7 @@
       analyticsService,
       authService,
       apiEventService,
+      controllerLoadedService,
       dateService,
       errorService,
       popoverService,
@@ -29,6 +31,7 @@
     var api = {
       analytics: analyticsService,
       auth: authService,
+      controllerLoaded: controllerLoadedService,
       events: apiEventService,
       date: dateService,
       error: errorService,
