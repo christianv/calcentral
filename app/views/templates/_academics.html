@@ -236,9 +236,9 @@
           </div>
           <div class="cc-widget-padding">
             <div data-ng-repeat="course in teaching">
-              <strong data-ng-bind="course.course_number"></strong>
-              <div class="cc-text-light" data-ng-bind="course.title"></div>
-              <ul>
+              <h3 data-ng-bind="course.course_number"></h3>
+              <span class="cc-text-light" data-ng-bind="course.title"></span>
+              <ul class="cc-list-links">
                 <li data-ng-repeat="semester in course.semesters">
                   <a data-ng-bind="semester.name" data-ng-href="/academics/semester/{{semester.slug}}/class/{{semester.ccn}}"></a>
                 </li>
