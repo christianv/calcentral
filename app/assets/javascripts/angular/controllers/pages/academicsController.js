@@ -74,7 +74,8 @@
     };
 
     $scope.getAcademics = function() {
-      $http.get('/api/my/academics').success(function(data) {
+      $http.get('/dummy/json/academics.json').success(function(data) {
+      //$http.get('/api/my/academics').success(function(data) {
         angular.extend($scope, data);
         $scope.exam_schedule = data.exam_schedule;
         $scope.semesters = data.semesters;
