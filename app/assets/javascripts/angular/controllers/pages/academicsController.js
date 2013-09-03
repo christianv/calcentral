@@ -114,7 +114,11 @@
         if ($routeParams.course_slug) {
           angular.forEach($scope.selected_semester.schedule, function (course) {
             if (course.slug === $routeParams.course_slug) {
+<<<<<<< HEAD
               if ($scope.selected_course === undefined) {
+=======
+              if ($scope.selected_course == undefined) {
+>>>>>>> raydavis/CLC-2310
                 $scope.selected_course = course;
               }
               $scope.selected_course_sections.push(course);
