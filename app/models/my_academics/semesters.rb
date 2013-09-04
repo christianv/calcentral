@@ -5,7 +5,6 @@ class MyAcademics::Semesters
   def merge(data)
     proxy = CampusUserCoursesProxy.new({:user_id => @uid})
     feed = proxy.get_all_campus_courses
-    current_semester_index = 0
     is_past = false
     is_future = true
     semesters = []
@@ -13,7 +12,7 @@ class MyAcademics::Semesters
     feed.keys.each do |semester_key|
       term_yr = semester_key.split("-")[0]
       term_cd = semester_key.split("-")[1]
-      schedule = []
+      sections = []
 
       feed[semester_key].each do |course|
         next unless course[:role] == 'Student'
@@ -63,7 +62,7 @@ class MyAcademics::Semesters
             entry[:waitlist_pos] = waitlist_pos
             entry[:enroll_limit] = course[:enroll_limit]
           end
-          schedule << entry
+          sections << entry
           i += 1
         end
       end
@@ -71,7 +70,6 @@ class MyAcademics::Semesters
       semester_name = TermCodes.to_english(term_yr, term_cd)
       is_current = Settings.sakai_proxy.current_terms.include?(semester_name)
       if is_current
-        current_semester_index = semesters.size
         is_future = false
       end
 
@@ -88,7 +86,7 @@ class MyAcademics::Semesters
         :name => semester_name,
         :slug => TermCodes.to_slug(term_yr, term_cd),
         :time_bucket => time_bucket,
-        :schedule => schedule
+        :sections => sections
       }
       if is_current
         is_past = true # so the next semesters in the loop show up as past
@@ -96,6 +94,5 @@ class MyAcademics::Semesters
     end
 
     data[:semesters] = semesters
-    data[:current_semester_index] = current_semester_index
   end
 end

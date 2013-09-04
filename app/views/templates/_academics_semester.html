@@ -29,7 +29,7 @@
                 <th scope="col">Grade Option</th>
                 <th scope="col">Units</th>
               </thead>
-              <tbody data-ng-show="selected_semester.schedule.length" data-ng-repeat="course in selected_courses">
+              <tbody data-ng-show="selected_semester.sections.length" data-ng-repeat="course in selected_courses">
                 <tr data-ng-show="course.is_primary_section">
                   <td>
                     <a data-ng-href="/academics/semester/{{selected_semester.slug}}/class/{{course.ccn}}"
@@ -48,7 +48,7 @@
                   <td></td>
                 </tr>
               </tbody>
-              <tbody data-ng-show="!selected_semester.schedule.length">
+              <tbody data-ng-show="!selected_semester.sections.length">
                 <tr>
                   <td>
                     <p>You are not currently enrolled in any courses.</p>

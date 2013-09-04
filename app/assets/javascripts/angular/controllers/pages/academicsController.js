@@ -9,18 +9,54 @@
     apiService.util.setTitle('My Academics');
 
     var gradeopts = [
-      {grade: 'A', weight: 4},
-      {grade: 'A-', weight: 3.7},
-      {grade: 'B+', weight: 3.3},
-      {grade: 'B', weight: 3},
-      {grade: 'B-', weight: 2.7},
-      {grade: 'C+', weight: 2.3},
-      {grade: 'C', weight: 2},
-      {grade: 'C-', weight: 1.7},
-      {grade: 'D+', weight: 1.3},
-      {grade: 'D', weight: 1},
-      {grade: 'D-', weight: 0.7},
-      {grade: 'F', weight: 0}
+      {
+        grade: 'A',
+        weight: 4
+      },
+      {
+        grade: 'A-',
+        weight: 3.7
+      },
+      {
+        grade: 'B+',
+        weight: 3.3
+      },
+      {
+        grade: 'B',
+        weight: 3
+      },
+      {
+        grade: 'B-',
+        weight: 2.7
+      },
+      {
+        grade: 'C+',
+        weight: 2.3
+      },
+      {
+        grade: 'C',
+        weight: 2
+      },
+      {
+        grade: 'C-',
+        weight: 1.7
+      },
+      {
+        grade: 'D+',
+        weight: 1.3
+      },
+      {
+        grade: 'D',
+        weight: 1
+      },
+      {
+        grade: 'D-',
+        weight: 0.7
+      },
+      {
+        grade: 'F',
+        weight: 0
+      }
     ];
 
     /**
@@ -73,46 +109,114 @@
       $scope.prev_next_semester_show = semesters_length > 1;
     };
 
+    var findSemester = function(semesters, selected_semester) {
+      if (selected_semester) {
+        return selected_semester;
+      }
+
+      for (var i = 0; i < semesters.length; i++) {
+        if (semesters[i].slug === $routeParams.semester_slug) {
+          return semesters[i];
+        }
+      }
+    };
+
+    var getEnrolledCourses = function(courses) {
+      return courses.filter(function(course) {
+        return !course.waitlist_pos;
+      });
+    };
+
+    var getWaitlistedCourses = function(courses) {
+      return courses.filter(function(course) {
+        return !!course.waitlist_pos;
+      });
+    };
+
+    var findTeachingSemester = function(semesters, semester) {
+      for (var i = 0; i < semesters.length; i++) {
+        if (semester.slug === semesters[i].slug) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    var parseTeaching = function(teaching_semesters) {
+
+      if (!teaching_semesters) {
+        return {};
+      }
+
+      var teaching = {};
+
+      for (var i = 0; i < teaching_semesters.length; i++) {
+        var semester = teaching_semesters[i];
+        for (var j = 0; j < semester.sections.length; j++) {
+          var section = semester.sections[j];
+          if (!teaching[section.slug]) {
+            teaching[section.slug] = {
+              course_number: section.course_number,
+              title: section.title,
+              slug: section.slug,
+              semesters: []
+            };
+          }
+          var semester_obj = {
+            name: semester.name,
+            slug: semester.slug
+          };
+          if (!findTeachingSemester(teaching[section.slug].semesters, semester_obj)) {
+            teaching[section.slug].semesters.push(semester_obj);
+          }
+        }
+      }
+      return teaching;
+
+    };
+
     $scope.getAcademics = function() {
       $http.get('/dummy/json/academics.json').success(function(data) {
       //$http.get('/api/my/academics').success(function(data) {
         angular.extend($scope, data);
-        $scope.exam_schedule = data.exam_schedule;
         $scope.semesters = data.semesters;
         $scope.selected_course_sections = [];
 
         // Some users (e.g. test-xxx users) may be missing the "student" role but still need ability to view My Academics pages
         $scope.can_view_academics = $scope.api.user.profile.roles.student || $scope.college_and_level.standing == 'Undergraduate';
 
+        $scope.teaching = parseTeaching(data.teaching_semesters);
+        $scope.teaching_length = Object.keys($scope.teaching).length;
+
         // Get selected semester from URL params and extract data from semesters array
         if ($routeParams.semester_slug) {
-          angular.forEach(data.semesters, function(semester) {
-            if (semester.slug === $routeParams.semester_slug) {
-              $scope.selected_semester = semester;
-            }
-          });
-          checkPageExists($scope.selected_semester);
-          updatePrevNextSemester(data.semesters, $scope.selected_semester);
-
-          if ($scope.selected_semester) {
-            $scope.selected_courses = $scope.selected_semester.schedule;
-            var enrolled_courses = [];
-            var waitlisted_courses = [];
-            $scope.selected_courses.forEach(function(elt) {
-              if (elt.waitlist_pos) {
-                waitlisted_courses.push(elt);
-              } else {
-                enrolled_courses.push(elt);
-              }
-            });
-            $scope.enrolled_courses = enrolled_courses;
-            $scope.waitlisted_courses = waitlisted_courses;
+          var is_instructor_gsi = false;
+          var selected_semester = findSemester(data.semesters, selected_semester);
+          if (!selected_semester) {
+            is_instructor_gsi = true;
           }
+          selected_semester = findSemester(data.teaching_semesters, selected_semester);
+          checkPageExists(selected_semester);
+          updatePrevNextSemester(data.semesters, selected_semester);
+
+          if (selected_semester) {
+            $scope.selected_courses = selected_semester.sections;
+
+            if (!is_instructor_gsi) {
+              $scope.enrolled_courses = getEnrolledCourses(selected_semester.sections);
+              $scope.waitlisted_courses = getWaitlistedCourses(selected_semester.sections);
+            }
+          }
+          $scope.selected_semester = selected_semester;
+          $scope.is_instructor_gsi = is_instructor_gsi;
         }
 
         // Get selected course from URL params and extract data from selected semester schedule
         if ($routeParams.course_slug) {
-          angular.forEach($scope.selected_semester.schedule, function (course) {
+          //if (is_instructor_gsi) {
+            //$scope.selected_semester.
+          //}
+          angular.forEach($scope.selected_semester.sections, function(course) {
             if (course.slug === $routeParams.course_slug) {
               if ($scope.selected_course === undefined) {
                 $scope.selected_course = course;
@@ -124,7 +228,10 @@
 
         }
 
-        parseExamSchedule();
+        if (data.exam_schedule) {
+          $scope.exam_schedule = data.exam_schedule;
+          parseExamSchedule();
+        }
 
         $scope.gpaInit(); // Initialize GPA calculator with selected courses
       });

@@ -451,7 +451,7 @@
       "name": "Spring 2014",
       "slug": "spring-2014",
       "time_bucket": "future",
-      "schedule": [
+      "sections": [
         {
           "course_number": "BIOLOGY 1A",
           "slug": "biology-1a",
@@ -474,7 +474,7 @@
       "name": "Fall 2013",
       "slug": "fall-2013",
       "time_bucket": "current",
-      "schedule": [
+      "sections": [
         {
           "course_number": "BIOLOGY 1A",
           "slug": "biology-1a",
@@ -571,7 +571,7 @@
       "name": "Spring 2012",
       "slug": "spring-2012",
       "time_bucket": "past",
-      "schedule": [
+      "sections": [
         {
           "course_number": "BIOLOGY 1A",
           "slug": "biology-1a",
@@ -617,177 +617,193 @@
       ]
     }
   ],
-  "current_semester_index": 1,
-  "teaching": [
+  "teaching_semesters": [
     {
-      "course_number": "BIO 123A",
-      "slug": "bio-123a",
-      "title": "General Biology and the Cambrian Biota",
-      "semesters": [
+      "name": "Summer 2013",
+      "slug": "summer-2013",
+      "role": "GSI",
+      "sections": [
         {
-          "name": "Summer 2013",
-          "slug": "summer-2013",
-          "role": "GSI",
-          "sections": [
+          "course_number": "BIO 123A",
+          "course_label": "BIO 123A",
+          "slug": "bio-123a",
+          "title": "General Biology and the Cambrian Biota",
+          "ccn": "27606",
+          "instruction_format": "LEC",
+          "section_num": "002",
+          "schedules": [
             {
-              "ccn": "27606",
-              "instruction_format": "LEC",
-              "section_num": "002",
-              "schedules": [
-                {
-                  "building_name": "PIMENTAL",
-                  "room_number": "1",
-                  "schedule": "MWF 8:00A-9:00A"
-                }
-              ],
-              "instructors": [
-                {
-                  "name": "David Weisblatd",
-                  "email": "dw@example.edu",
-                  "uid": "21345"
-                }
-              ]
-            },
-            {
-              "ccn": "276019",
-              "instruction_format": "LAB",
-              "section_num": "201",
-              "schedules": [
-                {
-                  "building_name": "LECONTE",
-                  "room_number": "0004",
-                  "schedule": "F 12:00P-1:00P"
-                }
-              ],
-              "instructors": [
-                {
-                  "name": "Mary Salinger",
-                  "email": "mary@example.edu",
-                  "uid": "9898989"
-                }
-              ]
-            },
-            {
-              "ccn": "49713",
-              "instruction_format": "DIS",
-              "section_num": "008",
-              "schedules": [ ],
-              "instructors": [
-                {
-                  "name": "Oski Bear",
-                  "email": "oski@example.edu",
-                  "uid": "61889"
-                },
-                {
-                  "name": "Mary Salinger",
-                  "email": "mary@example.edu",
-                  "uid": "9898989"
-                }
-              ]
+              "building_name": "PIMENTAL",
+              "room_number": "1",
+              "schedule": "MWF 8:00A-9:00A"
             }
           ],
-          "class_sites": [
+          "instructors": [
             {
-              "id": "11866397",
-              "short_description": "Confessions of a Biotician",
-              "name": "BIO 123A Everyone",
-              "emitter": "bCourses",
-              "color_class": "canvas-class",
-              "site_url": "https://ucberkeley.beta.instructure.com/courses/11866397",
-              "sections": [
-                {
-                  "ccn": "27606"
-                },
-                {
-                  "ccn": "276019"
-                },
-                {
-                  "ccn": "49713"
-                }
-              ]
-            },
-            {
-              "id": "de1f491a-525e-4848-952b-11866397",
-              "site_url": "https://bspace-dev.berkeley.edu/portal/site/de1f491a-525e-4848-952b-11866397",
-              "emitter": "bSpace",
-              "name": "Bio 123A DIS 008 Su13",
-              "color_class": "bspace-class",
-              "sections": [
-                {
-                  "ccn": "49713"
-                }
-              ]
+              "name": "David Weisblatd",
+              "email": "dw@example.edu",
+              "uid": "21345"
             }
           ]
         },
         {
-          "name": "Fall 2013",
-          "slug": "fall-2013",
-          "role": "Instructor",
+          "course_number": "BIO 123A",
+          "course_label": "BIO 123A",
+          "slug": "bio-123a",
+          "title": "General Biology and the Cambrian Biota",
+          "ccn": "276019",
+          "instruction_format": "LAB",
+          "section_num": "201",
+          "schedules": [
+            {
+              "building_name": "LECONTE",
+              "room_number": "0004",
+              "schedule": "F 12:00P-1:00P"
+            }
+          ],
+          "instructors": [
+            {
+              "name": "Mary Salinger",
+              "email": "mary@example.edu",
+              "uid": "9898989"
+            }
+          ]
+        },
+        {
+          "course_number": "BIO 123A",
+          "course_label": "BIO 123A",
+          "slug": "bio-123a",
+          "title": "General Biology and the Cambrian Biota",
+          "ccn": "49713",
+          "instruction_format": "DIS",
+          "section_num": "008",
+          "schedules": [],
+          "instructors": [
+            {
+              "name": "Oski Bear",
+              "email": "oski@example.edu",
+              "uid": "61889"
+            },
+            {
+              "name": "Mary Salinger",
+              "email": "mary@example.edu",
+              "uid": "9898989"
+            }
+          ]
+        }
+      ],
+      "class_sites": [
+        {
+          "id": "11866397",
+          "short_description": "Confessions of a Biotician",
+          "name": "BIO 123A Everyone",
+          "emitter": "bCourses",
+          "color_class": "canvas-class",
+          "site_url": "https://ucberkeley.beta.instructure.com/courses/11866397",
           "sections": [
             {
-              "ccn": "27607",
-              "instruction_format": "LEC",
-              "section_num": "003",
-              "schedules": [
-                {
-                  "building_name": "PIMENTAL",
-                  "room_number": "12",
-                  "schedule": "MWF 11:00A-12:00P"
-                }
-              ],
-              "instructors": [
-                {
-                  "name": "Mary Salinger",
-                  "email": "mary@example.edu",
-                  "uid": "9898989"
-                }
-              ]
+              "ccn": "27606"
+            },
+            {
+              "ccn": "276019"
+            },
+            {
+              "ccn": "49713"
+            }
+          ]
+        },
+        {
+          "id": "de1f491a-525e-4848-952b-11866397",
+          "site_url": "https://bspace-dev.berkeley.edu/portal/site/de1f491a-525e-4848-952b-11866397",
+          "emitter": "bSpace",
+          "name": "Bio 123A DIS 008 Su13",
+          "color_class": "bspace-class",
+          "sections": [
+            {
+              "ccn": "49713"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Fall 2013",
+      "slug": "fall-2013",
+      "role": "Instructor",
+      "sections": [
+        {
+          "course_number": "BIO 123A",
+          "slug": "bio-123a",
+          "title": "General Biology and the Cambrian Biota",
+          "ccn": "27607",
+          "instruction_format": "LEC",
+          "section_num": "003",
+          "schedules": [
+            {
+              "building_name": "PIMENTAL",
+              "room_number": "12",
+              "schedule": "MWF 11:00A-12:00P"
+            }
+          ],
+          "instructors": [
+            {
+              "name": "Mary Salinger",
+              "email": "mary@example.edu",
+              "uid": "9898989"
             }
           ]
         }
       ]
     }
   ],
-  "exam_schedule": {
-    "Tue May 14": [
-      {
-        "time": "8:00A",
-        "location": {
-          "raw_location": "390 HEARST MIN",
-          "display": "Hearst Memorial Mining Building",
-          "lat": "37.874459999999999",
-          "lon": "-122.25727000000001",
-          "room_number": "390"
-        },
-        "course_number": "Psychology C120"
-      }
-    ],
-    "Wed May 15": [
-      {
-        "time": "3:00P",
-        "location": {
-          "raw_location": "100 GPB",
-          "display": "Genetics & Plant Biology Building",
-          "lat": "37.873429999999999",
-          "lon": "-122.26473",
-          "room_number": "100"
-        },
-        "course_number": "Psychology 133"
-      }
-    ],
-    "Thu May 16": [
-      {
-        "time": "3:00P",
-        "location": {
-          "raw_location": "2060 VALLEY LSB",
-          "display": "Valley Life Sciences Building",
-          "lat": "37.871479999999998",
-          "lon": "-122.26211000000001",
-          "room_number": "2060"
-        },
-        "course_number": "Education 140"
-      }
-    ]
-  }
+  "exam_schedule": [
+    {
+      "date": {
+        "epoch": 1387324800,
+        "date_time": "2013-12-18T00:00:00+00:00",
+        "date_string": "Wed December 18"
+      },
+      "time": "8:00A",
+      "location": {
+        "raw_location": "390 HEARST MIN",
+        "display": "Hearst Memorial Mining Building",
+        "lat": "37.874459999999999",
+        "lon": "-122.25727000000001",
+        "room_number": "390"
+      },
+      "course_number": "Psychology C120"
+    },
+    {
+      "date": {
+        "epoch": 1387324800,
+        "date_time": "2013-12-18T00:00:00+00:00",
+        "date_string": "Wed December 18"
+      },
+      "time": "3:00P",
+      "location": {
+        "raw_location": "100 GPB",
+        "display": "Genetics & Plant Biology Building",
+        "lat": "37.873429999999999",
+        "lon": "-122.26473",
+        "room_number": "100"
+      },
+      "course_number": "Psychology 133"
+    },
+    {
+      "date": {
+        "epoch": 1387324800,
+        "date_time": "2013-12-18T00:00:00+00:00",
+        "date_string": "Wed December 18"
+      },
+      "time": "3:00P",
+      "location": {
+        "raw_location": "2060 VALLEY LSB",
+        "display": "Valley Life Sciences Building",
+        "lat": "37.871479999999998",
+        "lon": "-122.26211000000001",
+        "room_number": "2060"
+      },
+      "course_number": "Education 140"
+    }
+  ]
 }
