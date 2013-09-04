@@ -32,7 +32,7 @@
               <tbody data-ng-show="selected_semester.sections.length" data-ng-repeat="course in selected_courses">
                 <tr data-ng-show="course.is_primary_section">
                   <td>
-                    <a data-ng-href="/academics/semester/{{selected_semester.slug}}/class/{{course.ccn}}"
+                    <a data-ng-href="/academics/semester/{{selected_semester.slug}}/class/{{course.slug}}"
                        data-ng-bind="course.course_number">
                     </a>
                   </td>
@@ -69,7 +69,7 @@
                 <tbody>
                   <tr data-ng-repeat="course in waitlisted_courses">
                     <td>
-                      <a data-ng-href="/academics/semester/{{selected_semester.slug}}/class/{{course.ccn}}"
+                      <a data-ng-href="/academics/semester/{{selected_semester.slug}}/class/{{course.slug}}"
                          data-ng-bind="course.course_number">
                       </a>
                       <span data-ng-bind="course.section_label"></span>

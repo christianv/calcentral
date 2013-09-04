@@ -621,7 +621,6 @@
     {
       "name": "Summer 2013",
       "slug": "summer-2013",
-      "role": "GSI",
       "sections": [
         {
           "course_number": "BIO 123A",
@@ -630,6 +629,7 @@
           "title": "General Biology and the Cambrian Biota",
           "ccn": "27606",
           "instruction_format": "LEC",
+          "role": "GSI",
           "section_num": "002",
           "schedules": [
             {
@@ -653,6 +653,7 @@
           "title": "General Biology and the Cambrian Biota",
           "ccn": "276019",
           "instruction_format": "LAB",
+          "role": "GSI",
           "section_num": "201",
           "schedules": [
             {
@@ -676,6 +677,7 @@
           "title": "General Biology and the Cambrian Biota",
           "ccn": "49713",
           "instruction_format": "DIS",
+          "role": "GSI",
           "section_num": "008",
           "schedules": [],
           "instructors": [
@@ -729,7 +731,6 @@
     {
       "name": "Fall 2013",
       "slug": "fall-2013",
-      "role": "Instructor",
       "sections": [
         {
           "course_number": "BIO 123A",
@@ -737,6 +738,7 @@
           "title": "General Biology and the Cambrian Biota",
           "ccn": "27607",
           "instruction_format": "LEC",
+          "role": "Instructor",
           "section_num": "003",
           "schedules": [
             {
