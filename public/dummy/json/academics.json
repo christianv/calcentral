@@ -625,6 +625,7 @@
         {
           "course_number": "BIO 123A",
           "course_label": "BIO 123A",
+          "section_label": "LEC 002",
           "slug": "bio-123a",
           "title": "General Biology and the Cambrian Biota",
           "ccn": "27606",
@@ -649,6 +650,7 @@
         {
           "course_number": "BIO 123A",
           "course_label": "BIO 123A",
+          "section_label": "LAB 201",
           "slug": "bio-123a",
           "title": "General Biology and the Cambrian Biota",
           "ccn": "276019",
@@ -673,6 +675,7 @@
         {
           "course_number": "BIO 123A",
           "course_label": "BIO 123A",
+          "section_label": "DIS 008",
           "slug": "bio-123a",
           "title": "General Biology and the Cambrian Biota",
           "ccn": "49713",
@@ -734,6 +737,8 @@
       "sections": [
         {
           "course_number": "BIO 123A",
+          "course_label": "BIO 123A",
+          "section_label": "LEC 003",
           "slug": "bio-123a",
           "title": "General Biology and the Cambrian Biota",
           "ccn": "27607",

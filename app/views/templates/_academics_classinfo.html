@@ -23,6 +23,9 @@
           <h3>Class Title</h3>
           <div data-ng-bind="selected_course.title"></div>
 
+          <h3>My Role</h3>
+          <div data-ng-bind="selected_course.role"></div>
+
           <h3 data-ng-show="selected_course_sections.length">My Enrollment</h3>
 
           <div class="cc-table" data-ng-show="selected_course_sections.length">
@@ -72,9 +75,9 @@
           <h4>Section Schedules</h4>
 
           <div class="row collapse" data-ng-repeat="sec in selected_course_sections">
-            <div class="small-3 columns" data-ng-bind="sec.section_label"></div>
+            <div class="small-3 columns" data-ng-show="sec.schedules" data-ng-bind="sec.section_label"></div>
             <div class="small-9 columns">
-              <div data-ng-repeat="sked in sec.schedules" class="cc-academics-schedule-room">
+              <div data-ng-repeat="sked in sec.schedules" data-ng-show="sec.schedules" class="cc-academics-schedule-room">
                 <span data-ng-bind="sked.schedule"></span> |
                 <span data-ng-bind="sked.room_number"></span> <span data-ng-bind="sked.building_name"></span> <br />
               </div>
