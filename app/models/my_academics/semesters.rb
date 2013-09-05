@@ -38,7 +38,6 @@ class MyAcademics::Semesters
           format = this_section[:instruction_format]
           section = this_section[:section_num]
           section_label = "#{format} #{section}"
-          course_label = "#{course_number}"
           schedules = this_section[:schedules]
           instructors = this_section[:instructors]
           is_primary_section = this_section[:is_primary_section]
@@ -52,7 +51,6 @@ class MyAcademics::Semesters
             :section => section,
             :format => format,
             :section_label => section_label,
-            :course_label => course_label,
             :schedules => schedules,
             :instructors => instructors,
             :is_primary_section => is_primary_section,

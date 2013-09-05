@@ -454,7 +454,6 @@
       "classes": [
         {
           "course_number": "BIOLOGY 1A",
-          "course_label": "BIOLOGY 1A",
           "grade": null,
           "grade_option": "Letter",
           "slug": "biology-1a",
@@ -480,7 +479,6 @@
       "time_bucket": "current",
       "classes": [
         {
-          "course_label": "BIOLOGY 1A",
           "course_number": "BIOLOGY 1A",
           "grade": null,
           "grade_option": "Letter",
@@ -536,7 +534,6 @@
         },
         {
           "course_number": "COG SCI C147",
-          "course_label": "COG SCI C147",
           "grade": null,
           "grade_option": "Letter",
           "slug": "cog_sci-c147",
@@ -578,7 +575,6 @@
       "time_bucket": "past",
       "classes": [
         {
-          "course_label": "BIOLOGY 1A",
           "course_number": "BIOLOGY 1A",
           "grade": "B",
           "grade_option": "Letter",
@@ -603,7 +599,6 @@
           ]
         },
         {
-          "course_label": "COG SCI C147",
           "course_number": "COG SCI C147",
           "grade": "C+",
           "grade_option": "Letter",
@@ -637,7 +632,6 @@
       "classes": [
         {
           "course_number": "BIO 123A",
-          "course_label": "BIO 123A",
           "role": "GSI",
           "slug": "bio-123a",
           "title": "General Biology and the Cambrian Biota",
@@ -727,7 +721,6 @@
       "classes": [
         {
           "course_number": "BIO 123A",
-          "course_label": "BIO 123A",
           "role": "Instructor",
           "slug": "bio-123a",
           "title": "General Biology and the Cambrian Biota",

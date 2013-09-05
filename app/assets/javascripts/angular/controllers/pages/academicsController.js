@@ -82,8 +82,8 @@
     };
 
     var updatePrevNextSemester = function(semesters, selected_semester) {
-      var previous_semester = {};
       var next_semester = {};
+      var previous_semester = {};
       var selected_semester_index = false;
 
       var semesters_length = semesters.length;
@@ -104,8 +104,8 @@
           }
         }
       }
-      $scope.previous_semester = previous_semester;
       $scope.next_semester = next_semester;
+      $scope.previous_semester = previous_semester;
       $scope.prev_next_semester_show = semesters_length > 1;
     };
 
@@ -149,11 +149,10 @@
       }
 
       var teaching = {};
-
       for (var i = 0; i < teaching_semesters.length; i++) {
         var semester = teaching_semesters[i];
-        for (var j = 0; j < semester.sections.length; j++) {
-          var section = semester.sections[j];
+        for (var j = 0; j < semester.classes.length; j++) {
+          var section = semester.classes[j];
           if (!teaching[section.slug]) {
             teaching[section.slug] = {
               course_number: section.course_number,
