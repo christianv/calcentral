@@ -183,11 +183,20 @@
 
     };
 
+    var countInstructors = function(selected_course) {
+      var count = 0;
+      for (var i = 0; i < selected_course.sections.length; i++) {
+        if (selected_course.sections[i].instructors && selected_course.sections[i].instructors.length) {
+          count += selected_course.sections[i].instructors.length;
+        }
+      }
+      return count;
+    };
+
     var parseAcademics = function(data) {
       angular.extend($scope, data);
 
       $scope.semesters = data.semesters;
-      $scope.selected_course_sections = [];
 
       // Some users (e.g. test-xxx users) may be missing the "student" role but still need ability to view My Academics pages
       $scope.can_view_academics = $scope.api.user.profile.roles.student || $scope.college_and_level.standing == 'Undergraduate';
@@ -219,17 +228,16 @@
       }
 
       // Get selected course from URL params and extract data from selected semester schedule
-      if ($routeParams.course_slug) {
-        angular.forEach($scope.selected_semester.classes, function(course) {
+      if ($routeParams.class_slug) {
+        for (var i = 0; i< $scope.selected_semester.classes.length; i++) {
+          var course = $scope.selected_semester.classes[i];
           if (course.slug === $routeParams.class_slug) {
-            if ($scope.selected_course === undefined) {
-              $scope.selected_course = course;
-            }
-            $scope.selected_course_sections.push(course);
+            $scope.selected_course = course;
+            break;
           }
-        });
+        };
         checkPageExists($scope.selected_course);
-
+        $scope.selected_course_count_instructors = countInstructors($scope.selected_course);
       }
 
       if (data.exam_schedule) {
