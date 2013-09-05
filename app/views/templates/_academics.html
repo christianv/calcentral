@@ -2,8 +2,7 @@
 
   <div
     class="cc-page-academics"
-    data-cc-spinner-directive
-  >
+    data-cc-spinner-directive>
     <div data-ng-show="can_view_academics">
       <div class="column">
         <h1>My Academics</h1>
@@ -273,11 +272,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr data-ng-repeat="sem in semester.sections" data-ng-show="sem.is_primary_section">
-                      <td class="cc-ellipsis"><a data-ng-href="/academics/semester/{{semester.slug}}/class/{{sem.slug}}" data-ng-bind="sem.course_number"></a></td>
-                      <td data-ng-bind="sem.title" data-ng-show="{{semester.time_bucket == 'current'}}"></td>
-                      <td data-ng-bind="sem.units | number:1"></td>
-                      <td data-ng-bind="sem.grade" data-ng-show="{{semester.time_bucket == 'past'}}">Gr.</td>
+                    <tr data-ng-repeat="class in semester.classes">
+                      <td class="cc-ellipsis"><a data-ng-href="/academics/semester/{{semester.slug}}/class/{{class.slug}}" data-ng-bind="class.course_number"></a></td>
+                      <td data-ng-bind="class.title" data-ng-show="{{semester.time_bucket == 'current'}}"></td>
+                      <td data-ng-bind="class.units | number:1"></td>
+                      <td data-ng-bind="class.grade" data-ng-show="{{semester.time_bucket == 'past'}}">Gr.</td>
                     </tr>
                   </tbody>
                 </table>

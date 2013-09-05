@@ -36,7 +36,7 @@ class CampusUserCoursesProxy < BaseProxy
           item[:grade] = row["grade"]
           item[:transcript_unit] = row["transcript_unit"]
           if row['enroll_status'] == 'W'
-            item[:waitlist_pos] = row['wait_list_seq_num']
+            item[:waitlist_position] = row['wait_list_seq_num']
             item[:enroll_limit] = row['enroll_limit']
           end
           semester_key = "#{item[:term_yr]}-#{item[:term_cd]}"

@@ -28,7 +28,7 @@ class MyAcademics::Semesters
           Rails.logger.warn "#{self.class.name} - Course #{course[:ccn]} has a empty 'pnp_flag' field: #{course}"
           grade_option = ''
         end
-        waitlist_pos = course[:waitlist_pos] if course[:waitlist_pos].present?
+        waitlist_pos = course[:waitlist_position] if course[:waitlist_position].present?
         grade = course[:grade] ? course[:grade].strip : nil
         slug = course_to_slug(course[:dept], course[:catid])
         i = 0
@@ -57,7 +57,7 @@ class MyAcademics::Semesters
             :grade => grade
           }
           if waitlist_pos.present?
-            entry[:waitlist_pos] = waitlist_pos
+            entry[:waitlist_position] = waitlist_pos
             entry[:enroll_limit] = course[:enroll_limit]
           end
           sections << entry

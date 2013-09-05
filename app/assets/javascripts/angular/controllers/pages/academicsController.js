@@ -1,4 +1,4 @@
-(function(calcentral) {
+(function(angular, calcentral) {
   'use strict';
 
   /**
@@ -121,16 +121,25 @@
       }
     };
 
-    var getEnrolledCourses = function(courses) {
-      return courses.filter(function(course) {
-        return !course.waitlist_pos;
-      });
-    };
+    var getClassesSections = function(courses, find_waitlisted) {
+      var classes = [];
 
-    var getWaitlistedCourses = function(courses) {
-      return courses.filter(function(course) {
-        return !!course.waitlist_pos;
-      });
+      for (var i = 0; i < courses.length; i++) {
+        var course = angular.copy(courses[i]);
+        var sections = [];
+        for (var j = 0; j < course.sections.length; j++) {
+          var section = course.sections[j];
+          if ((find_waitlisted && section.waitlist_position) || (!find_waitlisted && !section.waitlist_position)) {
+            sections.push(section);
+          }
+        }
+        if (sections.length) {
+          course.sections = sections;
+          classes.push(course);
+        }
+      }
+
+      return classes;
     };
 
     var findTeachingSemester = function(semesters, semester) {
@@ -198,11 +207,11 @@
         updatePrevNextSemester(data.semesters, selected_semester);
 
         if (selected_semester) {
-          $scope.selected_courses = selected_semester.sections;
+          $scope.selected_courses = selected_semester.classes;
 
           if (!is_instructor_gsi) {
-            $scope.enrolled_courses = getEnrolledCourses(selected_semester.sections);
-            $scope.waitlisted_courses = getWaitlistedCourses(selected_semester.sections);
+            $scope.enrolled_courses = getClassesSections(selected_semester.classes, false);
+            $scope.waitlisted_courses = getClassesSections(selected_semester.classes, true);
           }
         }
         $scope.selected_semester = selected_semester;
@@ -211,7 +220,7 @@
 
       // Get selected course from URL params and extract data from selected semester schedule
       if ($routeParams.course_slug) {
-        angular.forEach($scope.selected_semester.sections, function(course) {
+        angular.forEach($scope.selected_semester.classes, function(course) {
           if (course.slug === $routeParams.class_slug) {
             if ($scope.selected_course === undefined) {
               $scope.selected_course = course;
@@ -254,7 +263,7 @@
 
       angular.forEach($scope.selected_courses, function(course) {
         // Don't calculate for pass/no-pass courses!
-        if (course.grade_option === 'Letter' && course.units && course.is_primary_section) {
+        if (course.grade_option === 'Letter' && course.units) {
           var grade = course.grade ? findWeight(course.grade).weight : course.estimated_grade;
           course.score = parseFloat(grade, 10) * course.units;
           total_units += parseFloat(course.units, 10);
@@ -288,4 +297,4 @@
     });
 
   }]);
-})(window.calcentral);
+})(window.angular, window.calcentral);
