@@ -559,12 +559,12 @@
                 {
                   "building_name": "WHEELER",
                   "room_number": "0210",
-                  "schedule": "TuTh 2:00P-3:30P",
+                  "schedule": "TuTh 2:00P-3:30P"
                 },
                 {
                   "building_name": "DWINELLE",
                   "room_number": "117",
-                  "schedule": "W 4:00P-5:30P",
+                  "schedule": "W 4:00P-5:30P"
                 }
               ]
             }
@@ -598,7 +598,7 @@
                   "uid": "192517"
                 }
               ],
-              "is_primary_section": true,
+              "is_primary_section": true
             }
           ]
         },
