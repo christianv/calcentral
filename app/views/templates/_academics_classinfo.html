@@ -23,7 +23,7 @@
           <h3>Class Title</h3>
           <div data-ng-bind="selected_course.title"></div>
 
-          <h3>My Role</h3>
+          <h3 data-ng-show="selected_course.role">My Role</h3>
           <div data-ng-bind="selected_course.role"></div>
 
           <h3 data-ng-show="selected_course_sections.length">My Enrollment</h3>
