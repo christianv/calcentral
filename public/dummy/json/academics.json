@@ -457,7 +457,6 @@
           "course_label": "BIOLOGY 1A",
           "grade": null,
           "grade_option": "Letter",
-          "instructors": [],
           "slug": "biology-1a",
           "title": "General Biology Lecture",
           "units": "5.0",
@@ -465,6 +464,7 @@
             {
               "ccn": "7309",
               "instruction_format": "LEC",
+              "instructors": [],
               "is_primary_section": true,
               "schedules": [],
               "section_label": "LEC 003",
