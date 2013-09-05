@@ -109,13 +109,13 @@
       $scope.prev_next_semester_show = semesters_length > 1;
     };
 
-    var findSemester = function(semesters, selected_semester) {
+    var findSemester = function(semesters, slug, selected_semester) {
       if (selected_semester) {
         return selected_semester;
       }
 
       for (var i = 0; i < semesters.length; i++) {
-        if (semesters[i].slug === $routeParams.semester_slug) {
+        if (semesters[i].slug === slug) {
           return semesters[i];
         }
       }
@@ -205,13 +205,13 @@
       $scope.teaching_length = Object.keys($scope.teaching).length;
 
       // Get selected semester from URL params and extract data from semesters array
-      if ($routeParams.semester_slug) {
+      if ($routeParams.semester_slug || $routeParams.teaching_semester_slug) {
         var is_instructor_gsi = false;
-        var selected_semester = findSemester(data.semesters, selected_semester);
-        if (!selected_semester) {
+        var selected_semester = findSemester(data.semesters, $routeParams.semester_slug, selected_semester);
+        if ($routeParams.teaching_semester_slug) {
           is_instructor_gsi = true;
         }
-        selected_semester = findSemester(data.teaching_semesters, selected_semester);
+        selected_semester = findSemester(data.teaching_semesters, $routeParams.teaching_semester_slug, selected_semester);
         checkPageExists(selected_semester);
         updatePrevNextSemester(data.semesters, selected_semester);
 

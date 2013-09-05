@@ -65,7 +65,7 @@
             </table>
           </div>
 
-          <h4>Section Schedules</h4>
+          <h4 data-ng-show="selected_course_count_schedules">Section Schedules</h4>
 
           <div class="row collapse" data-ng-repeat="section in selected_course.sections">
             <div class="small-3 columns" data-ng-show="section.schedules" data-ng-bind="section.section_label"></div>

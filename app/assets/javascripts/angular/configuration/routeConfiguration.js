@@ -26,6 +26,10 @@
       templateUrl: 'templates/academics_classinfo.html',
       controller: 'AcademicsController'
     }).
+    when('/academics/teaching-semester/:teaching_semester_slug/class/:class_slug', {
+      templateUrl: 'templates/academics_classinfo.html',
+      controller: 'AcademicsController'
+    }).
     // We actually need to duplicate the campus items, more info on
     // http://stackoverflow.com/questions/12524533
     when('/campus', {
