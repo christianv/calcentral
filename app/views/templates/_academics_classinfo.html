@@ -26,9 +26,9 @@
           <h3 data-ng-show="selected_course.role">My Role</h3>
           <div data-ng-bind="selected_course.role"></div>
 
-          <h3 data-ng-show="selected_course.sections.length">My Enrollment</h3>
+          <h3 data-ng-show="selected_course.sections.length && !is_instructor_gsi">My Enrollment</h3>
 
-          <div class="cc-table" data-ng-show="selected_course.sections.length">
+          <div class="cc-table" data-ng-show="selected_course.sections.length && !is_instructor_gsi">
             <table>
               <thead>
                 <tr>

@@ -161,12 +161,12 @@
       for (var i = 0; i < teaching_semesters.length; i++) {
         var semester = teaching_semesters[i];
         for (var j = 0; j < semester.classes.length; j++) {
-          var section = semester.classes[j];
-          if (!teaching[section.slug]) {
-            teaching[section.slug] = {
-              course_number: section.course_number,
-              title: section.title,
-              slug: section.slug,
+          var course = semester.classes[j];
+          if (!teaching[course.slug]) {
+            teaching[course.slug] = {
+              course_number: course.course_number,
+              title: course.title,
+              slug: course.slug,
               semesters: []
             };
           }
@@ -174,8 +174,8 @@
             name: semester.name,
             slug: semester.slug
           };
-          if (!findTeachingSemester(teaching[section.slug].semesters, semester_obj)) {
-            teaching[section.slug].semesters.push(semester_obj);
+          if (!findTeachingSemester(teaching[course.slug].semesters, semester_obj)) {
+            teaching[course.slug].semesters.push(semester_obj);
           }
         }
       }
@@ -183,11 +183,11 @@
 
     };
 
-    var countInstructors = function(selected_course) {
+    var countSectionItem = function(selected_course, section_item) {
       var count = 0;
       for (var i = 0; i < selected_course.sections.length; i++) {
-        if (selected_course.sections[i].instructors && selected_course.sections[i].instructors.length) {
-          count += selected_course.sections[i].instructors.length;
+        if (selected_course.sections[i][section_item] && selected_course.sections[i][section_item].length) {
+          count += selected_course.sections[i][section_item].length;
         }
       }
       return count;
@@ -235,9 +235,10 @@
             $scope.selected_course = course;
             break;
           }
-        };
+        }
         checkPageExists($scope.selected_course);
-        $scope.selected_course_count_instructors = countInstructors($scope.selected_course);
+        $scope.selected_course_count_instructors = countSectionItem($scope.selected_course, 'instructors');
+        $scope.selected_course_count_schedules = countSectionItem($scope.selected_course, 'schedules');
       }
 
       if (data.exam_schedule) {
