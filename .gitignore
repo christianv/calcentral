@@ -40,7 +40,6 @@ app/assets/stylesheets/application.css
 
 # My Finances
 student_financials.json
-app/assets/images/cfv
 
 # Ignore git version stamp
 /versions/git.txt
