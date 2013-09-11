@@ -171,7 +171,7 @@
         'refunds': createCountRefund(),
         'all': createCount(statuses.all)
       };
-      $scope.countButtonsClass = $scope.countButtons === 1 ? 'cc-myfinances-100' : 'even-' + $scope.countButtons;
+      $scope.countButtonsClass = $scope.countButtons === 1 ? 'cc-myfinances-100' : 'cc-even-' + $scope.countButtons;
     };
 
     /*var findStudentData = function(students, uid) {

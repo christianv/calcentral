@@ -79,17 +79,17 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
             </div>
             <div class="row">
               <div class="small-7 small-centered columns">
-                <ul class="button-group radius {{countButtonsClass}}" data-ng-init="transStatusSearch=''">
+                <ul class="cc-button-group {{countButtonsClass}}" data-ng-init="transStatusSearch=''">
                   <li data-ng-show="counts.open!=0">
-                    <button class="tiny button secondary" data-ng-click="transStatusSearch='open';search.transTerm='';search.transType='';notrefund=true" data-ng-class="{'secondary':(transStatusSearch!='open'),'selected':(transStatusSearch=='open')}">Account Balance
+                    <button class="cc-button" data-ng-click="transStatusSearch='open';search.transTerm='';search.transType='';notrefund=true" data-ng-class="{'cc-button-selected':(transStatusSearch=='open')}">Account Balance
                     </button>
                   </li>
                   <li>
-                    <button class="tiny button selected" data-ng-click="transStatusSearch='';search.transTerm='';search.transType='';notrefund=true" data-ng-class="{'secondary':(transStatusSearch!='' || search.transType=='refund'),'selected':(transStatusSearch=='' && search.transType!='refund')}">Transaction History
+                    <button class="cc-button cc-button-selected" data-ng-click="transStatusSearch='';search.transTerm='';search.transType='';notrefund=true" data-ng-class="{'cc-button-selected':(transStatusSearch=='' && search.transType!='refund')}">Transaction History
                     </button>
                   </li>
                   <li data-ng-show="counts.refunds!=0">
-                    <button class="tiny button secondary" data-ng-click="transStatusSearch='';search.transTerm='';search.transType='refund';notrefund=false" data-ng-class="{'secondary':(search.transType!='refund'),'selected':(search.transType=='refund')}">$ Paid Out
+                    <button class="cc-button" data-ng-click="transStatusSearch='';search.transTerm='';search.transType='refund';notrefund=false" data-ng-class="{'cc-button-selected':(search.transType=='refund')}">$ Paid Out
                     </button>
                   </li>
                 </ul>
