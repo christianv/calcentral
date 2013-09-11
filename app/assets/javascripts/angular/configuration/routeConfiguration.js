@@ -45,6 +45,10 @@
       controller: 'DashboardController',
       shouldRefresh: true
     }).
+    when('/myfinances', {
+      templateUrl: 'templates/myfinances.html',
+      controller: 'MyFinancesController'
+    }).
     when('/settings', {
       templateUrl: 'templates/settings.html',
       controller: 'SettingsController'

@@ -31,6 +31,17 @@ campusdb:
   pool: 95
   # Needed when the bSpace application tables are in a different namespace.
   bspace_prefix:
+
+edwqa:
+  adapter: jdbc
+  driver: oracle.jdbc.OracleDriver
+  url:
+  username:
+  password:
+  pool: 5
+  timeout: 5000
+  edwqa_prefix:
+
 test_sqlite:
   pool: 3
 
