@@ -1,4 +1,22 @@
 <script type="text/ng-template" id="templates/splash.html">
+  <div ng-controller="LoginController">
+    <div ng-hide="login.user">
+      <form action="" ng-submit="login.connect()">
+        <fieldset>
+          <legend>Login</legend>
+          <p><input ng-model="login.login" name="email" type="text" placeholder="Login" required /></p>
+          <p><input ng-model="login.password" name="password" type="password" placeholder="Password" required /></p>
+          <p><button type="submit">Login</button></p>
+        </fieldset>
+      </form>
+    </div>
+
+    <div ng-show="login.user">
+      <p>Welcome, {{login.user.userName}}!</p>
+      <p><button ng-click="login.disconnect()">Logout</button></p>
+    </div>
+  </div>
+
   <div class="row">
     <div class="large-6 columns">
       <div class="cc-page-splash-logo-container">

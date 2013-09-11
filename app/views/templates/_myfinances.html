@@ -1,0 +1,164 @@
+<script type="text/ng-template" id="templates/myfinances.html">
+
+  <div class="cc-page-myfinances" data-ng-cloak>
+    <div class="row">
+      <div class="small-12 large-8 small-centered columns">
+        <h1>My Account</h1>
+        <div data-ng-show="myfinances.person_id">
+          <h2>Account Summary</h2>
+
+          <div class="row cc-page-myfinances-account-summary">
+
+            <div class="cc-page-myfinances-account-summary-click" data-ng-click="myfinances._showinfo = !myfinances._showinfo" data-cc-accessible-focus-directive style=" overflow: hidden" data-ng-class="{'cc-myfincances-greyback':(myfinances._showinfo==true)}">
+              <div class="small-3 columns">
+                <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.totalCurrentBalanceShow"></div>
+              </div>
+              <div class="small-9 columns">
+                Account Balance <span class="cc-page-myfinances-light">includes charges not yet due</span>
+              </div>
+            </div>
+            <div data-ng-show="myfinances._showinfo" style="font-size: 0.8em; padding-top: 10px;
+padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng-class="{'cc-myfincances-greyback':(myfinances._showinfo==true)}">
+              <div data-ng-hide="isAllZero" class="small-2 small-offset-3 columns">
+                <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.lastStatementBalanceShow"></div>
+              </div>
+              <div data-ng-hide="isAllZero" class="small-7 columns">
+                Last Statement Balance <span class="cc-page-myfinances-light">on {{myfinances.summary.lastStatementDate | date:'MMMM d'}}</span>
+                <button class="button radius small cc-right">View Statements</button>
+              </div>
+              <div data-ng-hide="isAllZero" class="small-2 small-offset-3 columns">
+                <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.unbilledActivityShow"></div>
+              </div>
+              <div data-ng-hide="isAllZero" class="small-7 columns">
+                Activity Since Last Statement <span class="cc-page-myfinances-light">since {{myfinances.summary.lastStatementDate | date:'MMMM d'}}</span>
+              </div>
+            </div>
+            <!--<div data-ng-hide="isAllZero" class="small-3 columns" data-ng-show="myfinances.summary.anticipatedAid!=0">
+              <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.anticipatedAidShow"></div>
+            </div>
+            <div data-ng-hide="isAllZero" class="small-9 columns" data-ng-show="myfinances.summary.anticipatedAid!=0">
+              Anticipated Aid <span class="cc-page-myfinances-light">not yet disbursed</span>
+              <button class="button radius small cc-right">View in MyFinAid</button>
+            </div>-->
+            <div data-ng-hide="isAllZero" class="small-3 columns" data-ng-show="myfinances.summary.futureActivity!=0">
+              <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.futureActivityShow"></div>
+            </div>
+            <div data-ng-hide="isAllZero" class="small-9 columns" data-ng-show="myfinances.summary.futureActivity!=0">
+              Charges not yet due
+            </div>
+            <div data-ng-hide="isAllZero" class="cc-page-myfinances-minimum-amount">
+              <div class="small-3 columns">
+                <div class="cc-page-myfinances-amount" data-ng-bind-html="myfinances.summary.minimumAmountDueShow"></div>
+              </div>
+              <div class="small-9 columns">
+                <div data-ng-show="myfinances.summary.minimumAmountDue >= 0">
+                  Amount Due Now <button class="button radius small cc-right">Pay Now</button>
+                </div>
+                <div data-ng-show="myfinances.summary.minimumAmountDue < 0">
+                  Credit Balance <button class="button radius small cc-right">Pay Now</button>
+                </div>
+                <div data-ng-show="myfinances.summary.totalPastDueAmount > 0" class="cc-page-myfinances-total-pastdue">Includes Past Due Amount of {{myfinances.summary.totalPastDueAmountShow}}</div>
+                <button class="button radius small cc-right" data-ng-show="myfinances.summary.anticipatedAid==0" style="clear:both">View MyFinAid</button>
+              </div>
+            </div>
+          </div>
+
+          <h2>Account Activity</h2>
+
+          <div class="cc-page-myfinances-account-activity">
+            <div class="row cc-page-myfinances-terms">
+              <div class="small-4 columns">
+                <input placeholder="Search..." data-ng-model="search.transDesc">
+              </div>
+              <div class="small-4 small-offset-4 columns" style="height: 20px;">
+                <select class="cc-right" data-ng-model="search.transTerm" data-ng-show="transStatusSearch=='' && search.transType!='refund'" id="cc-page-myfinances-select-term">
+                  <option value="" data-ng-selected="term==''">All Terms</option>
+                  <option value="{{term}}" data-ng-repeat="term in myfinances.terms" data-ng-selected="term==currentTerm">{{term}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-7 small-centered columns">
+                <ul class="button-group radius {{countButtonsClass}}" data-ng-init="transStatusSearch=''">
+                  <li data-ng-show="counts.open!=0">
+                    <button class="tiny button secondary" data-ng-click="transStatusSearch='open';search.transTerm='';search.transType='';notrefund=true" data-ng-class="{'secondary':(transStatusSearch!='open'),'selected':(transStatusSearch=='open')}">Account Balance
+                    </button>
+                  </li>
+                  <li>
+                    <button class="tiny button selected" data-ng-click="transStatusSearch='';search.transTerm='';search.transType='';notrefund=true" data-ng-class="{'secondary':(transStatusSearch!='' || search.transType=='refund'),'selected':(transStatusSearch=='' && search.transType!='refund')}">Transaction History
+                    </button>
+                  </li>
+                  <li data-ng-show="counts.refunds!=0">
+                    <button class="tiny button secondary" data-ng-click="transStatusSearch='';search.transTerm='';search.transType='refund';notrefund=false" data-ng-class="{'secondary':(search.transType!='refund'),'selected':(search.transType=='refund')}">$ Paid Out
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="cc-page-myfinances-table">
+              <div class="row cc-page-myfinances-table-header">
+                <div class="small-2 columns" data-ng-click="changeSorting('transDate')" >
+                  Date <i data-ng-class="getSortClass('transDate')"></i>
+                </div>
+                <div class="small-5 columns" data-ng-click="changeSorting('transDesc')">
+                  Description <i data-ng-class="getSortClass('transDesc')"></i>
+                </div>
+                <div class="small-2 columns cc-page-myfinances-amount"  data-ng-click="changeSorting('transBalanceAmount')">
+                  <i data-ng-class="getSortClass('transBalanceAmount')"></i> Amount
+                </div>
+                <div class="small-1 columns" data-ng-click="changeSorting('transType')">
+                  <i data-ng-class="getSortClass('transType')"></i> Type
+                </div>
+                <div class="small-2 columns"  data-ng-click="changeSorting('transDueDate')">
+                  Due Date <i data-ng-class="getSortClass('transDueDate')"></i>
+                </div>
+              </div>
+              <div class="row cc-page-myfinances-table-row"
+                data-ng-repeat="item in myfinances.activity | filter:search | filter:statusFilter | filter:notrefundFilter | orderBy:sort.column:sort.descending"
+                data-ng-class="{'cc-page-myfinances-table-row-selected':(item._showdetail==true), 'cc-page-myfinances-table-row-blue':(item.transStatus=='current' || item.transStatus=='pastDue')}"
+                data-ng-click="item._showdetail = !item._showdetail"
+                data-cc-accessible-focus-directive>
+                <div class="small-2 columns" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
+                  {{item.transDate | date:'MMM dd, yyyy'}}
+                </div>
+                <div class="small-5 columns" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
+                  {{item.transDesc}}
+                </div>
+                <div class="small-2 columns cc-page-myfinances-amount" data-ng-bind-html="item.transBalanceAmountShow" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
+                </div>
+                <div class="small-1 columns" title="{{item.transType}}" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
+                  <img data-ng-src="/assets/cfv/cfv-{{item.transType}}.png" height="30" width="30" style="margin: 2px 0 0 3px; opacity: 0.8" />
+                </div>
+                <div class="small-2 columns">
+                  <span data-ng-show="item._showdetail || item.transStatus!='closed'" data-ng-bind-html="item.transDueDateShow" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}"></span>
+                </div>
+                <div class="cc-myfincances-normal" style="clear:both;" data-ng-show="item._showdetail">
+                  <div data-ng-show="item.originalAmount">
+                    <div class="small-2 small-offset-2 columns">Original Amount:</div>
+                    <div class="small-8 columns">&nbsp;<span class="cc-page-myfinances-amount" data-ng-bind-html="item.originalAmountShow"></span></div>
+                  </div>
+                  <div class="small-2 small-offset-2 columns">Department:</div>
+                  <div class="small-8 columns">&nbsp;<a data-ng-bind="item.transDept" data-ng-click="api.util.preventBubble($event)" data-ng-href="{{item.transDeptUrl}}"></a></div>
+                  <div data-ng-show="item.transTerm">
+                    <div class="small-2 small-offset-2 columns">Term:</div>
+                    <div class="small-8 columns">&nbsp;<span data-ng-bind="item.transTerm"></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h2>Transaction Types</h2>
+          <div class="cc-myfincances-legend" style="overflow:hidden; margin-bottom: 30px;">
+            <ul style="list-style-type:none;">
+              <li data-ng-repeat="item in transTypes" style="clear:both;">
+                <img data-ng-src="/assets/cfv/cfv-{{item}}.png" height="30" width="30" style="float:left; opacity: 0.8" />
+                <div style="font-size:14px; float:left; margin: 5px 0 0 10px">{{item}}</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</script>
