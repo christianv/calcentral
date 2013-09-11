@@ -108,6 +108,9 @@ class UserApi < MyMergedModel
   end
 
   def self.is_allowed_to_log_in?(uid)
+    if !UserAuth.is_superuser?(uid)
+      return false
+    end
     unless Settings.features.user_whitelist
       return true
     end
