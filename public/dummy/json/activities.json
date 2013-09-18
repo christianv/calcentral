@@ -153,6 +153,18 @@
     },
     {
       "id": "",
+      "title": "Appointment Signups Updated - Office Hours",
+      "summary": "Student may sign up for office hours once per week",
+      "source": "CHEM 1A",
+      "type": "announcement",
+      "date": "",
+      "source_url": "https://sakai.example.com/portal/site/b1df3076-88c5-43cc-00d2-632b196f8497",
+      "emitter": "bSpace",
+      "color_class": "bspace-class"
+
+    },
+    {
+      "id": "",
       "title": "Admission Process Incomplete (transcript received, not reviewed)",
       "summary": "The Admissions Office has received, but not yet completed the review of your high school transcript.  This review must be completed and your high school graduation, or equivalent, verified before you can receive any federal aid.  Contact the Admissions Office to resolve this matter.",
       "source": "Financial Aid",
