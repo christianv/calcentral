@@ -8,6 +8,10 @@
 
     $scope.admin = {};
 
+    var redirectToSettings = function() {
+      window.location = '/settings';
+    };
+
     /**
      * Act as someone else
      */
@@ -17,20 +21,16 @@
       }
 
       var user = {
-        uid: $scope.admin.act_as.uid
+        uid: $scope.admin.act_as.uid + ''
       };
-      $http.post('/act_as', user).success(function() {
-        location.reload();
-      });
+      $http.post('/act_as', user).success(redirectToSettings);
     };
 
     /**
      * Stop acting as someone else
      */
     $scope.admin.stopActAs = function() {
-      $http.post('/stop_act_as').success(function() {
-        location.reload();
-      });
+      $http.post('/stop_act_as').success(redirectToSettings);
     };
 
   }]);

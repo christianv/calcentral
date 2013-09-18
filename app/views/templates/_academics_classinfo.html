@@ -1,18 +1,21 @@
 <script type="text/ng-template" id="templates/academics_classinfo.html">
   <div
     class="cc-page-academics"
+    data-cc-spinner-directive
     data-ng-show="can_view_academics"
   >
-    <h1>
-      <a href="/academics">My Academics</a> &raquo;
-      <span data-ng-show="!is_instructor_gsi">
-        <a data-ng-href="/academics/semester/{{selected_semester.slug}}"><span data-ng-bind="selected_semester.name"></span></a> &raquo;
-        <span data-ng-bind="selected_course.course_number"></span>
-      </span>
-      <span data-ng-show="is_instructor_gsi">
-        <span data-ng-bind="selected_course.course_number"></span> | <span data-ng-bind="selected_semester.name"></span>
-      </span>
-    </h1>
+    <div>
+      <h1>
+        <a href="/academics">My Academics</a> &raquo;
+        <span data-ng-show="!is_instructor_gsi">
+          <a data-ng-href="/academics/semester/{{selected_semester.slug}}"><span data-ng-bind="selected_semester.name"></span></a> &raquo;
+          <span data-ng-bind="selected_course.course_number"></span>
+        </span>
+        <span data-ng-show="is_instructor_gsi">
+          <span data-ng-bind="selected_course.course_number"></span> | <span data-ng-bind="selected_semester.name"></span>
+        </span>
+      </h1>
+    </div>
 
     <div class="large-4 columns cc-academics-page-left">
       <div class="cc-widget">
@@ -45,17 +48,17 @@
             </table>
           </div>
 
-          <h3>Class Info</h3>
+          <h3 data-ng-show="selected_course_count_schedules || selected_course.units || selected_course.grade_option">Class Info</h3>
 
-          <h4>Course Offering</h4>
+          <h4 data-ng-hide="is_instructor_gsi">Course Offering</h4>
 
-          <div class="cc-table">
+          <div data-ng-hide="is_instructor_gsi" class="cc-table">
             <table>
               <tbody>
                 <tr>
                   <th scope="row" width="25%">Units</th>
-                  <td data-ng-show="selected_course.units" data-ng-bind="selected_course.units"></td>
-                  <td data-ng-show="!selected_course.units | number:1">--</td>
+                  <td data-ng-show="selected_course.units" data-ng-bind="selected_course.units  | number:1"></td>
+                  <td data-ng-show="!selected_course.units">--</td>
                 </tr>
                 <tr data-ng-show="selected_course.grade_option">
                   <th scope="row">Grading</th>
@@ -88,7 +91,7 @@
         <div class="cc-widget-padding">
           <div data-ng-repeat="section in selected_course.sections">
             <h3 data-ng-bind="section.section_label"></h3>
-            <ul>
+            <ul class="cc-academics-instructors">
               <li data-ng-repeat="instructor in section.instructors">
                 <a data-ng-href="https://calnet.berkeley.edu/directory/details.pl?uid={{instructor.uid}}" data-ng-bind="instructor.name"></a>
                 <a data-ng-show="instructor.email" title="Email {{instructor.name}}" data-ng-href="mailto:{{instructor.email}}">

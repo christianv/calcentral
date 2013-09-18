@@ -30,8 +30,8 @@
                   <tr>
                     <td></td>
                     <td><strong data-ng-bind="college_and_level.standing"></strong></td>
-                    <td><strong data-ng-bind="gpa_units.total_units"></strong></td>
-                    <td><strong data-ng-bind="gpa_units.cumulative_gpa"></strong></td>
+                    <td data-ng-show="gpa_units.total_units !== null"><strong data-ng-bind="gpa_units.total_units"></strong></td>
+                    <td data-ng-show="gpa_units.cumulative_gpa !== null"><strong data-ng-bind="gpa_units.cumulative_gpa"></strong></td>
                   </tr>
                 </tbody>
               </table>
@@ -261,7 +261,7 @@
           </div>
         </div>
 
-        <div class="cc-widget cc-widget-last" data-ng-show="api.user.profile.roles.student">
+        <div class="cc-widget cc-widget-last" data-ng-show="api.user.profile.roles.student && semesters.length">
           <div class="cc-widget-title">
             <h2 class="cc-left">Semesters</h2>
             <a href="https://telebears.berkeley.edu/tranreq/" class="cc-right cc-academics-orderlink">
@@ -278,20 +278,20 @@
                   <thead>
                     <tr>
                       <th width="25%" scope="col">Class</th>
-                      <th width="55%" scope="col" data-ng-show="{{semester.time_bucket == 'current'}}">Title</th>
-                      <th width="20%" scope="col">
+                      <th width="60%" scope="col" data-ng-show="{{semester.time_bucket == 'current'}}">Title</th>
+                      <th width="20%" scope="col" class="cc-table-right">
                         <span data-ng-show="{{semester.time_bucket == 'current'}}">Units</span>
                         <span data-ng-show="{{semester.time_bucket != 'current'}}" title="Units">Un.</span>
                       </th>
-                      <th width="25%" scope="col" data-ng-show="{{semester.time_bucket == 'past'}}" title="Grades">Gr.</th>
+                      <th width="25%" scope="col" class="cc-table-right" data-ng-show="{{semester.time_bucket == 'past'}}" title="Grades">Gr.</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr data-ng-repeat="class in semester.classes">
                       <td class="cc-ellipsis"><a data-ng-href="/academics/semester/{{semester.slug}}/class/{{class.slug}}" data-ng-bind="class.course_number"></a></td>
                       <td data-ng-bind="class.title" data-ng-show="{{semester.time_bucket == 'current'}}"></td>
-                      <td data-ng-bind="class.units | number:1"></td>
-                      <td data-ng-bind="class.grade" data-ng-show="{{semester.time_bucket == 'past'}}">Gr.</td>
+                      <td data-ng-bind="class.units | number:1" class="cc-table-right"></td>
+                      <td data-ng-bind="class.grade" class="cc-table-right" data-ng-show="{{semester.time_bucket == 'past'}}">Gr.</td>
                     </tr>
                   </tbody>
                 </table>

@@ -69,6 +69,7 @@ gem "devise", "~> 2.2.5"
 # TorqueBox app server
 gem "torquebox", "~> 2.3.2"
 gem "torquebox-server", "~> 2.3.2"
+gem "torquebox-messaging", "~> 2.3.2"
 
 # for trying, and trying again, and then giving up.
 gem "retriable", "~> 1.3.3.1"
@@ -96,7 +97,7 @@ group :assets do
 
   # Font awesome - an icon font
   # https://github.com/littlebtc/font-awesome-sass-rails
-  gem "font-awesome-sass-rails", "~> 3.0.2.2"
+  gem "font-awesome-sass-rails", :git => 'https://github.com/pduersteler/font-awesome-sass-rails.git', :ref => '50375dfa'
 
   # Moment.js
   # https://github.com/derekprior/momentjs-rails

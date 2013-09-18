@@ -1,6 +1,7 @@
 logger:
   level: <%= ENV['LOGGER_LEVEL'] || WARN %>
   stdout: <%= ENV['LOGGER_STDOUT'] %>
+  slow_query_threshold_in_ms: 250
 
 application:
   # Set to true if testing production env without Apache/Nginx
@@ -212,3 +213,4 @@ features:
   live_campus_links_data: false
   user_whitelist: false
   academic_status: false
+  my_fin_aid: false

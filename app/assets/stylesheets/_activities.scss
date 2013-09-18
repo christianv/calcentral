@@ -7,7 +7,6 @@
 
   .cc-widget-activities-list {
     font-size: 12px;
-    list-style-type: none;
     margin: 0;
     padding: 0 10px;
 
@@ -17,10 +16,9 @@
         border-bottom: none;
       }
     }
-  }
-
-  .cc-widget-activities-activity {
-    border-bottom: 1px solid $cc-color-light-grey;
+    li.cc-widget-activities-list-undated {
+      border-bottom: 2px solid $cc-color-shadow-color;
+    }
   }
 
   .cc-widget-activities-sub-activity-container {
@@ -73,7 +71,6 @@
   .cc-widget-activities-sub-activity-list {
     margin-top: 15px;
     li {
-      list-style-type: none;
       .cc-widget-activities-sub-activity-date-string {
         color: #999;
         float: right;
