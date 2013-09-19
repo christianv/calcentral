@@ -11,7 +11,7 @@
 
             <div class="cc-page-myfinances-account-summary-click" data-ng-click="myfinances._showinfo = !myfinances._showinfo" data-cc-accessible-focus-directive style=" overflow: hidden" data-ng-class="{'cc-myfincances-greyback':(myfinances._showinfo==true)}">
               <div class="small-3 columns">
-                <div class="cc-page-myfinances-amount" data-ng-bind="myfinances.summary.totalCurrentBalance" data-cc-amount-directive></div>
+                <div class="cc-page-myfinances-amount" data-cc-amount-directive="myfinances.summary.totalCurrentBalance"></div>
               </div>
               <div class="small-9 columns">
                 Account Balance <span class="cc-page-myfinances-light">includes charges not yet due</span>
@@ -20,35 +20,35 @@
             <div data-ng-show="myfinances._showinfo" style="font-size: 0.8em; padding-top: 10px;
 padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng-class="{'cc-myfincances-greyback':(myfinances._showinfo==true)}">
               <div data-ng-hide="isAllZero" class="small-2 small-offset-3 columns">
-                <div class="cc-page-myfinances-amount" data-cc-amount-directive data-ng-bind="myfinances.summary.lastStatementBalance"></div>
+                <div class="cc-page-myfinances-amount" data-cc-amount-directive="myfinances.summary.lastStatementBalance"></div>
               </div>
               <div data-ng-hide="isAllZero" class="small-7 columns">
                 Last Statement Balance <span class="cc-page-myfinances-light">on {{myfinances.summary.lastStatementDate | date:'MMMM d'}}</span>
                 <button class="cc-button cc-right">View Statements</button>
               </div>
               <div data-ng-hide="isAllZero" class="small-2 small-offset-3 columns">
-                <div class="cc-page-myfinances-amount" data-cc-amount-directive data-ng-bind="myfinances.summary.unbilledActivity"></div>
+                <div class="cc-page-myfinances-amount" data-cc-amount-directive="myfinances.summary.unbilledActivity"></div>
               </div>
               <div data-ng-hide="isAllZero" class="small-7 columns">
                 Activity Since Last Statement <span class="cc-page-myfinances-light">since {{myfinances.summary.lastStatementDate | date:'MMMM d'}}</span>
               </div>
             </div>
             <!--<div data-ng-hide="isAllZero" class="small-3 columns" data-ng-show="myfinances.summary.anticipatedAid!=0">
-              <div class="cc-page-myfinances-amount" data-cc-amount-directive data-ng-bind="myfinances.summary.anticipatedAid"></div>
+              <div class="cc-page-myfinances-amount" data-cc-amount-directive="myfinances.summary.anticipatedAid"></div>
             </div>
             <div data-ng-hide="isAllZero" class="small-9 columns" data-ng-show="myfinances.summary.anticipatedAid!=0">
               Anticipated Aid <span class="cc-page-myfinances-light">not yet disbursed</span>
               <button class="cc-button cc-right">View in MyFinAid</button>
             </div>-->
             <div data-ng-hide="isAllZero" class="small-3 columns" data-ng-show="myfinances.summary.futureActivity!=0">
-              <div class="cc-page-myfinances-amount" data-cc-amount-directive data-ng-bind="myfinances.summary.futureActivity"></div>
+              <div class="cc-page-myfinances-amount" data-cc-amount-directive="myfinances.summary.futureActivity"></div>
             </div>
             <div data-ng-hide="isAllZero" class="small-9 columns" data-ng-show="myfinances.summary.futureActivity!=0">
               Charges not yet due
             </div>
             <div data-ng-hide="isAllZero" class="cc-page-myfinances-minimum-amount">
               <div class="small-3 columns">
-                <div class="cc-page-myfinances-amount" data-cc-amount-directive data-ng-bind="myfinances.summary.minimumAmountDue"></div>
+                <div class="cc-page-myfinances-amount" data-cc-amount-directive="myfinances.summary.minimumAmountDue"></div>
               </div>
               <div class="small-9 columns">
                 <div data-ng-show="myfinances.summary.minimumAmountDue >= 0">
@@ -57,7 +57,7 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
                 <div data-ng-show="myfinances.summary.minimumAmountDue < 0">
                   Credit Balance <button class="cc-button cc-right">Pay Now</button>
                 </div>
-                <div data-ng-show="myfinances.summary.totalPastDueAmount > 0" class="cc-page-myfinances-total-pastdue">Includes Past Due Amount of <span data-cc-amount-directive data-ng-bind="myfinances.summary.totalPastDueAmount"></span></div>
+                <div data-ng-show="myfinances.summary.totalPastDueAmount > 0" class="cc-page-myfinances-total-pastdue">Includes Past Due Amount of <span data-cc-amount-directive="myfinances.summary.totalPastDueAmount"></span></div>
                 <button class="cc-button cc-right" data-ng-show="myfinances.summary.anticipatedAid==0" style="clear:both">View MyFinAid</button>
               </div>
             </div>
@@ -122,7 +122,7 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
                 </div>
                 <div class="small-5 columns" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}" data-ng-bind="item.transDesc">
                 </div>
-                <div class="small-2 columns cc-page-myfinances-amount" data-cc-amount-directive data-ng-bind="item.transBalanceAmount" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
+                <div class="small-2 columns cc-page-myfinances-amount" data-cc-amount-directive="item.transBalanceAmount" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
                 </div>
                 <div class="small-1 columns" title="{{item.transType}}" data-ng-class="{'cc-myfincances-red':(item._isPastDueDate==true)}">
                   <img data-ng-src="/assets/cfv/cfv-{{item.transType}}.png" height="30" width="30" style="margin: 2px 0 0 3px; opacity: 0.8" />
@@ -133,7 +133,7 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
                 <div class="cc-myfincances-normal" style="clear:both;" data-ng-if="item._showdetail">
                   <div data-ng-show="item.originalAmount">
                     <div class="small-2 small-offset-2 columns">Original Amount:</div>
-                    <div class="small-8 columns">&nbsp;<span class="cc-page-myfinances-amount" data-cc-amount-directive data-ng-bind="item.originalAmount"></span></div>
+                    <div class="small-8 columns">&nbsp;<span class="cc-page-myfinances-amount" data-cc-amount-directive="item.originalAmount"></span></div>
                   </div>
                   <div class="small-2 small-offset-2 columns">Department:</div>
                   <div class="small-8 columns">&nbsp;<a data-ng-bind="item.transDept" data-ng-click="api.util.preventBubble($event)" data-ng-href="{{item.transDeptUrl}}"></a></div>
