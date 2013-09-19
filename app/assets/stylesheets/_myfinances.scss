@@ -55,21 +55,26 @@
     color: #777;
     font-size: 13px;
   }
-  .cc-page-myfincances-legend {
+  .cc-page-myfinances-legend {
     margin-bottom: 30px;
     overflow: hidden;
+    li {
+      clear: both;
+      .cc-page-myfinances-legend-text {
+        float: left;
+        font-size: 14px;
+        margin: 5px 0 0 10px;
+      }
+      img {
+        float: left;
+        opacity: 0.8;
+      }
+    }
   }
   .cc-page-myfinances-account-summary {
     font-size: 18px;
     line-height: 1.3;
-    margin-bottom: 30px;
     margin-bottom: 20px;
-    .button {
-      @include background(linear-gradient(#fff, #e5e5e5));
-      border: 1px solid #d2d2d2;
-      color: $cc-color-medium-grey;
-      width: 150px;
-    }
     .cc-page-myfinances-green {
       color: #474747;
     }
@@ -92,6 +97,14 @@
       div {
         text-decoration: underline;
       }
+    }
+    .cc-page-myfinances-account-summary-info {
+      clear: both;
+      font-size: 0.8em;
+      margin-bottom: 3px;
+      overflow: hidden;
+      padding-bottom: 5px;
+      padding-top: 10px;
     }
   }
   .cc-page-myfinances-account-activity {
@@ -140,6 +153,12 @@
     }
     .cc-page-myfinances-green {
       color: #fff;
+    }
+  }
+  .cc-page-myfinances-type {
+    img {
+      margin-left: 3px;
+      opacity: 0.8
     }
   }
 }

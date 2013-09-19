@@ -9,7 +9,7 @@
 
           <div class="row cc-page-myfinances-account-summary">
 
-            <div class="cc-page-myfinances-account-summary-click" data-ng-click="myfinances._showinfo = !myfinances._showinfo" data-cc-accessible-focus-directive style=" overflow: hidden" data-ng-class="{'cc-page-myfinances-greyback':(myfinances._showinfo==true)}">
+            <div class="cc-page-myfinances-account-summary-click" data-ng-click="myfinances._showinfo = !myfinances._showinfo" data-cc-accessible-focus-directive data-ng-class="{'cc-page-myfinances-greyback':(myfinances._showinfo==true)}">
               <div class="small-3 columns">
                 <div class="cc-page-myfinances-amount" data-cc-amount-directive="myfinances.summary.totalCurrentBalance"></div>
               </div>
@@ -17,8 +17,7 @@
                 Account Balance <span class="cc-page-myfinances-light">includes charges not yet due</span>
               </div>
             </div>
-            <div data-ng-show="myfinances._showinfo" style="font-size: 0.8em; padding-top: 10px;
-padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng-class="{'cc-page-myfinances-greyback':(myfinances._showinfo==true)}">
+            <div class="cc-page-myfinances-account-summary-info" data-ng-show="myfinances._showinfo" data-ng-class="{'cc-page-myfinances-greyback':(myfinances._showinfo==true)}">
               <div data-ng-hide="isAllZero" class="small-2 small-offset-3 columns">
                 <div class="cc-page-myfinances-amount" data-cc-amount-directive="myfinances.summary.lastStatementBalance"></div>
               </div>
@@ -58,7 +57,7 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
                   Credit Balance <button class="cc-button cc-right">Pay Now</button>
                 </div>
                 <div data-ng-show="myfinances.summary.totalPastDueAmount > 0" class="cc-page-myfinances-total-pastdue">Includes Past Due Amount of <span data-cc-amount-directive="myfinances.summary.totalPastDueAmount"></span></div>
-                <button class="cc-button cc-right" data-ng-show="myfinances.summary.anticipatedAid==0" style="clear:both">View MyFinAid</button>
+                <button class="cc-button cc-right cc-clearfix" data-ng-show="myfinances.summary.anticipatedAid==0">View MyFinAid</button>
               </div>
             </div>
           </div>
@@ -70,7 +69,7 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
               <div class="small-4 columns">
                 <input placeholder="Search..." data-ng-model="search.transDesc">
               </div>
-              <div class="small-4 small-offset-4 columns" style="height: 20px;">
+              <div class="small-4 small-offset-4 columns">
                 <select class="cc-right" data-ng-model="search.transTerm" data-ng-show="transStatusSearch=='' && search.transType!='refund'" id="cc-page-myfinances-select-term">
                   <option value="" data-ng-selected="term==''">All Terms</option>
                   <option value="{{term}}" data-ng-repeat="term in myfinances.terms" data-ng-selected="term==currentTerm">{{term}}</option>
@@ -124,13 +123,13 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
                 </div>
                 <div class="small-2 columns cc-page-myfinances-amount" data-cc-amount-directive="item.transBalanceAmount" data-ng-class="{'cc-page-myfinances-red':(item._isPastDueDate==true)}">
                 </div>
-                <div class="small-1 columns" title="{{item.transType}}" data-ng-class="{'cc-page-myfinances-red':(item._isPastDueDate==true)}">
-                  <img data-ng-src="/assets/cfv/cfv-{{item.transType}}.png" height="30" width="30" style="margin: 2px 0 0 3px; opacity: 0.8" />
+                <div class="small-1 columns cc-page-myfinances-type" title="{{item.transType}}" data-ng-class="{'cc-page-myfinances-red':(item._isPastDueDate==true)}">
+                  <img data-ng-src="/assets/cfv/cfv-{{item.transType}}.png" height="30" width="30" />
                 </div>
                 <div class="small-2 columns">
                   <span data-ng-show="item._showdetail || item.transStatus!='closed'" data-ng-bind="item.transDueDateShow" data-ng-class="{'cc-page-myfinances-red':(item._isPastDueDate==true)}"></span>
                 </div>
-                <div class="cc-page-myfinances-normal" style="clear:both;" data-ng-if="item._showdetail">
+                <div class="cc-page-myfinances-normal" class="cc-clearfix" data-ng-if="item._showdetail">
                   <div data-ng-show="item.originalAmount">
                     <div class="small-2 small-offset-2 columns">Original Amount:</div>
                     <div class="small-8 columns">&nbsp;<span class="cc-page-myfinances-amount" data-cc-amount-directive="item.originalAmount"></span></div>
@@ -146,11 +145,11 @@ padding-bottom: 5px; clear: both; overflow: hidden; margin-bottom: 3px;" data-ng
             </div>
           </div>
           <h2>Transaction Types</h2>
-          <div class="cc-page-myfincances-legend">
-            <ul style="list-style-type:none;">
-              <li data-ng-repeat="item in transTypes" style="clear:both;">
-                <img data-ng-src="/assets/cfv/cfv-{{item}}.png" height="30" width="30" style="float:left; opacity: 0.8" />
-                <div style="font-size:14px; float:left; margin: 5px 0 0 10px">{{item}}</div>
+          <div class="cc-page-myfinances-legend">
+            <ul>
+              <li data-ng-repeat="item in transTypes">
+                <img data-ng-src="/assets/cfv/cfv-{{item}}.png" height="30" width="30" />
+                <div class="cc-page-myfinances-legend-text">{{item}}</div>
               </li>
             </ul>
           </div>
