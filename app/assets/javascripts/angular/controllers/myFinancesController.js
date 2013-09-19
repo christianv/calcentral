@@ -41,18 +41,6 @@
       }
     };
 
-    var parseAmount = function(obj, i) {
-      var item = obj[i];
-      if (isNumber(item)) {
-        var currency = $filter('number')(item, 2);
-        if (obj[i] >= 0) {
-          obj[i + 'Show'] = '  $ ' + currency;
-        } else {
-          obj[i + 'Show'] = '<span class="cc-myfincances-green">- $ ' + currency.replace('-', '') + '</span>';
-        }
-      }
-    };
-
     var parseTransBalanceAmount = function(element) {
       if (linkMapper[element.transDept]) {
         element.transDeptUrl = linkMapper[element.transDept];
@@ -93,7 +81,6 @@
       for (var i in finances.summary) {
         if (finances.summary.hasOwnProperty(i)){
           parseDate(finances.summary, i);
-          parseAmount(finances.summary, i);
         }
       }
 
@@ -104,7 +91,6 @@
           if (element.hasOwnProperty(j)){
 
             parseDate(element, j);
-            parseAmount(element, j);
             addToTranstypes(element);
             if (j === 'transDueDate') {
               parseDueDate(element, j);
@@ -251,7 +237,7 @@
       }
     });
 
-    $scope.currentTerm = 'Spring 2013';
+    $scope.currentTerm = 'Fall 2013';
     $scope.statusFilter = function(item) {
       return ($scope.searchStatuses.indexOf(item.transStatus) !== -1);
     };
