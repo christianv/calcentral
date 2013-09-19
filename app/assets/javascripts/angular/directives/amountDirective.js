@@ -24,7 +24,7 @@
             text = '  $ ' + currency;
           } else {
             text = '- $ ' + currency.replace('-', '');
-            element.addClass('cc-myfincances-green');
+            element.addClass('cc-page-myfinances-green');
           }
 
           element.text(text);

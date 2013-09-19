@@ -28,10 +28,6 @@
       'other': 'http://studentcentral.berkeley.edu/contact'
     };
 
-    var isNumber = function(n) {
-      return !isNaN(parseFloat(n)) && isFinite(n);
-    };
-
     var parseDate = function(obj, i) {
       var regex = /^(0?[1-9]|1[012])[\/](0?[1-9]|[12][0-9]|3[01])[\/](\d{4})$/;
       var item = obj[i] + '';
@@ -157,7 +153,7 @@
         'refunds': createCountRefund(),
         'all': createCount(statuses.all)
       };
-      $scope.countButtonsClass = $scope.countButtons === 1 ? 'cc-myfinances-100' : 'cc-even-' + $scope.countButtons;
+      $scope.countButtonsClass = $scope.countButtons === 1 ? 'cc-page-myfinances-100' : 'cc-even-' + $scope.countButtons;
     };
 
     /*var findStudentData = function(students, uid) {

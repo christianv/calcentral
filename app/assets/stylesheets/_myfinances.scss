@@ -19,10 +19,10 @@
     border: 1px solid #999;
     margin: 50px 1.1em 5px;
   }
-  .cc-myfincances-greyback {
+  .cc-page-myfinances-greyback {
     background: #eee;
   }
-  .cc-myfinances-nofinaid {
+  .cc-page-myfinances-nofinaid {
     font-size: 12px;
     margin-bottom: 15px;
     text-align: right;
@@ -30,7 +30,7 @@
       margin-left: 20px;
     }
   }
-  .cc-myfinances-100 li, .cc-myfinances-100 li button {
+  .cc-page-myfinances-100 li, .cc-page-myfinances-100 li button {
     width: 100%;
   }
   .cc-page-myfinances-amount {
@@ -39,21 +39,25 @@
   .cc-page-myfinances-terms {
     margin-bottom: 15px;
   }
-  .cc-myfincances-red {
+  .cc-page-myfinances-red {
     color: #D23D46;
   }
-  .cc-myfincances-normal {
+  .cc-page-myfinances-normal {
     color: #666;
   }
-  .cc-myfincances-grey {
+  .cc-page-myfinances-grey {
     color: #222;
   }
-  .cc-myfincances-green {
+  .cc-page-myfinances-green {
     color: #0D863D;
   }
   .cc-page-myfinances-light {
     color: #777;
     font-size: 13px;
+  }
+  .cc-page-myfincances-legend {
+    margin-bottom: 30px;
+    overflow: hidden;
   }
   .cc-page-myfinances-account-summary {
     font-size: 18px;
@@ -66,7 +70,7 @@
       color: $cc-color-medium-grey;
       width: 150px;
     }
-    .cc-myfincances-green {
+    .cc-page-myfinances-green {
       color: #474747;
     }
     .cc-page-myfinances-amount {
@@ -125,16 +129,16 @@
     img {
       -webkit-filter: invert(100%);
     }
-    .cc-myfincances-red {
+    .cc-page-myfinances-red {
       color: #fff;
     }
-    .cc-myfincances-normal {
+    .cc-page-myfinances-normal {
       color: #ccc;
     }
-    .cc-myfincances-grey {
+    .cc-page-myfinances-grey {
       color: #fff;
     }
-    .cc-myfincances-green {
+    .cc-page-myfinances-green {
       color: #fff;
     }
   }
