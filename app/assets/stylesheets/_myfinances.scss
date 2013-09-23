@@ -112,21 +112,21 @@
     line-height: 1.6;
   }
   .cc-page-myfinances-table {
+    font-size: 14px;
     margin-bottom: 30px;
-  }
-  .cc-page-myfinances-table-header {
-    background: #E5E5E5;
-    font-weight: bold;
-    margin-top: 15px;
-    padding: 3px 0;
-    &>div:hover {
-      cursor: pointer;
-      text-decoration: underline;
+    th {
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+    th, td {
+      padding: 2px;
     }
   }
   .cc-page-myfinances-table-row:hover {
     cursor: pointer;
-    & > div:not(:last-child) {
+    & > td {
       text-decoration: underline;
     }
   }
@@ -134,7 +134,6 @@
     background: #E7EFF8 !important;
   }
   .cc-page-myfinances-table-row-selected {
-    color: #fff;
     background: #666 !important;
     a, a:hover, a:focus {
       color: #7ec9df;
@@ -142,11 +141,14 @@
     img {
       -webkit-filter: invert(100%);
     }
+    tr td {
+      color: #fff !important;
+    }
     .cc-page-myfinances-red {
       color: #fff;
     }
-    .cc-page-myfinances-normal {
-      color: #ccc;
+    .cc-page-myfinances-normal td {
+      color: #ccc !important;
     }
     .cc-page-myfinances-grey {
       color: #fff;
