@@ -139,13 +139,10 @@
     margin-bottom: 5px;
   }
   .cc-academics-semester {
-    float: left;
     padding: 0 20px 20px 0;
-    width: 50%;
+    width: 100%;
     > div {
       border: 1px solid $cc-color-list-border;
-      min-height: 150px;
-      overflow-x: auto;
       padding: 10px;
     }
     h3 {
@@ -158,7 +155,6 @@
   }
   .cc-academics-semester-current {
     font-size: 100%;
-    width: 100%;
     > div {
       background: $cc-color-blue-hover;
     }
@@ -202,6 +198,33 @@
     }
     .cc-unavailable {
       padding-right: 5px;
+    }
+  }
+  .cc-academics-telebears {
+    h4 {
+      font-size: 12px;
+      font-weight: bold;
+      margin: 0;
+    }
+    .cc-adviser-message {
+      color: $cc-color-black;
+      font-size: 13px;
+      margin-left: 10px;
+      overflow: hidden;
+      padding-left: 10px;
+    }
+    .cc-adviser-message-container {
+      padding: 10px 0;
+    }
+    .cc-more-info {
+      padding-top: 10px;
+    }
+    .cc-telebears-phases {
+      overflow: hidden;
+      padding-bottom: 10px;
+    }
+    .cc-telebears-time-tag {
+      color: $cc-color-lighter-medium-grey;
     }
   }
   .cc-academics-what-is-registration-block {

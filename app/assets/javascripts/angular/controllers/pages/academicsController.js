@@ -81,7 +81,9 @@
     var checkPageExists = function(page) {
       if (!page) {
         apiService.util.redirect('404');
-        return;
+        return false;
+      } else {
+        return true;
       }
     };
 
@@ -202,7 +204,7 @@
 
       $scope.semesters = data.semesters;
 
-      $scope.is_undergratuate = ($scope.college_and_level.standing === 'Undergraduate');
+      $scope.is_undergratuate = ($scope.college_and_level && $scope.college_and_level.standing === 'Undergraduate');
 
       $scope.teaching = parseTeaching(data.teaching_semesters);
       $scope.teaching_length = Object.keys($scope.teaching).length;
@@ -215,7 +217,9 @@
           is_instructor_gsi = true;
         }
         selected_semester = findSemester(data.teaching_semesters, $routeParams.teaching_semester_slug, selected_semester);
-        checkPageExists(selected_semester);
+        if (!checkPageExists(selected_semester)) {
+          return;
+        }
         updatePrevNextSemester(data.semesters, selected_semester);
 
         if (selected_semester) {
@@ -239,7 +243,9 @@
             break;
           }
         }
-        checkPageExists($scope.selected_course);
+        if (!checkPageExists($scope.selected_course)) {
+          return;
+        }
         $scope.selected_course_count_instructors = countSectionItem($scope.selected_course, 'instructors');
         $scope.selected_course_count_schedules = countSectionItem($scope.selected_course, 'schedules');
       }
@@ -250,6 +256,17 @@
       }
 
       $scope.gpaInit(); // Initialize GPA calculator with selected courses
+
+      //only show telebears appointment if term and semester matches
+      $scope.telebears = null;
+      if (data.semesters && data.semesters.length > 1) {
+        var current_semester = data.semesters.filter(function(value) {
+          return value.time_bucket === "current";
+        }).shift() || {};
+        if (current_semester.name === (data.telebears.term + " " + data.telebears.year)) {
+          $scope.telebears = data.telebears;
+        }
+      }
     };
 
     $scope.hideDisclaimer = true;
@@ -312,6 +329,7 @@
           ($scope.college_and_level && $scope.college_and_level.standing === 'Undergraduate');
 
         $http.get('/api/my/academics').success(parseAcademics);
+//        $http.get('/dummy/json/academics.json').success(parseAcademics);
       }
     });
 
