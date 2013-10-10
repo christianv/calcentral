@@ -5,6 +5,9 @@ rvm:
 
 matrix:
   include:
+    - { rvm: jruby-19mode }
+    - { rvm: jruby-19mode, env: JRUBY_OPTS="--client -Xcext.enabled=false -J-Xmx900m" }
+    - { rvm: jruby-19mode, env: JRUBY_OPTS="--1.9" }
     - { rvm: jruby-1.7.4 }
     - { rvm: 1.9.3, env: rake=1.4.0 }
 
