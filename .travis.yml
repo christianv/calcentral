@@ -1,8 +1,16 @@
 bundler_args: --without development testext production
 
 rvm:
+  - "2.0.0"
+  - "1.9.3"
+  - "1.9.2"
+  - "jruby-18mode"
   - "jruby-19mode"
+  - "rbx-18mode"
+  - "rbx-19mode"
+  - "ruby-head"
   - "jruby-head"
+  - "1.8.7"
 
 env:
   - JRUBY_OPTS="--client -Xcext.enabled=false -J-Xmx900m" DISPLAY=:99.0 LOGGER_LEVEL=WARN
