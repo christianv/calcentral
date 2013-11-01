@@ -64,7 +64,7 @@ hot_plate:
   enabled: false
 
 features:
-  live_campus_links_data: true
+  live_campus_links_data: false
   user_whitelist: true
   academic_status: true
   my_fin_aid: true
