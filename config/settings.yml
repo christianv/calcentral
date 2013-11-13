@@ -135,6 +135,10 @@ financials_proxy:
   username: ''
   password: ''
 
+lns_advising_proxy:
+  fake: false
+  base_url: "http://10.254.4.43/api.php?key_api=fdj3c10010010502f102&student_id=21251363"
+
 blog_latest_release_notes_feed_proxy:
   fake: false
   feed_url: "https://ets.berkeley.edu/taxonomy/term/788/all/feed"

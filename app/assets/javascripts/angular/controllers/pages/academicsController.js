@@ -403,6 +403,9 @@
       if (isAuthenticated) {
         $scope.can_view_academics = $scope.api.user.profile.student_info.has_academics_tab;
         $http.get('/api/my/academics').success(parseAcademics);
+        $http.get('/dummy/json/advising_appointment_history.json').success(function(data) {
+          angular.extend($scope, data);
+        });
         //$http.get('/dummy/json/academics.json').success(parseAcademics);
       }
     });
