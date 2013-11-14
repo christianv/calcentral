@@ -13,7 +13,7 @@ class LSAdvisingProxy < BaseProxy
   end
 
   def request(path, params = {})
-    logger.debug self.class.fetch_from_cache(@uid)
+    # logger.debug self.class.fetch_from_cache(@uid)
     # self.class.fetch_from_cache(@uid) do
       student_id = lookup_student_id
       if student_id.nil?

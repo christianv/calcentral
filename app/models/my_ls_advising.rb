@@ -4,14 +4,18 @@ class MyLsAdvising < MyMergedModel
     feed = {}
     proxy = LSAdvisingProxy.new({user_id: @uid})
     proxy_response = proxy.get
-    logger.debug proxy_response
+
+    puts "qwerqwerqwer"
+    puts proxy_response
+
+    #logger.debug proxy_response
     # if proxy_response && body = proxy_response[:body]
-    if proxy_response && body = proxy_response.body
-      logger.debug body
+    #if proxy_response && body = proxy_response.body
+      #logger.debug body
       # feed.merge!(body)
-    end
+    #end
     # feed
-    JSON.parse(proxy_response.body)
+    #JSON.parse(proxy_response.body)
   end
 
 end
