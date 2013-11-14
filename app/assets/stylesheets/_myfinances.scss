@@ -30,13 +30,15 @@
   .cc-page-myfinances-amount {
     text-align: right;
   }
-  .cc-page-myfinances-deferred-payment-plan {
+  .cc-page-myfinances-dpp {
     background: $cc-color-widget-background;
+  }
+  .cc-page-myfinances-dpp-amounts {
     font-size: 12px;
-    padding: 5px 10px;
-    i {
-      margin-left: 5px;
-    }
+  }
+  .cc-page-myfinances-dpp-note {
+    font-size: 11px;
+    margin-top: 5px;
   }
   .cc-page-myfinances-green {
     &, & td {
@@ -65,6 +67,9 @@
   .cc-page-myfinances-lighter {
     color: $cc-color-lighter-medium-grey;
   }
+  .cc-page-myfinances-not-amount-due-dpp {
+    font-size: 11px;
+  }
   .cc-page-myfinances-red {
     &, & td {
       color: $cc-color-red;
@@ -88,6 +93,11 @@
     i {
       margin-left: 9px;
     }
+  }
+  .cc-page-myfinances-unapplied {
+    font-style: italic;
+    font-weight: bold;
+    opacity: 0.6;
   }
   .cc-page-myfinances-unapplied-awards {
     border-top: 2px solid $cc-color-widget-background;

@@ -50,7 +50,7 @@
         if (obj.transStatus === 'Past due') {
           obj._isPastDueDate = true;
           obj._isDueNow = '1_past_due'; // Past due
-        } else if (obj.transStatus !== 'Closed') {
+        } else if (obj.transStatus === 'Current' || obj.transStatus === 'Installment') {
           obj._isDueNow = '2_current_due'; // Current due
         }
       }
@@ -140,6 +140,7 @@
       $scope.search = {
         'transTerm': to_select_term
       };
+      $scope.search_term = to_select_term;
     };
 
     var createTerms = function() {
@@ -221,12 +222,12 @@
      */
     var checkAllZero = function() {
       var summary = $scope.myfinances.summary;
-      $scope.isAllZero = (summary.anticipatedAid === 0 &&
-        summary.lastStatementBalance === 0 &&
-        summary.unbilledActivity === 0 &&
-        summary.futureActivity === 0 &&
-        summary.totalPastDueAmount === 0 &&
-        summary.minimumAmountDue === 0);
+      $scope.isAllZero = (summary.anticipatedAid === '0.00' &&
+        summary.lastStatementBalance === '0.00' &&
+        summary.unbilledActivity === '0.00' &&
+        summary.futureActivity === '0.00' &&
+        summary.totalPastDueAmount === '0.00' &&
+        summary.minimumAmountDue === '0.00');
     };
 
     /**
