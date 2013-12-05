@@ -25,7 +25,7 @@
       for (var i = 0; i < link.categories.length; i++) {
         $scope.topcategories[link.categories[i].topcategory] = true;
       }
-    };
+    }
 
     /**
      * Depending on the roles, determine whether the current user should be able to view the link
@@ -40,7 +40,7 @@
           addToTopCategories(link);
           return true;
         }
-      }
+       }
       return false;
     };
 
