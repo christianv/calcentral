@@ -112,7 +112,7 @@
       }
       $scope.next_semester = next_semester;
       $scope.previous_semester = previous_semester;
-      $scope.prev_next_semester_show = semesters_length > 1;
+      $scope.prev_next_semester_show = semesters_length > 1
     };
 
     var findSemester = function(semesters, slug, selected_semester) {
@@ -125,7 +125,7 @@
           return semesters[i];
         }
       }
-    };
+    }
 
     var getClassesSections = function(courses, find_waitlisted) {
       var classes = [];
