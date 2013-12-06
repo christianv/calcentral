@@ -1,4 +1,8 @@
 task :travis do
+
+  system ("jshint .")
+  raise "JSHint failed!" unless $?.exitstatus == 0
+
   # Replace with
   # ["rspec spec", "rake jasmine:ci"].each do |cmd|
   # when we have the rspec tests working
