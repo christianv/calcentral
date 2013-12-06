@@ -12,6 +12,4 @@ env:
 
 before_install:
   - sh -e /etc/init.d/xvfb start
-
-install:
   - "npm -g install jshint"
