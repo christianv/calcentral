@@ -9,7 +9,7 @@ task :travis do
   # when we have the rspec tests working
   ["rake jasmine:ci"].each do |cmd|
     puts "Starting to run #{cmd}..."
-    system("export DISPLAY=:99.0 && bundle exec #{cmd}")
+    system("export DISPLAY=:99.0 && bundle exec #{cmd} --server-timeout 30")
     raise "#{cmd} failed!" unless $?.exitstatus == 0
   end
 end
