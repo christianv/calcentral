@@ -13,13 +13,26 @@ $cc-color-splash-blue-dark: #004677;
   .cc-page-splash-beta {
     color: $cc-color-red;
     font-size: 22px;
-    margin-top: 52px;
+    margin-top: 13px;
     text-transform: uppercase;
   }
+  .cc-page-splash-buttons .cc-button {
+    display: block;
+    margin: 10px auto 0;
+    text-align: center;
+    width: 200px;
+  }
+  .cc-page-splash-center {
+    text-align: center;
+  }
+  .cc-page-splash-container-left {
+    border-right: 2px solid $cc-color-widget-background;
+  }
   .cc-page-splash-logo {
-    margin-top: 60px;
+    margin: 20px auto 35px;
   }
   .cc-page-splash-logo-container {
+    margin: 0 auto;
     overflow: hidden;
   }
   h2 {

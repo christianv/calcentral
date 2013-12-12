@@ -1,15 +1,14 @@
 <script type="text/ng-template" id="templates/splash.html">
   <div class="row">
-    <div class="large-6 columns cc-page-splash-container">
+    <div class="large-6 columns cc-page-splash-container-left">
       <div class="cc-page-splash-logo-container">
-        <%= image_tag "calcentral_logo_big_396x41.png", :size => "372x40", :alt => "", :class => "cc-page-splash-logo cc-left" %>
-        <div class="cc-page-splash-beta">Beta</div>
+        <div class="cc-page-splash-center">
+          <%= image_tag "calcentral_logo_big_396x41.png", :size => "372x40", :alt => "", :class => "cc-page-splash-logo" %>
+        </div>
       </div>
-      <div>
-        <button class="radius cc-button cc-button-blue" data-ng-click="api.user.signIn()">Sign In</button>
-      </div>
-      <div>
-        <a class="radius cc-button" href="https://ets.berkeley.edu/calcentral">Learn More<span class="cc-visuallyhidden"> about the CalCentral releases</span></a>
+      <div class="cc-page-splash-buttons">
+        <button class="radius cc-button cc-button-blue cc-button-large" data-ng-click="api.user.signIn()">Sign In</button>
+        <a class="radius cc-button cc-button-large" href="https://ets.berkeley.edu/calcentral">Learn More<span class="cc-visuallyhidden"> about the CalCentral releases</span></a>
       </div>
 
       <div class="row collapse cc-page-splash-blog-panel" data-ng-show="latest_release_note.title">
