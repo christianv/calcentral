@@ -1,10 +1,9 @@
 $cc-color-splash-blue-dark: #004677;
-$cc-color-splash-blue-light: #0073C3;
 
 .cc-page-splash {
   .cc-container-main {
-    padding: 0 35px;
-    background: #fff asset-data-url('calcentral_bubble_background_466x408.png') no-repeat right 5px;
+    background: $cc-color-white;
+    padding: 30px;
   }
 
   > header, .cc-navigation-bar {
@@ -23,75 +22,14 @@ $cc-color-splash-blue-light: #0073C3;
   .cc-page-splash-logo-container {
     overflow: hidden;
   }
-  h1 {
-    color: $cc-color-splash-blue-dark;
-    font-size: 24px;
-    margin: 15px 0 5px;
-  }
   h2 {
     color: $cc-color-splash-blue-dark;
     font-size: 18px;
     margin: 0 0 10px;
   }
-  .cc-page-splash-subtitle {
-    font-size: 18px;
-    margin-bottom: 30px;
-  }
-  .cc-page-splash-signin {
-    background: $cc-color-splash-blue-dark;
-    @include background(linear-gradient($cc-color-splash-blue-light, $cc-color-splash-blue-dark));
-    box-shadow: none;
-    font-size: 13px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-  }
-  .cc-page-splash-status {
-    background: asset-data-url('splash_status_555x300.png') no-repeat 0 0;
-    background-position: center;
-    @include background-size(cover);
-    border: 1px solid #666;
-    margin-top: 60px;
-    padding-bottom: 48.56%;
-    position: relative;
-    a {
-      bottom: 10px;
-      float: right;
-      right: 10px;
-      position: absolute;
-    }
-    h2 {
-      color: #666;
-      font-size: 14px;
-      left: 10px;
-      position: absolute;
-      top: 5px;
-    }
-  }
-
-  .cc-page-splash-features {
-    padding: 0 30px 110px;
-    p {
-      font-size: 14px;
-    }
-    img {
-      @include box-shadow(0 4px 8px #888);
-      float: right;
-    }
-    .row {
-      margin-bottom: 10px;
-      margin-top: 40px;
-    }
-  }
-  .cc-page-splash-features-title {
-    background: $cc-color-widget-background;
-    color: $body-font-color;
-    font-size: 25px;
-    font-weight: normal;
-    margin-top: 40px;
-    padding: 10px 15px;
-  }
 
   .cc-page-splash-blog-panel {
+    background: $cc-color-main-background;
     margin: 150px 0 0 0;
     padding: 10px;
     .cc-page-splash-blog-date {
@@ -122,15 +60,6 @@ $cc-color-splash-blue-light: #0073C3;
     }
     .cc-page-splash-blog-panel {
       margin-top: 25px;
-    }
-    .cc-page-splash-features {
-      padding: 0 0 30px;
-    }
-    .cc-page-splash-features-title {
-      margin: 25px 0 0;
-    }
-    .cc-page-splash-features img {
-      float: none;
     }
   }
 
