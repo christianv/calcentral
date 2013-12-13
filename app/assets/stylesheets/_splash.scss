@@ -67,12 +67,10 @@ $cc-color-splash-blue-dark: #004677;
   /* Mobile only */
   @media only screen and (max-width: 767px) {
     .cc-container-main {
-      background-position: center 225px;
-      background-size: contain;
       padding: 0 10px;
     }
     .cc-page-splash-blog-panel {
-      margin-top: 25px;
+      margin-top: 80px !important;
     }
   }
 
