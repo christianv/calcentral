@@ -134,7 +134,7 @@ group :development, :test , :testext do
 
   # Test our JavaScript code.
   # https://github.com/pivotal/jasmine-gem
-  gem "jasmine", "~> 1.3.1"
+  gem "jasmine", "~> 2.0.0"
 
   # Don't update the following gem without doing a precompile
   gem "jquery-rails", "~> 2.2.1"
