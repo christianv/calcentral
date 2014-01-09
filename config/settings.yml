@@ -120,6 +120,12 @@ bearfacts_proxy:
   app_key: ''
   base_url: "https://apis-dev.berkeley.edu/bearfacts-apis"
 
+research_user_proxy:
+  fake: false
+  base_url: "https://hub-qa.berkeley.edu/alfresco/service/api/ucb/person"
+  test_user: "secret"
+  password: "secret"
+
 myfinaid_proxy:
   fake: false
   token: secret set per deployment layer
@@ -137,6 +143,17 @@ financials_proxy:
 textbooks_proxy:
   fake: false
   base_url: "https://www.bkstr.com"
+
+playlists_proxy:
+  fake: false
+  base_url: 'http://webcast.berkeley.edu/itunesu_podcasts.js'
+
+youtube_proxy:
+  fake: false
+  base_url: 'http://gdata.youtube.com/feeds/api/playlists/'
+  params: {
+    alt: 'json'
+  }
 
 blog_latest_release_notes_feed_proxy:
   fake: false
@@ -193,15 +210,12 @@ cache:
     SakaiUserSitesProxy: <%= 30.minutes %>
     SakaiSiteAnnouncementsProxy: <%= 30.minutes %>
 
-    MyBadges::GoogleCalendar: <%= 2.minutes %>
+    MyBadges::GoogleCalendar: <%= 4.minutes %>
     MyBadges::GoogleDrive: <%= 10.minutes %>
-    MyBadges::GoogleMail: <%= 2.minutes %>
+    MyBadges::GoogleMail: <%= 4.minutes %>
 
     CalLinkMembershipsProxy: <%= 4.hours %>
     CalLinkOrganizationProxy: <%= 4.hours %>
-
-    GoogleTasksListProxy: <%= 10.minutes %>
-    GoogleEventsListProxy: <%= 2.minutes %>
 
 # Cache warmer settings
 cache_warmer:
@@ -248,7 +262,9 @@ features:
   activity_to_task: false
   financials: false
   telebears: false
+  research: false
   textbooks: false
+  videos: false
 
 messaging:
   enabled: true

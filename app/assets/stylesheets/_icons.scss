@@ -1,4 +1,5 @@
 .cc-icon {
+  margin-top: 2px;
   background: no-repeat;
   height: 16px;
   width: 16px;
@@ -26,6 +27,9 @@
 .cc-icon-mail {
   background-image: asset-data-url('icon_mail_24x24.png');
 }
+.cc-icon-researchhub{
+  background-image: asset-data-url('icon_research_16x16.png')
+}
 
 /* Fontawesome icons */
 .fa-exclamation-circle, .fa-exclamation-triangle {
@@ -50,5 +54,10 @@
 
 .cc-icon-chegg {
   background-image: asset-data-url('icon_chegg_16x16.png');
+  display: inline-block;
+}
+
+.cc-icon-oskicat {
+  background-image: asset-data-url('icon_oskicat_16x16.png');
   display: inline-block;
 }

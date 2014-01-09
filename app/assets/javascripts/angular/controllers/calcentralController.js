@@ -1,10 +1,10 @@
-(function(window, calcentral) {
+(function(window, angular) {
   'use strict';
 
   /**
    * CalCentral main controller
    */
-  calcentral.controller('CalcentralController', ['$rootScope', 'apiService', function($rootScope, apiService) {
+  angular.module('calcentral.controllers').controller('CalcentralController', function($rootScope, apiService) {
 
     // Expose the API service
     $rootScope.api = apiService;
@@ -20,13 +20,9 @@
       apiService.user.handleRouteChange();
       apiService.util.changeControllerName(current.controller);
       apiService.auth.isLoggedInRedirect();
-
-      // Refresh the services, we only want to do this on certain pages
-      if (current.$$route && current.$$route.fireUpdatedFeeds) {
-        apiService.updatedFeeds.startPolling();
-      }
+      apiService.updatedFeeds.initiate(current.$$route, $rootScope);
     });
 
-  }]);
+  });
 
-})(window, window.calcentral);
+})(window, window.angular);

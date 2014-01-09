@@ -66,6 +66,7 @@ class CampusUserCoursesProxy < BaseProxy
       campus_classes.values.each do |semester|
         semester.each do |course|
           course[:sections].each do |section|
+            section[:ccn] = get_ccn section[:ccn]
             proxy = CampusCourseSectionsProxy.new({term_yr: course[:term_yr],
                                                    term_cd: course[:term_cd],
                                                    ccn: section[:ccn]})
@@ -90,7 +91,6 @@ class CampusUserCoursesProxy < BaseProxy
   #    "course_code": "COG SCI C102",
   #    "emitter": "Campus",
   #    "name": "Scientific Approaches to Consciousness",
-  #    "color_class": "campus-class",
   #    "term_yr": "2013",
   #    "term_cd": "B",
   #    "dept": "COG SCI",
@@ -163,11 +163,12 @@ class CampusUserCoursesProxy < BaseProxy
           term_yr: row['term_yr'],
           term_cd: row['term_cd'],
           dept: row['dept_name'],
+          dept_desc: row['dept_description'],
           catid: row['catalog_id'],
           course_code: "#{row['dept_name']} #{row['catalog_id']}",
+          course_catalog: row['catalog_id'],
           emitter: 'Campus',
           name: row['course_title'],
-          color_class: "campus-class",
           sections: [
             row_to_section_data(row)
           ]
@@ -189,6 +190,11 @@ class CampusUserCoursesProxy < BaseProxy
       section_data[:enroll_limit] = row['enroll_limit']
     end
     section_data
+  end
+
+  def get_ccn(ccn)
+    return ccn unless ccn.length < 5
+    "0" * (5 - ccn.length) + ccn
   end
 
 end

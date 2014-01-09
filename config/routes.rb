@@ -29,22 +29,35 @@ Calcentral::Application.routes.draw do
   match '/api/my/refresh' => 'my_refresh#refresh', :defaults => { :format => 'json' }
   match '/api/my/updated_feeds' => 'is_updated#list', :defaults => {:format => 'json'}
   match '/api/my/event' => 'my_events#create', via: :post, defaults: { format: 'json' }
+  match '/api/my/research' => 'my_research_groups#get_feed', :as => :research, :defaults => { :format => 'json' }
+
+  # Youtube class videos endpoints
+  ## Get the playlist_id of the title given, or list all playlists if no title given.
+  match '/api/my/playlists(/:playlist_title)' => 'my_playlists#get_playlists', :defaults => { :format => 'json' }
+  ## Get a list of youtube videos given a playlist_id.
+  match '/api/my/youtube/:playlist_id' => 'my_youtube#get_videos', :defaults => { :format => 'json' }
+  ## Get a list of youtube videos given a playlist_title.
+  match '/api/my/videos/:playlist_title' => 'my_videos#get_videos', :defaults => { :format => 'json' }
 
   # Canvas embedded application support.
   match '/canvas/embedded/*url' => 'canvas_lti#embedded', :defaults => { :format => 'html' }
   match '/canvas/lti_roster_photos' => 'canvas_lti#lti_roster_photos', :defaults => { :format => 'xml' }
   match '/canvas/lti_course_provision' => 'canvas_lti#lti_course_provision', :defaults => { :format => 'xml' }
   match '/canvas/lti_user_provision' => 'canvas_lti#lti_user_provision', :defaults => { :format => 'xml' }
+  match '/canvas/lti_course_add_user' => 'canvas_lti#lti_course_add_user', :defaults => { :format => 'xml' }
 
   # A Canvas course ID of "embedded" means to retrieve from session properties.
+  match '/api/academics/canvas/course_user_profile' => 'canvas#course_user_profile', :defaults => { :format => 'json' }
   match '/api/academics/rosters/canvas/:canvas_course_id' => 'canvas_rosters#get_feed', :as => :canvas_roster, :defaults => { :format => 'json' }
   match '/canvas/:canvas_course_id/photo/:person_id' => 'canvas_rosters#photo', :defaults => { :format => 'jpeg' }, :action => 'show'
   match '/api/academics/canvas/course_provision' => 'canvas_course_provision#get_feed', :as => :canvas_course_provision, :defaults => { :format => 'json' }
   match '/api/academics/canvas/course_provision_as/:admin_acting_as' => 'canvas_course_provision#get_feed', :as => :canvas_course_provision, :defaults => { :format => 'json' }
   match '/api/academics/canvas/course_provision/create' => 'canvas_course_provision#create_course_site', :via => :post, :as => :canvas_course_create, :defaults => { :format => 'json' }
   match '/api/academics/canvas/course_provision/status' => 'canvas_course_provision#job_status', :via => :get, :as => :canvas_course_job_status, :defaults => { :format => 'json' }
-
   match '/api/academics/canvas/user_provision/user_import' => 'canvas_user_provision#user_import', :as => :canvas_user_provision_import, :defaults => { :format => 'json' }
+  match '/api/academics/canvas/course_add_user/search_users' => 'canvas_course_add_user#search_users', :via => :get, :as => :canvas_course_add_user_search_users, :defaults => { :format => 'json' }
+  match '/api/academics/canvas/course_add_user/course_sections' => 'canvas_course_add_user#course_sections', :via => :get, :as => :canvas_course_add_user_course_sections, :defaults => { :format => 'json' }
+  match '/api/academics/canvas/course_add_user/add_user' => 'canvas_course_add_user#add_user', :via => :post, :as => :canvas_course_add_user_add_user, :defaults => { :format => 'json' }
 
   match '/api/smoke_test_routes' => 'routes_list#smoke_test_routes', :as => :all_routes, :defaults => { :format => 'json' }
 

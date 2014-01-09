@@ -65,7 +65,7 @@ $cc-color-splash-blue-dark: #004677;
   }
 
   /* Mobile only */
-  @media only screen and (max-width: 767px) {
+  @media #{$small-only} {
     .cc-container-main {
       padding: 0 10px;
     }

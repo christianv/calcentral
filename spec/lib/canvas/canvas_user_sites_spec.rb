@@ -83,11 +83,10 @@ describe CanvasUserSites do
             course_code: 'BIOLOGY 1A',
             emitter: 'Campus',
             name: 'General Biology Lecture',
-            color_class: "campus-class",
             role: 'Student',
             sections: [
-                { ccn: 7366 },
-                { ccn: 7309 }
+                { ccn: '07366' },
+                { ccn: '07309' }
             ]
         }
     ])
@@ -172,10 +171,9 @@ describe CanvasUserSites do
             course_code: 'BIOLOGY 1A',
             emitter: 'Campus',
             name: 'General Biology Lecture',
-            color_class: "campus-class",
             role: 'Instructor',
             sections: [
-                { ccn: 7309 }
+                { ccn: '07309' }
             ]
         }
     ])
@@ -212,7 +210,6 @@ describe CanvasUserSites do
     group[:name].should == 'The Left Banke'
     group[:site_url].blank?.should be_false
     group[:emitter].should == "bCourses"
-    group[:color_class].should == "canvas-group"
   end
 
   it "should put suitable course-linked Canvas Group sites into classes" do
@@ -262,10 +259,9 @@ describe CanvasUserSites do
             course_code: 'BIOLOGY 1A',
             emitter: 'Campus',
             name: 'General Biology Lecture',
-            color_class: "campus-class",
             role: 'Student',
             sections: [
-                { ccn: 7309 }
+                { ccn: '07309' }
             ]
         }
     ])

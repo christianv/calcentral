@@ -14,6 +14,7 @@ Home of CalCentral. [![Dependency Status](https://gemnasium.com/ets-berkeley-edu
 * [Rails 3.2.x](http://rubyonrails.org/download)
 * [Rubygems](http://rubyforge.org/frs/?group_id=126)
 * [Rvm](https://rvm.io/rvm/install/) - Ruby version managers
+* [xvfb](XQuartz: http://xquartz.macosforge.org/landing/) - xvfb headless browser, included for Macs with XQuartz
 
 ## Installation
 
@@ -63,20 +64,29 @@ cd calcentral
 1. Install jruby
 ```bash
 rvm get head
-rvm install jruby-1.7.3
+rvm install jruby-1.7.8
 cd ..
 cd calcentral
 # Answer "yes" again if it asks you to trust a new .rvmrc file.
 ```
 
-1. (Optional for development) Make JRuby faster & enable C extensions by running this or put in your .bashrc:
-```bash
-export JRUBY_OPTS="-Xcext.enabled=true -J-d32 -J-client -X-C"
+1. (For 64-bit JVMs) Make JRuby faster, give it lots of RAM, & enable C extensions by running this or put in your .bashrc:
+``` bash
+export JRUBY_OPTS="-Xcext.enabled=true -X-C -J-Xms900m -J-Xmx900m -J-XX:MaxPermSize=500m --headless -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-Xcompile.invokedynamic=false"
 ```
+
+1. (For 32-bit JVMs) Make JRuby faster, give it lots of RAM, & enable C extensions by running this or put in your .bashrc:
+```bash
+export JRUBY_OPTS="-Xcext.enabled=true -J-d32 -J-client -X-C -J-Xms900m -J-Xmx900m -J-XX:MaxPermSize=500m --headless"
+```
+
+  * __WARNING__: The -J-d32 setting is optional (32-bit mode starts up a tiny bit quicker in some JVMs).
   * __WARNING__: Do not switch between 32-bit and 64-bit JRuby after your gemset has been initialized (your bundle library will have serious issues). If you do need to change settings, make sure to reinitialize your gemset:
      * ```rvm gemset delete calcentral```
      * (set your JRUBY_OPTS)
      * ```bundle install```
+
+1. Download and install xvfb. On a Mac, you get xvfb by [installing XQuartz](XQuartz: http://xquartz.macosforge.org/landing/)
 
 1. Download the appropriate gems with [Bundler](http://gembundler.com/rails3.html)
 ```bash
@@ -148,14 +158,16 @@ rspec --drb spec/lib/my_spec.rb
 
 You can even run Spork right inside [IntelliJ RubyMine or IDEA](http://www.jetbrains.com/ruby/webhelp/using-drb-server.html).
 
-## Front-end Testing
+## Front-end Linting
 
-Front-end [jasmine](http://pivotal.github.com/jasmine/) tests live in spec/javascripts/calcentral/*.
+Front-end linting can be done by running the following command:
 
-To run the tests headless on firefox run `rake jasmine:ci`.
+```
+jshint .
+```
 
-To view results of front-end tests, run `rake jasmine` in a separate terminal,
-then visit [localhost:8888](http://localhost:8888).
+This will check for any potential JavaScript issues and whether you formatted the code correctly.
+
 
 ## Role-Aware Testing
 
@@ -204,21 +216,6 @@ rails s -e production
 1. After testing, remove the static assets and generated pages
 ```bash
 bundle exec rake assets:clean
-```
-
-### Java Out of Memory exception
-
-If you're getting something like the following error:
-
-```
-Java::JavaLang::OutOfMemoryError: Java heap space
-```
-
-Make sure that you're memory settings for Java are high enough.
-Add the following to your `JRUBY_OPTS`:
-
-```
-JRUBY_OPTS="-J-Xmx900m -J-XX:MaxPermSize=500m"
 ```
 
 ### Start the server with TorqueBox

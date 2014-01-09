@@ -1,12 +1,12 @@
 /**
  * Configure the routes for CalCentral
  */
-(function(calcentral) {
+(function(angular) {
 
   'use strict';
 
   // Set the configuration
-  calcentral.config(['$routeProvider', function($routeProvider) {
+  angular.module('calcentral.config').config(function($routeProvider) {
 
     // List all the routes
     $routeProvider.when('/', {
@@ -83,6 +83,10 @@
       templateUrl: 'templates/canvas_embedded/user_provision.html',
       controller: 'CanvasUserProvisionController'
     }).
+    when('/canvas/embedded/course_add_user', {
+      templateUrl: 'templates/canvas_embedded/course_add_user.html',
+      controller: 'CanvasCourseAddUserController'
+    }).
     when('/canvas/rosters/:canvas_course_id', {
       templateUrl: 'templates/canvas_embedded/roster.html',
       controller: 'CanvasRosterController'
@@ -95,6 +99,10 @@
       templateUrl: 'templates/canvas_embedded/user_provision.html',
       controller: 'CanvasUserProvisionController'
     }).
+    when('/canvas/course_add_user/:canvas_course_id', {
+      templateUrl: 'templates/canvas_embedded/course_add_user.html',
+      controller: 'CanvasCourseAddUserController'
+    }).
     // Redirect to a 404 page
     otherwise({
       templateUrl: 'templates/404.html',
@@ -102,6 +110,6 @@
       isPublic: true
     });
 
-  }]);
+  });
 
-})(window.calcentral);
+})(window.angular);

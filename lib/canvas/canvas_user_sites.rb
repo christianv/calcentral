@@ -78,7 +78,7 @@ class CanvasUserSites
           (coffering[:role] == 'Student' || coffering[:role] == 'Instructor') &&
               coffering[:term_yr].to_s == campus_section[:term_yr] &&
               coffering[:term_cd] == campus_section[:term_cd] &&
-              coffering[:sections].index{ |csect| csect[:ccn].to_s == campus_section[:ccn] }
+              coffering[:sections].index{ |csect| csect[:ccn].to_i == campus_section[:ccn].to_i }
         end
         if matched_course_idx
           linked_course_ids.add(campus_user_courses[matched_course_idx][:id])
@@ -96,7 +96,6 @@ class CanvasUserSites
         role: role,
         courses: linked_course_ids,
         emitter: CanvasProxy::APP_NAME,
-        color_class: "canvas-class",
         site_url: "#{@url_root}/courses/#{course_id}"
     }
   end
@@ -113,7 +112,6 @@ class CanvasUserSites
           courses: groups_course[:courses],
           source: groups_course[:name],
           emitter: CanvasProxy::APP_NAME,
-          color_class: "canvas-class",
           site_url: "#{@url_root}/groups/#{site['id']}"
       }
     else
@@ -122,7 +120,6 @@ class CanvasUserSites
           name: site['name'],
           site_type: 'group',
           emitter: CanvasProxy::APP_NAME,
-          color_class: "canvas-group",
           site_url: "#{@url_root}/groups/#{site['id']}"
       }
     end

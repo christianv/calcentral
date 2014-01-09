@@ -33,7 +33,25 @@ describe CampusData do
     end
   end
 
+  it "should find the most currently available student data between terms" do
+    CampusData.stub(:current_year).and_return(2525)
+    data = CampusData.get_person_attributes(300846)
+    if CampusData.test_data?
+      data['reg_status_cd'].should == "C"
+    end
+  end
+
   it "should find Stu TestB's registration status" do
+    data = CampusData.get_reg_status(300846)
+    if CampusData.test_data?
+      data['ldap_uid'].should == "300846"
+      # we will only have predictable reg_status_cd values in our fake Oracle db.
+      data['reg_status_cd'].should == "C"
+    end
+  end
+
+  it "should find the most currently available registration status between terms" do
+    CampusData.stub(:current_year).and_return(2525)
     data = CampusData.get_reg_status(300846)
     if CampusData.test_data?
       data['ldap_uid'].should == "300846"
@@ -66,7 +84,7 @@ describe CampusData do
   end
 
   it "should find a course" do
-    course = CampusData.get_course_from_section("7366", "2013", "B")
+    course = CampusData.get_course_from_section("07366", "2013", "B")
     course.should_not be_nil
     if CampusData.test_data?
       # we will only have predictable data in our fake Oracle db.
@@ -77,8 +95,7 @@ describe CampusData do
   end
 
   it "should find sections from CCNs" do
-    courses = CampusData.get_sections_from_ccns("2013", "D", ["7309", "7366", "919191", "16171"])
-    pp courses
+    courses = CampusData.get_sections_from_ccns("2013", "D", ["7309", "07366", "919191", "16171"])
     courses.should_not be_nil
     if CampusData.test_data?
       courses.length.should == 3
@@ -259,6 +276,171 @@ describe CampusData do
   it "should say a staff member does not have instructional or student history", if: CampusData.test_data? do
     CampusData.has_instructor_history?("2040", Settings.sakai_proxy.academic_terms.instructor).should be_false
     CampusData.has_student_history?("2040", Settings.sakai_proxy.academic_terms.student).should be_false
+  end
+
+  context "when searching for users by name" do
+    it "should raise exception if search string argument is not a string" do
+      expect { CampusData.find_people_by_name(12345) }.to raise_error(ArgumentError, "Search text argument must be a string")
+    end
+
+    it "should raise exception if row limit argument is not an integer" do
+      expect { CampusData.find_people_by_name("TEST-", "15") }.to raise_error(ArgumentError, "Limit argument must be a Fixnum")
+    end
+
+    it "should escape user input to avoid SQL injection", :testext => true do
+      CampusData.connection.should_receive(:quote_string).with("anything' OR 'x'='x").and_return("anything'' OR ''x''=''x")
+      user_data = CampusData.find_people_by_name("anything' OR 'x'='x")
+    end
+
+    it "should be able to find users by last name separated by a comma and space", :testext => true do
+      user_data = CampusData.find_people_by_name("smith, j", 10)
+      expect(user_data).to be_an_instance_of Array
+      if user_data.count > 0
+        expect(user_data[0]).to be_an_instance_of Hash
+        expect(user_data[0]['first_name']).to be_an_instance_of String
+        expect(user_data[0]['last_name']).to be_an_instance_of String
+      end
+    end
+
+    it "should provide row number and count column", :testext => true do
+      user_data = CampusData.find_people_by_name("smith, j", 10)
+      expect(user_data).to be_an_instance_of Array
+      if user_data.count > 0
+        expect(user_data[0]).to be_an_instance_of Hash
+        expect(user_data[0]['row_number']).to be_an_instance_of String
+        expect(user_data[0]['result_count']).to be_an_instance_of String
+      end
+    end
+
+    it "should be able to limit the number of results", :testext => true do
+      user_data = CampusData.find_people_by_name("smith", 2)
+      expect(user_data).to be_an_instance_of Array
+      expect(user_data.count).to eq 2
+    end
+  end
+
+  context "when searching for users by email" do
+    it "should raise exception if search string argument is not a string" do
+      expect { CampusData.find_people_by_email(12345) }.to raise_error(ArgumentError, "Search text argument must be a string")
+    end
+
+    it "should raise exception if row limit argument is not an integer" do
+      expect { CampusData.find_people_by_email("test-", "15") }.to raise_error(ArgumentError, "Limit argument must be a Fixnum")
+    end
+
+    it "should escape user input to avoid SQL injection", :testext => true do
+      CampusData.connection.should_receive(:quote_string).with("anything' OR 'x'='x").and_return("anything'' OR ''x''=''x")
+      user_data = CampusData.find_people_by_email("anything' OR 'x'='x")
+    end
+
+    it "should be able to find users by partial email", :testext => true do
+      user_data = CampusData.find_people_by_email("johnson")
+      expect(user_data).to be_an_instance_of Array
+      if user_data.count > 0
+        expect(user_data[0]).to be_an_instance_of Hash
+        expect(user_data[0]['first_name']).to be_an_instance_of String
+        expect(user_data[0]['last_name']).to be_an_instance_of String
+      end
+    end
+
+    it "should provide row number and count column", :testext => true do
+      user_data = CampusData.find_people_by_email("john", 1)
+      expect(user_data).to be_an_instance_of Array
+      if user_data.count > 0
+        expect(user_data[0]).to be_an_instance_of Hash
+        expect(user_data[0]['row_number']).to be_an_instance_of String
+        expect(user_data[0]['result_count']).to be_an_instance_of String
+      end
+    end
+
+    it "should be able to limit the number of results", :testext => true do
+      user_data = CampusData.find_people_by_email("john", 5)
+      expect(user_data).to be_an_instance_of Array
+      expect(user_data.count).to eq 5
+    end
+  end
+
+  context "when searching for users by student id" do
+    it "should raise exception if argument is not a string" do
+      expect { CampusData.find_people_by_student_id(12345) }.to raise_error(ArgumentError, "Argument must be a string")
+    end
+
+    it "should raise exception if argument is not an integer string" do
+      expect { CampusData.find_people_by_student_id('2890abc') }.to raise_error(ArgumentError, "Argument is not an integer string")
+    end
+
+    it "should not find results by partial student id", if: CampusData.test_data? do
+      user_data = CampusData.find_people_by_student_id("8639")
+      expect(user_data).to be_an_instance_of Array
+      expect(user_data.count).to eq 0
+    end
+
+    it "should find results by exact student id", if: CampusData.test_data? do
+      user_data = CampusData.find_people_by_student_id("863980")
+      expect(user_data).to be_an_instance_of Array
+      expect(user_data.count).to eq 1
+      expect(user_data[0]).to be_an_instance_of Hash
+      expect(user_data[0]['first_name']).to eq "FAISAL KARIM"
+      expect(user_data[0]['last_name']).to eq "MERCHANT"
+    end
+
+    it "should include row number and count as 1", if: CampusData.test_data? do
+      user_data = CampusData.find_people_by_student_id("863980")
+      expect(user_data).to be_an_instance_of Array
+      expect(user_data[0]).to be_an_instance_of Hash
+      expect(user_data[0]['row_number']).to eq 1
+      expect(user_data[0]['result_count']).to eq 1
+    end
+  end
+
+  context "when searching for users by LDAP user id" do
+    it "should raise exception if argument is not a string" do
+      expect { CampusData.find_people_by_uid(300847) }.to raise_error(ArgumentError, "Argument must be a string")
+    end
+
+    it "should raise exception if argument is not an integer string" do
+      expect { CampusData.find_people_by_uid('300abc') }.to raise_error(ArgumentError, "Argument is not an integer string")
+    end
+
+    it "should not find results by partial user id", if: CampusData.test_data? do
+      user_data = CampusData.find_people_by_uid("3008")
+      expect(user_data).to be_an_instance_of Array
+      expect(user_data.count).to eq 0
+    end
+
+    it "should find user by exact LDAP user ID", if: CampusData.test_data? do
+      user_data = CampusData.find_people_by_uid("300847")
+      expect(user_data).to be_an_instance_of Array
+      expect(user_data.count).to eq 1
+      expect(user_data[0]).to be_an_instance_of Hash
+      expect(user_data[0]['first_name']).to eq "STUDENT"
+      expect(user_data[0]['last_name']).to eq "TEST-300847"
+    end
+
+    it "should include row number and count as 1", if: CampusData.test_data? do
+      user_data = CampusData.find_people_by_uid("300847")
+      expect(user_data).to be_an_instance_of Array
+      expect(user_data[0]).to be_an_instance_of Hash
+      expect(user_data[0]['row_number']).to eq 1
+      expect(user_data[0]['result_count']).to eq 1
+    end
+  end
+
+  context "when checking integer format of string" do
+    it "raises exception if argument is not a string" do
+      expect { CampusData.is_integer_string?(188902) }.to raise_error(ArgumentError, "Argument must be a string")
+    end
+
+    it "returns true if string is successfully converted to an integer" do
+      expect(CampusData.is_integer_string?("189023")).to be_true
+    end
+
+    it "returns false if string is not successfully converted to an integer" do
+      expect(CampusData.is_integer_string?("18dfsd9023")).to be_false
+      expect(CampusData.is_integer_string?("254AbCdE")).to be_false
+      expect(CampusData.is_integer_string?("98,()@")).to be_false
+      expect(CampusData.is_integer_string?("2390.023")).to be_false
+    end
   end
 
 end

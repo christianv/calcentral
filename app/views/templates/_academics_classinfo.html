@@ -17,7 +17,7 @@
       </h1>
     </div>
 
-    <div class="large-4 columns cc-academics-page-left">
+    <div class="medium-4 columns cc-academics-page-left">
       <div class="cc-widget">
         <div class="cc-widget-title">
           <h2>Class information</h2>
@@ -83,7 +83,7 @@
       </div>
     </div>
 
-    <div class="large-4 columns" data-ng-show="selected_course_count_instructors">
+    <div class="medium-4 columns" data-ng-show="selected_course_count_instructors">
       <div class="cc-widget">
         <div class="cc-widget-title">
           <h2 data-ng-pluralize count="selected_course_count_instructors" when="{'1': 'Instructor', 'other': 'Instructors'}">Instructors</h2>
@@ -105,8 +105,25 @@
       </div>
     </div>
 
-    <div class="large-4 columns" data-ng-show="selected_course.class_sites.length">
-      <div class="cc-widget">
+    <div class="medium-4 columns">
+      <div class="cc-widget cc-widget-last" data-ng-controller="VideoController" data-ng-if="api.user.profile.features.videos">
+        <div class="cc-widget-title">
+          <h2>Videos</h2>
+        </div>
+        <div class="cc-widget-padding">
+          <div data-cc-spinner-directive>
+            <div data-ng-bind="error_message"></div>
+            <div class="cc-youtube-video" data-ng-repeat="video in videos">
+              <h3 data-ng-bind="video.title"></h3>
+              <iframe type="text/html" width="100%" height="100%"
+              data-ng-attr-src="{{video.link}}"
+              frameborder="0"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cc-widget cc-widget-last" data-ng-if="selected_course.class_sites.length">
         <div class="cc-widget-title">
           <h2>Class Sites</h2>
         </div>
@@ -122,10 +139,8 @@
           </ul>
         </div>
       </div>
-    </div>
 
-    <div class="large-4 columns" data-ng-if="api.user.profile.features.textbooks && books.has_books">
-      <div class="cc-widget cc-widget-last">
+      <div class="cc-widget cc-widget-last" data-ng-if="api.user.profile.features.textbooks && books.has_books">
         <div class="cc-widget-title">
           <h2>Textbooks</h2>
         </div>
@@ -151,6 +166,11 @@
                     <li data-ng-if="book.chegg_link">
                       <strong>Rent Book:</strong>
                       <a data-ng-href="{{book.chegg_link}}" class="cc-icon cc-icon-chegg">
+                      </a>
+                    </li>
+                    <li data-ng-if="book.oskicat_link">
+                      <strong>OskiCat Link:</strong>
+                      <a data-ng-href="{{book.oskicat_link}}" class="cc-icon cc-icon-oskicat">
                       </a>
                     </li>
                   </ul>

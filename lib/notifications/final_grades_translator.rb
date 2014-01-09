@@ -25,13 +25,12 @@ class FinalGradesTranslator
         :id => notification.id,
         :title => title,
         :summary => "Your final grade is available in Bearfacts.",
-        :source => event["system"],
+        :source => 'Bear Facts',
         :type => "alert",
         :date => format_date(timestamp),
         :url => "https://bearfacts.berkeley.edu/bearfacts/",
         :source_url => "https://bearfacts.berkeley.edu/bearfacts/",
-        :emitter => "BearFacts",
-        :color_class => "campus-item"
+        :emitter => "BearFacts"
     }
   end
 

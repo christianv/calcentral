@@ -36,10 +36,12 @@ describe "MyTasks" do
 
       # Counts for task types in VCR recording
       overdue_counter = 5
-      # On Sundays, no "Future" tasks can escape the "Today" bucket.
+      # Some "Future" tasks are normally discarded to limit the size of the feed.
+      # On Sundays, no "later in the week" tasks can escape the "Today" bucket. Since this moves
+      # some "Future" tasks to "Today", more total tasks will be in the feed on Sunday.
       if Time.zone.today.sunday?
         today_counter = 7
-        future_counter = 7
+        future_counter = 8
       else
         today_counter = 2
         future_counter = 10
@@ -67,7 +69,6 @@ describe "MyTasks" do
 
         if task["emitter"] == GoogleProxy::APP_ID
           task["link_url"].should == "https://mail.google.com/tasks/canvas?pli=1"
-          task["color_class"].should == "google-task"
           if task["due_date"]
             task["due_date"]["date_string"] =~ /\d\d\/\d\d/
             task["due_date"]["epoch"].should >= 1351641600
@@ -76,7 +77,6 @@ describe "MyTasks" do
         if task["emitter"] == CanvasProxy::APP_NAME
           task["link_url"].should =~ /https:\/\/ucberkeley.instructure.com\/courses/
           task["link_url"].should == task["source_url"]
-          task["color_class"].should == "canvas-class"
           if task["due_date"]
             task["due_date"]["date_string"] =~ /\d\d\/\d\d/
             task["due_date"]["epoch"].should >= 1351641600

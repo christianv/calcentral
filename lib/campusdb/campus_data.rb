@@ -32,11 +32,9 @@ class CampusData < OracleDatabase
         reg.fin_blk_flag, reg.reg_blk_flag, reg.tot_enroll_unit, reg.cal_residency_flag
       from calcentral_person_info_vw pi
       left outer join calcentral_student_term_vw reg on
-        ( reg.ldap_uid = pi.ldap_uid
-          and reg.term_yr = #{current_year.to_i}
-          and reg.term_cd = #{connection.quote(current_term)}
-        )
+        reg.ldap_uid = pi.ldap_uid
       where pi.ldap_uid = #{person_id.to_i}
+      order by reg.term_yr desc, reg.term_cd desc
       SQL
       result = connection.select_one(sql)
     }
@@ -63,29 +61,124 @@ class CampusData < OracleDatabase
 
   def self.get_basic_people_attributes(up_to_1000_ldap_uids)
     result = []
+      use_pooled_connection {
+        sql = <<-SQL
+        select pi.ldap_uid, pi.first_name, pi.last_name, pi.email_address, pi.student_id, pi.affiliations
+        from calcentral_person_info_vw pi
+        where pi.ldap_uid in (#{up_to_1000_ldap_uids.collect{|id| id.to_i}.join(', ')})
+        SQL
+        result = connection.select_all(sql)
+      }
+    result
+  end
+
+  def self.find_people_by_name(name_search_string, limit = 0)
+    raise ArgumentError, "Search text argument must be a string" if name_search_string.class != String
+    raise ArgumentError, "Limit argument must be a Fixnum" if limit.class != Fixnum
+    limit_clause = (limit > 0) ? "where rownum <= #{limit}" : ""
+    search_text_array = name_search_string.split(',')
+    search_text_array.collect! {|e| e.strip }
+    clean_search_string = connection.quote_string(search_text_array.join(','))
+    result = []
     use_pooled_connection {
       sql = <<-SQL
-      select pi.ldap_uid, pi.first_name, pi.last_name, pi.email_address, pi.student_id, pi.affiliations
-      from calcentral_person_info_vw pi
-      where pi.ldap_uid in (#{up_to_1000_ldap_uids.collect{|id| id.to_i}.join(', ')})
+        select outr.*
+        from (
+          select  pi.ldap_uid,
+                  pi.first_name,
+                  pi.last_name,
+                  pi.email_address,
+                  pi.student_id,
+                  pi.affiliations,
+                  row_number() over(order by 1) row_number,
+                  count(*) over() result_count
+          from calcentral_person_info_vw pi
+          where lower( concat(concat(pi.last_name, ','), pi.first_name) ) like '#{clean_search_string.downcase}%'
+          order by pi.last_name
+        ) outr #{limit_clause}
       SQL
       result = connection.select_all(sql)
     }
     result
   end
 
+  def self.find_people_by_email(email_search_string, limit = 0)
+    raise ArgumentError, "Search text argument must be a string" if email_search_string.class != String
+    raise ArgumentError, "Limit argument must be a Fixnum" if limit.class != Fixnum
+    limit_clause = (limit > 0) ? "where rownum <= #{limit}" : ""
+    clean_search_string = connection.quote_string(email_search_string)
+    result = []
+    use_pooled_connection {
+      sql = <<-SQL
+        select outr.*
+        from (
+          select  pi.ldap_uid,
+                  pi.first_name,
+                  pi.last_name,
+                  pi.email_address,
+                  pi.student_id,
+                  pi.affiliations,
+                  row_number() over(order by 1) row_number,
+                  count(*) over() result_count
+          from calcentral_person_info_vw pi
+          where lower(pi.email_address) like '%#{clean_search_string.downcase}%'
+          order by pi.last_name
+        ) outr #{limit_clause}
+      SQL
+      result = connection.select_all(sql)
+    }
+    result
+  end
+
+  def self.find_people_by_student_id(student_id_string)
+    raise ArgumentError, "Argument must be a string" if student_id_string.class != String
+    raise ArgumentError, "Argument is not an integer string" unless is_integer_string?(student_id_string)
+    result = []
+    use_pooled_connection {
+      sql = <<-SQL
+      select pi.ldap_uid, pi.first_name, pi.last_name, pi.email_address, pi.student_id, pi.affiliations, 1 row_number, 1 result_count
+      from calcentral_person_info_vw pi
+      where pi.student_id = #{student_id_string}
+      and rownum <= 1
+      SQL
+      result = connection.select_all(sql)
+    }
+    result
+  end
+
+  def self.find_people_by_uid(user_id_string)
+    raise ArgumentError, "Argument must be a string" if user_id_string.class != String
+    raise ArgumentError, "Argument is not an integer string" unless is_integer_string?(user_id_string)
+    result = []
+    use_pooled_connection {
+      sql = <<-SQL
+      select pi.ldap_uid, pi.first_name, pi.last_name, pi.email_address, pi.student_id, pi.affiliations, 1 row_number, 1 result_count
+      from calcentral_person_info_vw pi
+      where pi.ldap_uid = #{user_id_string}
+      and rownum <= 1
+      SQL
+      result = connection.select_all(sql)
+    }
+    result
+  end
+
+  def self.is_integer_string?(string)
+    raise ArgumentError, "Argument must be a string" if string.class != String
+    string.to_i.to_s == string
+  end
+
   def self.get_reg_status(person_id)
     result = nil
-      use_pooled_connection {
+    use_pooled_connection {
+      # To date, the student academic status view has always contained data for only one term.
+      # The "order by" clause is included in case that changes without warning.
       sql = <<-SQL
       select pi.ldap_uid, pi.student_id, reg.reg_status_cd
       from calcentral_person_info_vw pi
       left outer join calcentral_student_term_vw reg on
-        ( reg.ldap_uid = pi.ldap_uid
-          and reg.term_yr = #{current_year.to_i}
-          and reg.term_cd = #{connection.quote(current_term)}
-        )
+        reg.ldap_uid = pi.ldap_uid
       where pi.ldap_uid = #{person_id.to_i}
+      order by reg.term_yr desc, reg.term_cd desc
       SQL
       result = connection.select_one(sql)
     }
@@ -170,7 +263,7 @@ class CampusData < OracleDatabase
     terms_clause = terms_query_clause('r', terms)
     use_pooled_connection {
       sql = <<-SQL
-      select c.term_yr, c.term_cd, c.course_cntl_num, r.enroll_status, r.wait_list_seq_num, r.unit, r.pnp_flag,
+      select d.dept_description, c.term_yr, c.term_cd, c.course_cntl_num, r.enroll_status, r.wait_list_seq_num, r.unit, r.pnp_flag,
         c.course_title, c.dept_name, c.catalog_id, c.primary_secondary_cd, c.section_num, c.instruction_format,
         c.catalog_root, c.catalog_prefix, c.catalog_suffix_1, c.catalog_suffix_2, c.enroll_limit, c.cred_cd
       from calcentral_class_roster_vw r
@@ -178,6 +271,8 @@ class CampusData < OracleDatabase
         c.term_yr = r.term_yr
           and c.term_cd = r.term_cd
           and c.course_cntl_num = r.course_cntl_num )
+      join calcentral_dept_vw d on (
+        d.dept_name = c.dept_name)
       where r.student_ldap_uid = #{person_id.to_i}
         and c.section_cancel_flag is null
         #{terms_clause}
