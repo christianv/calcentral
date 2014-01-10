@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="templates/splash.html">
-  <div class="row">
-    <div class="large-6 columns cc-page-splash-container-left">
+  <div class="row cc-page-splash-container">
+    <div class="medium-6 columns cc-page-splash-container-left">
       <div class="cc-page-splash-logo-container">
         <div class="cc-page-splash-center">
           <%= image_tag "svg/calcentral_logo_beta_405x55.svg", :size => "405x55", :alt => "
@@ -13,20 +13,25 @@
       </div>
 
       <div class="row collapse cc-page-splash-blog-panel" data-ng-show="latest_release_note.title">
-        <div class="large-2 columns hide-for-small cc-page-splash-blog-date">
+        <div class="medium-2 columns hide-for-small cc-page-splash-blog-date">
           <p>{{latest_release_note.date}}</p>
         </div>
-        <div class="large-10 columns small-12">
-          <p class="cc-splash-blog-title">
+        <div class="medium-10 columns small-12">
+          <p class="cc-page-splash-blog-title">
             <a data-ng-href="{{latest_release_note.link}}">{{latest_release_note.title}}</a>
           </p>
-          <p class="cc-splash-blog-summary" data-ng-bind-html="latest_release_note.snippet"></p>
+          <p class="cc-page-splash-blog-summary" data-ng-bind-html="latest_release_note.snippet"></p>
         </div>
       </div>
     </div>
 
-    <div class="large-6 columns">
-      Carousel
+    <div class="medium-6 columns">
+      <div class="cc-page-splash-info">
+        <%= image_tag "splash_cfv_625×415.png", :size => "625×415", :alt => "", :class => "cc-page-splash-info-image" %>
+        <p class="cc-page-splash-info-text">
+          <strong>My Finances</strong>: The new consolidated financial view (CFV) in My Finances provides a student with detailed transaction information on his/her CARS billing account (ex: charges, payments and disbursements). My Finances shows recent activity since the last monthly CARS e-Bill statement.
+        </p>
+      </div>
     </div>
   </div>
 
