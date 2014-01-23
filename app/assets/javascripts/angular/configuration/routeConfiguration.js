@@ -49,6 +49,11 @@
       templateUrl: 'templates/myfinances.html',
       controller: 'MyFinancesController'
     }).
+    when('/finances/details', {
+      templateUrl: 'templates/myfinances.html',
+      controller: 'MyFinancesController',
+      isSubPage: true
+    }).
     when('/settings', {
       templateUrl: 'templates/settings.html',
       controller: 'SettingsController'

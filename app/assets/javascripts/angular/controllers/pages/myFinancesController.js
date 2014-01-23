@@ -5,7 +5,7 @@
    * Campus controller
    */
 
-  angular.module('calcentral.controllers').controller('MyFinancesController', function($filter, $http, $routeParams, $scope, apiService) {
+  angular.module('calcentral.controllers').controller('MyFinancesController', function($filter, $http, $route, $scope, apiService) {
 
     var sortTermsIndex = {
       'Fall': 0,
@@ -219,7 +219,7 @@
     /**
      * Get the student's financial information
      */
-    var getStudentInfo = function() {
+    var getFinancials = function() {
 
       // Data contains all the financial information for the current student
       $http.get('/api/my/financials').success(function(data) {
@@ -292,7 +292,8 @@
     // We need to wait until the user is loaded
     $scope.$on('calcentral.api.user.isAuthenticated', function(event, isAuthenticated) {
       if (isAuthenticated) {
-        getStudentInfo();
+        $scope.isSubPage = $route.current && $route.current.isSubPage;
+        getFinancials();
       }
     });
 
