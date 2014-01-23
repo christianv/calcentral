@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="templates/campus.html">
 
-  <div class="cc-page-campus" data-ng-cloak data-cc-spinner-directive>
+  <div class="cc-page-campus" data-ng-cloak data-cc-spinner-directive data-cc-link-list-directive="links">
 
     <div class="medium-9 medium-push-3 columns cc-page-campus-content">
 
@@ -14,7 +14,7 @@
           <h3>{{subcategory}}</h3>
 
           <ul class="cc-list-links">
-            <li data-ng-repeat="link in links | orderBy:'name' | linksubcategory:subcategory">
+            <li data-ng-repeat="link in linklist | orderBy:'name' | linksubcategory:subcategory">
               <a data-ng-href="{{link.url}}"
                 data-ng-click="api.analytics.trackExternalLink('Campus links', subcategory, link.url)"
                 title="{{link.description}}">{{link.name}}</a>

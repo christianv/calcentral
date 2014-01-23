@@ -8,77 +8,6 @@
   angular.module('calcentral.controllers').controller('CampusController', function($http, $routeParams, $scope, apiService) {
 
     /**
-     * Add to the subcategories list if it doesn't exist yet
-     * @param {String} subcategory The subcategory you want to add
-     */
-    var addToSubcategories = function(subcategory) {
-      if ($scope.subcategories.indexOf(subcategory) === -1) {
-        $scope.subcategories.push(subcategory);
-      }
-    };
-
-    /**
-     * Add to the top categories
-     * @param {Object} link Link object
-     */
-    var addToTopCategories = function(link) {
-      for (var i = 0; i < link.categories.length; i++) {
-        $scope.topcategories[link.categories[i].topcategory] = true;
-      }
-    };
-
-    /**
-     * Depending on the roles, determine whether the current user should be able to view the link
-     * @param {Object} link Link object
-     * @return {Boolean} Whether the user should be able to view the link
-     */
-    var canViewLink = function(link) {
-      for (var i in link.roles) {
-        if (link.roles.hasOwnProperty(i) &&
-            link.roles[i] === true &&
-            link.roles[i] ===  $scope.api.user.profile.roles[i]) {
-          addToTopCategories(link);
-          return true;
-        }
-      }
-      return false;
-    };
-
-    /**
-     * Check whether a link is in a current category
-     * @param {Object} link Link object
-     * @return {Boolean} Whether a link is in the current category
-     */
-    var isLinkInCategory = function(link) {
-      link.subCategories = [];
-      for (var i = 0; i < link.categories.length; i++) {
-        if (link.categories[i].topcategory === $scope.currentTopCategory) {
-          link.subCategories.push(link.categories[i].subcategory);
-        }
-      }
-      return (link.subCategories.length > 0);
-    };
-
-    /**
-     * Set the links for the current page
-     * @param {Array} links The list of links that need to be parsed
-     */
-    var setLinks = function(links) {
-      $scope.links = [];
-      $scope.subcategories = [];
-      $scope.topcategories = {};
-      angular.forEach(links, function(link) {
-        if (canViewLink(link) && isLinkInCategory(link)) {
-          $scope.links.push(link);
-          for (var i = 0; i < link.subCategories.length; i++) {
-            addToSubcategories(link.subCategories[i]);
-          }
-        }
-      });
-      $scope.subcategories.sort();
-    };
-
-    /**
      * Get the category name, when you feed in an id
      * @param {String} categoryId A category id
      * @return {String} The category name
@@ -117,8 +46,6 @@
         $scope.currentTopCategory = getCategoryName($routeParams.category);
         var title = 'Campus - ' + $scope.currentTopCategory;
         apiService.util.setTitle(title);
-
-        setLinks($scope.links);
       });
     };
 
