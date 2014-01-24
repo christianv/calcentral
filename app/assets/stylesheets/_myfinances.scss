@@ -68,15 +68,26 @@
   .cc-page-myfinances-lighter {
     color: $cc-color-lighter-medium-grey;
   }
-  .cc-page-myfinances-links-list {
-    margin: 10px 20px;
-  }
   .cc-page-myfinances-not-amount-due-dpp {
     font-size: 11px;
   }
   .cc-page-myfinances-red {
     &, & td {
       color: $cc-color-red;
+    }
+  }
+  .cc-page-myfinances-resources-contact {
+    line-height: 1.4;
+    margin-bottom: 0;
+    padding: 15px 15px 0;
+  }
+  .cc-page-myfinances-resources-list {
+    margin: 10px 20px;
+  }
+  .cc-page-myfinances-resources-more {
+    padding: 0 15px 15px;
+    .cc-button {
+      display: inline-block;
     }
   }
   .cc-page-myfinances-table {
