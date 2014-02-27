@@ -82,12 +82,12 @@
       if ($scope.search_text === '') {
         $scope.show_alerts = true;
         $scope.no_search_text_alert = true;
-        $scope.is_loading = false;
+        $scope.isLoading = false;
         return false;
       }
 
       $scope.show_users_area = true;
-      $scope.is_loading = true;
+      $scope.isLoading = true;
 
       var search_users_uri = '/api/academics/canvas/course_add_user/search_users';
       var feed_params = {
@@ -107,7 +107,7 @@
           $scope.user_search_results_count = 0;
           $scope.no_search_results_notice = true;
         }
-        $scope.is_loading = false;
+        $scope.isLoading = false;
         $scope.show_alerts = true;
       }).error(function(data) {
         $scope.show_error = true;
@@ -116,7 +116,7 @@
         } else {
           $scope.error_status = 'User search failed.';
         }
-        $scope.is_loading = false;
+        $scope.isLoading = false;
         $scope.search_failure_message = true;
         $scope.show_alerts = true;
       });
@@ -124,7 +124,7 @@
 
     $scope.addUser = function() {
       $scope.show_users_area = false;
-      $scope.is_loading = true;
+      $scope.isLoading = true;
       $scope.show_alerts = true;
       var submitted_user = $scope.selected_user;
       var submitted_section = $scope.selected_section;
@@ -145,7 +145,7 @@
         $scope.user_added.role_name = submitted_role.name;
         $scope.user_added.section_name = submitted_section.name;
         $scope.addition_success_message = true;
-        $scope.is_loading = false;
+        $scope.isLoading = false;
       }).error(function(data) {
         if (data.error) {
           $scope.error_status = data.error;
@@ -153,7 +153,7 @@
           $scope.error_status = 'Request to add user failed';
         }
         $scope.addition_failure_message = true;
-        $scope.is_loading = false;
+        $scope.isLoading = false;
       });
 
     };

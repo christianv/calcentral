@@ -7,10 +7,10 @@
   <div class="medium-9 small-8 columns cc-settings-service-description-block">
     <div data-ng-show="service=='google'">
       <strong>bConnected</strong><br />
-      <span class="cc-settings-service-description" data-ng-show="!api.user.profile.google_email || !api.user.profile.has_google_access_token">
+      <span class="cc-settings-service-description" data-ng-show="!api.user.profile.google_email || !api.user.profile.hasGoogleAccessToken">
         Connect your Google Apps for Education account in order to access your drive, mail and calendar.<br />Be sure you have logged out of any personal Google accounts before you perform this operation.
       </span>
-      <span class="cc-settings-service-description" data-ng-show="api.user.profile.google_email && api.user.profile.has_google_access_token" data-ng-bind-template="Connected as: {{api.user.profile.google_email}}"></span>
+      <span class="cc-settings-service-description" data-ng-show="api.user.profile.google_email && api.user.profile.hasGoogleAccessToken" data-ng-bind-template="Connected as: {{api.user.profile.google_email}}"></span>
     </div>
   </div>
 

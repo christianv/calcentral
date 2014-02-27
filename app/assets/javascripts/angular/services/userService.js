@@ -51,9 +51,9 @@
 
       events.isLoaded = true;
       // Check whether the current user is authenticated or not
-      events.isAuthenticated = profile && profile.is_logged_in;
+      events.isAuthenticated = profile && profile.isLoggedIn;
       // Check whether the current user is authenticated and has a google access token
-      events.isAuthenticatedAndHasGoogle = profile.is_logged_in && profile.has_google_access_token;
+      events.isAuthenticatedAndHasGoogle = profile.isLoggedIn && profile.hasGoogleAccessToken;
       // Expose the profile into events
       events.profile = profile;
 

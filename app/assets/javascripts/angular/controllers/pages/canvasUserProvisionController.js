@@ -13,7 +13,7 @@
       if (!$scope.userImportForm.$invalid) {
         $scope.displayImportResult = true;
         $scope.importProcessing = true;
-        $scope.is_loading = true;
+        $scope.isLoading = true;
 
         var valid_list = list.join();
 
@@ -25,7 +25,7 @@
         };
 
         $http(import_request).success(function(data) {
-          $scope.is_loading = false;
+          $scope.isLoading = false;
           $scope.importProcessing = false;
           angular.extend($scope, data);
         });

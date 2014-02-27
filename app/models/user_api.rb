@@ -98,7 +98,7 @@ class UserApi < MyMergedModel
       :full_name => @first_name + ' ' + @last_name,
       :is_google_reminder_dismissed => is_google_reminder_dismissed,
       :has_canvas_account => CanvasProxy.has_account?(@uid),
-      :has_google_access_token => GoogleProxy.access_granted?(@uid),
+      :hasGoogleAccessToken => GoogleProxy.access_granted?(@uid),
       :google_email => google_mail,
       :canvas_email => canvas_mail,
       :last_name => @last_name,

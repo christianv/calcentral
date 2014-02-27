@@ -18,7 +18,7 @@
 
     <!-- Pass rails variables to JS -->
     <script>
-      window.calcentral_config = <%= @calcentral_config %>;
+      window.calcentralConfig = <%= @calcentral_config %>;
     </script>
 
     <!-- Included JS Files  -->
@@ -33,7 +33,7 @@
 </head>
 
 <body
-  data-ng-class="{'cc-page-splash':(controller_name=='SplashController'),'cc-offcanvas-show':(off_canvas_menu.show)}"
+  data-ng-class="{'cc-page-splash':(controllerName === 'SplashController'),'cc-offcanvas-show':(off_canvas_menu.show)}"
   data-ng-show="api.user.events.isLoaded"
   data-cc-iosfix-directive>
 
