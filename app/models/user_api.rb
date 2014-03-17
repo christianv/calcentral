@@ -42,7 +42,7 @@ class UserApi < UserSpecificModel
     if !user.blank?
       # The nice way to do this is to also revoke their tokens by sending revoke request to the remote services
       use_pooled_connection {
-        Oauth2Data.destroy_all(:uid => uid)
+        User::Oauth2Data.destroy_all(:uid => uid)
         Notifications::Notification.destroy_all(:uid => uid)
       }
     end
@@ -81,10 +81,10 @@ class UserApi < UserSpecificModel
   end
 
   def get_feed_internal
-    google_mail = Oauth2Data.get_google_email(@uid)
-    canvas_mail = Oauth2Data.get_canvas_email(@uid)
+    google_mail = User::Oauth2Data.get_google_email(@uid)
+    canvas_mail = User::Oauth2Data.get_canvas_email(@uid)
     current_user = User::Auth.get(@uid)
-    is_google_reminder_dismissed = Oauth2Data.is_google_reminder_dismissed(@uid)
+    is_google_reminder_dismissed = User::Oauth2Data.is_google_reminder_dismissed(@uid)
     is_google_reminder_dismissed = is_google_reminder_dismissed && is_google_reminder_dismissed.present?
     campus_courses_proxy = CampusOracle::UserCourses.new({:user_id => @uid})
     has_student_history = campus_courses_proxy.has_student_history?
@@ -115,37 +115,8 @@ class UserApi < UserSpecificModel
     }
   end
 
-  def self.is_allowed_to_log_in?(uid)
-    unless Settings.features.user_whitelist
-      return true
-    end
-    if User::Data.where(uid: uid).first.present?
-      return true
-    end
-    if UserWhitelist.where(uid: uid).first.present?
-      return true
-    end
-    if (info = CampusOracle::Queries.get_student_info(uid))
-      Settings.user_whitelist.first_year_codes.each do |code|
-        if code.term_yr == info["first_reg_term_yr"] && code.term_cd == info["first_reg_term_cd"]
-          return true
-        end
-      end
-    end
-    if Canvas::Proxy.has_account?(uid)
-      return true
-    end
-    if (info.try(:[], "ug_grad_flag") == "G" &&
-      /STUDENT-STATUS-EXPIRED/.match(info["affiliations"]).nil? &&
-      CampusOracle::Queries.is_previous_ugrad?(uid))
-      return true
-    end
-
-    false
-  end
-
   def get_reg_blocks
-    blocks_feed = MyRegBlocks.new(@uid, original_uid: @original_uid).get_feed
+    blocks_feed = Bearfacts::MyRegBlocks.new(@uid, original_uid: @original_uid).get_feed
     response = {
       available: blocks_feed.present? && blocks_feed[:available],
       needsAction: blocks_feed[:active_blocks].present?,

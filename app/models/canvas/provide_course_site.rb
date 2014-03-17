@@ -211,8 +211,8 @@ module Canvas
         {
           yr: term.term_yr,
           cd: term.term_cd,
-          slug: TermCodes.to_slug(term.term_yr, term.term_cd),
-          name: TermCodes.to_english(term.term_yr, term.term_cd)
+          slug: Berkeley::TermCodes.to_slug(term.term_yr, term.term_cd),
+          name: Berkeley::TermCodes.to_english(term.term_yr, term.term_cd)
         }
       end
     end
@@ -307,14 +307,14 @@ module Canvas
       if (sis_id = generate_unique_sis_course_id(Canvas::ExistenceCheck.new, campus_course_data[:slug], term_yr, term_cd))
         {
           'course_id' => sis_id,
-          'short_name' => campus_course_data[:course_number],
+          'short_name' => campus_course_data[:course_code],
           'long_name' => campus_course_data[:title],
           'account_id' => subaccount,
           'term_id' => Canvas::Proxy.term_to_sis_id(term_yr, term_cd),
           'status' => 'active'
         }
       else
-        logger.error("Unable to generate unique Canvas course SIS ID for '#{campus_course_data[:course_number]}'; will NOT create site")
+        logger.error("Unable to generate unique Canvas course SIS ID for '#{campus_course_data[:course_code]}'; will NOT create site")
         raise RuntimeError, "Could not define new course site!"
       end
     end
@@ -329,7 +329,7 @@ module Canvas
             sections << {
               'section_id' => sis_section_id,
               'course_id' => sis_course_id,
-              'name' => "#{course[:course_number]} #{section[:section_label]}",
+              'name' => "#{course[:course_code]} #{section[:section_label]}",
               'status' => 'active'
             }
           else
