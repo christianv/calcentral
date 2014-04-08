@@ -107,6 +107,34 @@
           </ul>
         </div>
 
+        <div class="cc-widget  cc-widget-interesting cc-cal1card" data-ng-controller="Cal1CardController">
+          <div class="cc-widget-title">
+            <h2>Cal 1 Card</h2>
+          </div>
+          <ul class="cc-widget-list">
+            <li class="cc-clearfix-container">
+              <div class="cc-cal1card-header">
+                <strong>Debit Account</strong>
+              </div>
+              <div class="cc-cal1card-yourbalance">
+                Your current balance:
+              </div>
+              <span class="cc-left cc-cal1card-amount" data-ng-bind="cal1card.debit | currency"></span>
+              <a href="http://cal1card.berkeley.edu" class="cc-right">Manage Your Card</a>
+            </li>
+            <li>
+              <div class="cc-cal1card-header">
+                <strong>Meal Plan</strong> &bull; <span data-ng-bind="cal1card.mealpointsPlan"></span>
+              </div>
+              <div class="cc-cal1card-yourbalance">
+                Your current balance:
+              </div>
+              <span class="cc-left cc-cal1card-amount" data-ng-bind="cal1card.mealpoints | number"></span> <span class="cc-cal1card-points">pts</span>
+              <a href="http://caldining.berkeley.edu" class="cc-right">Manage Your Points</a>
+            </li>
+          </ul>
+        </div>
+
         <div class="cc-widget cc-print-hide">
           <div class="cc-widget-title">
             <h2 class="cc-left">Financial Resources</h2>

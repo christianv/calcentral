@@ -1,0 +1,11 @@
+{
+  "cal1card": {
+    "cal1cardStatus": "OK",
+    "cal1cardLost": null,
+    "debit": 0.8,
+    "debitMessage": "OK",
+    "mealpoints": 532.63,
+    "mealpointsMessage": "OK",
+    "mealpointsPlan": "Resident Meal Points"
+  }
+}
