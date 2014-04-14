@@ -1,0 +1,52 @@
+<script type="text/ng-template" id="templates/cal1card.html">
+  <div class="cc-widget cc-widget-interesting cc-cal1card" data-ng-controller="Cal1CardController" data-ng-if="api.user.profile.features.cal1card" data-cc-spinner-directive>
+    <div class="cc-widget-title cc-cal1card-logo">
+      <h2>Cal 1 Card</h2>
+    </div>
+    <ul class="cc-widget-list">
+      <li class="cc-clearfix-container" data-ng-if="cal1card.cal1cardLost !== 'Lost'">
+        <div data-ng-if="cal1card.debitMessage != null && cal1card.debitMessage !== 'Inactive'">
+          <div class="cc-cal1card-header">
+            <strong>Debit Account</strong>
+          </div>
+          <div class="cc-cal1card-yourbalance">
+            Your current balance:
+          </div>
+          <span class="cc-left cc-cal1card-amount" data-ng-bind="cal1card.debit + '' | currency"></span>
+          <a href="http://cal1card.berkeley.edu" class="cc-right">Manage Your Card</a>
+        </div>
+        <div data-ng-if="cal1card.debitMessage == null || cal1card.debitMessage === 'Inactive'">
+          <div class="cc-cal1card-header">
+            <strong>You don't have a debit account.</strong>
+          </div>
+          <a href="http://cal1card.berkeley.edu">Learn more about Cal 1 Card</a>
+        </div>
+      </li>
+      <li class="cc-clearfix-container" data-ng-if="cal1card.cal1cardLost === 'Lost'">
+        <div class="cc-cal1card-header">
+          <strong>Did you know?</strong>
+        </div>
+        Your Cal 1 Card is reported as lost.
+        <a href="http://cal1card.berkeley.edu">Manage Your Card</a>
+      </li>
+      <li>
+        <div data-ng-if="cal1card.mealpointsPlan">
+          <div class="cc-cal1card-header">
+            <strong>Meal Plan</strong><span data-ng-if="cal1card.mealpointsPlan"> &bull; </span><span data-ng-bind="cal1card.mealpointsPlan"></span>
+          </div>
+          <div class="cc-cal1card-yourbalance">
+            Your current balance:
+          </div>
+          <span class="cc-left cc-cal1card-amount" data-ng-bind="cal1card.mealpoints | number"></span> <span class="cc-cal1card-points">pts</span>
+          <a href="http://caldining.berkeley.edu" class="cc-right">Manage Your Points</a>
+        </div>
+        <div data-ng-if="!cal1card.mealpointsPlan">
+          <div class="cc-cal1card-header">
+            <strong>You don't have a meal plan.</strong>
+          </div>
+          <a href="http://caldining.berkeley.edu">Learn more about Meal Plans</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</script>
