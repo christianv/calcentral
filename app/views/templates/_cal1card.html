@@ -4,8 +4,8 @@
       <h2>Cal 1 Card</h2>
     </div>
     <ul class="cc-widget-list">
-      <li class="cc-clearfix-container" data-ng-if="cal1card.cal1cardLost !== 'Lost'">
-        <div data-ng-if="cal1card.debitMessage != null && cal1card.debitMessage !== 'Inactive'">
+      <li class="cc-clearfix-container" data-ng-if="cal1card.cal1cardLost !== 'Lost' || cal1card.cal1cardLost === 'Found'">
+        <div data-ng-if="cal1card.debitMessage === 'OK' && cal1card.debitMessage !== 'Inactive'">
           <div class="cc-cal1card-header">
             <strong>Debit Account</strong>
           </div>
@@ -15,7 +15,7 @@
           <span class="cc-left cc-cal1card-amount" data-ng-bind="cal1card.debit + '' | currency"></span>
           <a href="http://cal1card.berkeley.edu" class="cc-right">Manage Your Card</a>
         </div>
-        <div data-ng-if="cal1card.debitMessage == null || cal1card.debitMessage === 'Inactive'">
+        <div data-ng-if="cal1card.debitMessage !== 'OK' || cal1card.debitMessage === 'Inactive'">
           <div class="cc-cal1card-header">
             <strong>You don't have a debit account.</strong>
           </div>
@@ -27,6 +27,13 @@
           <strong>Did you know?</strong>
         </div>
         Your Cal 1 Card is reported as lost.
+        <a href="http://cal1card.berkeley.edu">Manage Your Card</a>
+      </li>
+      <li class="cc-clearfix-container" data-ng-if="cal1card.cal1cardLost === 'Found'">
+        <div class="cc-cal1card-header">
+          <strong>Good news!</strong>
+        </div>
+        Your Cal 1 Card has been found.
         <a href="http://cal1card.berkeley.edu">Manage Your Card</a>
       </li>
       <li>

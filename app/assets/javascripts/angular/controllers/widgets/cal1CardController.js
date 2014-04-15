@@ -8,8 +8,8 @@
 
     var loadCal1Card = function() {
       cal1CardFactory.getCal1Card().success(function(data) {
-        angular.extend($scope, data);
-        data.cal1card = data.body;
+        angular.extend($scope, data.body);
+        $scope.isLoading = false;
       });
     };
 
