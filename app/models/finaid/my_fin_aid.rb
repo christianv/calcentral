@@ -178,6 +178,11 @@ module Finaid
       @cutoff_date ||= (Time.zone.now - 1.year)
     end
 
+    # allow setting a fake now, for use in tests only.
+    def self.cutoff_date=(date)
+      @cutoff_date = date
+    end
+
     def self.next_term_year
       "#{current_term_year.to_i + 1}"
     end
