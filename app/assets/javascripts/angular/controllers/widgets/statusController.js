@@ -79,7 +79,7 @@
         // Get all the necessary data from the different factories
         var getBadges = badgesFactory.getBadges().success(loadStudentInfo);
         var getFinances = financesFactory.getFinances().success(loadFinances);
-        var getActivity = activityFactory.getActivity().success(loadActivity);
+        var getActivity = activityFactory.getActivity().then(loadActivity);
 
         // Make sure to hide the spinner when everything is loaded
         $q.all(getBadges, getFinances, getActivity).then(finishLoading);

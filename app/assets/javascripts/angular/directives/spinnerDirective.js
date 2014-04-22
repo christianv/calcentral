@@ -7,7 +7,7 @@
   angular.module('calcentral.directives').directive('ccSpinnerDirective', function() {
     return {
       restrict: 'A',
-      link: function(scope, elm) {
+      link: function(scope, elm, attr) {
         scope.isLoading = true;
 
         /**
@@ -17,7 +17,11 @@
           elm.toggleClass('cc-spinner', value);
         };
 
-        scope.$watch('isLoading', watch);
+        if (attr.ccSpinnerDirective) {
+          scope.$watch(attr.ccSpinnerDirective, watch);
+        } else {
+          scope.$watch('isLoading', watch);
+        }
       }
     };
   });
