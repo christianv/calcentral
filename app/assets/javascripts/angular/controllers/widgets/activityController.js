@@ -4,7 +4,7 @@
   /**
    * Activity controller
    */
-  angular.module('calcentral.controllers').controller('ActivityController', function(activityFactory, apiService, dateService, taskAdderService, $http, $scope) {
+  angular.module('calcentral.controllers').controller('ActivityController', function(activityFactory, apiService, dateService, taskAdderService, $scope) {
 
     var getMyActivity = function() {
       $scope.process = {

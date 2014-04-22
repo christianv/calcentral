@@ -167,8 +167,13 @@
       // return $http.get('/dummy/json/activities.json');
     };
 
+    var getFinaidActivity = function() {
+      return $http.get('/api/my/finaid').then(parseActivities);
+    };
+
     return {
-      getActivity: getActivity
+      getActivity: getActivity,
+      getFinaidActivity: getFinaidActivity
     };
 
   });
