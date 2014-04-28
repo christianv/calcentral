@@ -16,7 +16,7 @@
 
           var inputElement = $document[0].querySelector('#' + attrs.ccDatepickerDirective);
           var angularInputElement = angular.element(inputElement);
-
+console.log(attrs.ccDatepickerPosition);
           /**
            * Setup the picker
            */
@@ -38,7 +38,8 @@
               // Every time we select a value, we completely destroy the picker.
               // We do this because then we have less events hanging around + less elements in the DOM
               closeAll();
-            }
+            },
+            position: attrs.ccDatepickerPosition
           });
 
           /**
@@ -46,7 +47,11 @@
            */
           var watchshown = scope.$watch('pickerShown', function(showPicker) {
             if (showPicker) {
+              console.log(picker);
               picker.show();
+              picker.adjustPosition();
+              console.log(picker);
+              picker.style.top = '0px';
             } else {
               picker.hide();
             }

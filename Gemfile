@@ -96,7 +96,7 @@ gem "cancan", "~> 1.6.10"
 gem "angular-gem", "1.2.16"
 
 # Datepicker
-gem "pikaday-gem", "~> 1.1.0.0"
+gem "pikaday-gem", "~> 1.2.0"
 
 # CSS Framework - also includes Compass and SASS
 # https://github.com/zurb/foundation
