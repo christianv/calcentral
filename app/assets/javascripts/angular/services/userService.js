@@ -2,7 +2,7 @@
 
   'use strict';
 
-  angular.module('calcentral.services').service('userService', function($http, $location, $route, analyticsService, utilService) {
+  angular.module('calcentral.services').service('userService', function($http, $location, $route, $timeout, analyticsService, utilService) {
 
     var profile = {};
     var events = {
@@ -58,6 +58,13 @@
      */
     var handleUserLoaded = function(data) {
       angular.extend(profile, data);
+
+      var profiletemp = profile.profilePicture;
+      profile.profilePicture = null;
+
+      $timeout(function() {
+        profile.profilePicture = profiletemp;
+      }, 2000);
 
       events.isLoaded = true;
       // Check whether the current user is authenticated or not
