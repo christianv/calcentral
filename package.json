@@ -1,0 +1,13 @@
+
+{
+  "name": "calcentral",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ets-berkeley-edu/calcentral.git"
+  },
+  "devDependencies": {
+    "jshint": "2.5.0",
+    "jscs": "1.4.3"
+  },
+  "dependencies": {}
+}

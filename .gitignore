@@ -56,3 +56,6 @@ app/assets/stylesheets/application.css
 
 # Ignore deploy directory
 /deploy
+
+# Ignore node modules
+/node_modules/
