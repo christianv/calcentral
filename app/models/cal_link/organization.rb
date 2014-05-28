@@ -2,6 +2,7 @@ module CalLink
   class Organization < Proxy
 
     include SafeJsonParser
+    include Cache::UserCacheExpiry
 
     def initialize(options = {})
       super(options)
@@ -38,7 +39,7 @@ module CalLink
       Rails.logger.debug "#{self.class.name}: Remote server status #{response.status}, Body = #{response.body}"
       {
         :body => safe_json(response.body),
-        :status_code => response.status
+        :statusCode => response.status
       }
     end
 

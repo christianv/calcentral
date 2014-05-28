@@ -1,6 +1,7 @@
 module MyBadges
   class GoogleDrive
     include MyBadges::BadgesModule, DatedFeed
+    include Cache::UserCacheExpiry
 
     def initialize(uid)
       @uid = uid
@@ -26,7 +27,7 @@ module MyBadges
       last_viewed_change ||= @one_month_ago.iso8601
       query = "modifiedDate >= '#{last_viewed_change}' and trashed = false"
 
-      google_proxy = Google::DriveList.new(user_id: @uid)
+      google_proxy = GoogleApps::DriveList.new(user_id: @uid)
       google_drive_results = google_proxy.drive_list(optional_params={q: query}, page_limiter=@page_limiter)
 
       response = {
@@ -54,7 +55,7 @@ module MyBadges
               end
               response[:count] += 1
             end
-          rescue Exception => e
+          rescue => e
             Rails.logger.warn "#{e}: #{e.message}: #{entry["createdDate"]}, #{entry["modifiedDate"]}, #{entry["labels"].to_hash}"
             next
           end
@@ -81,7 +82,7 @@ module MyBadges
         }
         raise ArgumentError, 'icon does not exist in drive_icons' unless drive_icons_list.include?(file_baseclass)
         file_baseclass
-      rescue Exception => e
+      rescue => e
         Rails.logger.warn "#{self.class.name} could not parse icon basename from link #{icon_link}: #{e}"
         ''
       end
@@ -100,7 +101,7 @@ module MyBadges
       begin
         date_fields = [entry["createdDate"].to_s, entry["modifiedDate"].to_s]
         date_fields.map! {|x| Time.zone.parse(x).to_i }
-      rescue Exception => e
+      rescue => e
         Rails.logger.warn "#{self.class.name}: Problems parsing createdDate: #{entry["createdDate"]} modifiedDate: #{entry["modifiedDate"]}"
         return false
       end

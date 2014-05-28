@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Finaid::Proxy do
 
-  let(:this_year){ Settings.myfinaid_proxy.test_term_year } # start with 2013!
+  let(:this_year){ 2013 }
 
   let(:live_oski_finaid){ Finaid::Proxy.new({user_id: "61889",  term_year: this_year }).get }
   let(:fake_oski_finaid){ Finaid::Proxy.new({user_id: "61889",  term_year: this_year, fake: true}).get }
@@ -10,7 +10,7 @@ describe Finaid::Proxy do
 
   shared_examples "oski tests" do
     it { subject[:body].should be_present }
-    it { subject[:status_code].should eq(200) }
+    it { subject[:statusCode].should eq(200) }
     it "should be valid xml" do
       expect {
         Nokogiri::XML(subject[:body]) { |config| config.strict }
@@ -18,7 +18,7 @@ describe Finaid::Proxy do
     end
   end
 
-  context "oski live finaid with data", :testext => true do
+  context "oski live finaid with data", :testext => true, :ignore => true do
     it_behaves_like "oski tests" do
       subject { live_oski_finaid }
     end
@@ -35,7 +35,7 @@ describe Finaid::Proxy do
       subject { live_non_student }
 
       it { subject[:body].should eq("Lookup of student_id for uid 212377 failed, cannot call Myfinaid API") }
-      it { subject[:status_code].should eq(400) }
+      it { subject[:statusCode].should eq(400) }
     end
   end
 

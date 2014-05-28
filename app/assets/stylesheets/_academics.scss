@@ -1,5 +1,8 @@
 .cc-page-academics {
   overflow: hidden;
+  .header-margin-top {
+    margin-top: 20px;
+  }
   h2, h3, h4 {
     color: $cc-color-medium-grey;
   }
@@ -59,6 +62,12 @@
     margin-bottom: 10px;
     margin-top: 0;
   }
+  .cc-academics-class-info {
+    margin-bottom: 10px;
+  }
+  .cc-academics-class-primary-row {
+    font-weight: bold;
+  }
   .cc-academics-class-sites-list {
     a {
       display: block;
@@ -88,6 +97,14 @@
     list-style-type: square;
     li {
       margin-left: 20px;
+    }
+  }
+  .cc-academics-nocontent-container {
+    p {
+      margin-bottom: 0;
+    }
+    .cc-academics-nocontent {
+      margin: 20px;
     }
   }
   .cc-academics-nolink {
@@ -204,6 +221,9 @@
     .cc-telebears-phase-center {
       text-align: center;
     }
+  }
+  .cc-academics-semester-title-link {
+    margin-top: 7px;
   }
   .cc-academics-showhide-block-history {
     margin-top: 10px;

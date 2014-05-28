@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   include Pundit
   protect_from_forgery
   before_filter :get_settings, :initialize_calcentral_config
+  before_filter :check_reauthentication
   after_filter :access_log
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -15,8 +16,64 @@ class ApplicationController < ActionController::Base
     redirect_to url_for_path('/auth/cas') unless session[:user_id]
   end
 
+  # TODO see if we can standardize empty responses. We have 2 forms: This one, which returns empty JSON and
+  # an HTTP 200 status, and another form that returns empty body with 401 status.
+  def api_authenticate
+    if session[:user_id].blank?
+      Rails.logger.warn "Authenticated user absent in request to #{controller_name}\##{action_name}"
+      render :json => {}.to_json
+    end
+  end
+
+  def api_authenticate_401
+    if session[:user_id].blank?
+      Rails.logger.warn "Authenticated user absent in request to #{controller_name}\##{action_name}"
+      render :nothing => true, :status => 401
+    end
+  end
+
+  def is_admin?
+    (real_user && real_user.is_superuser==true)
+  end
+
+  def reauthenticate
+    delete_reauth_cookie
+    redirect_to url_for_path("/auth/cas?renew=true")
+  end
+
+  def check_reauthentication
+    unless !!session[:user_id]
+      delete_reauth_cookie
+      return
+    end
+    return unless Settings.features.reauthentication
+    return unless is_admin?
+    reauthenticate if acting_as? && !cookies[:reauthenticated]
+  end
+
+  def delete_reauth_cookie
+    cookies.delete :reauthenticated
+  end
+
   def current_user
     @current_user ||= User::Auth.get(session[:user_id])
+  end
+
+  def acting_as?
+    !!((session[:original_user_id] && session[:user_id]) && (session[:original_user_id] != session[:user_id]))
+  end
+
+  def real_uid
+    (acting_as?) ? session[:original_user_id] : session[:user_id]
+  end
+
+  def real_user
+    return false unless real_uid
+    @real_user ||= User::Auth.get(real_uid)
+  end
+
+  def act_as_uid
+    return (acting_as?) ? session[:user_id] : nil
   end
 
   # override of Rails default behavior:
@@ -38,58 +95,41 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def clear_cache
-    authorize(current_user, :can_clear_cache?)
-    Rails.logger.info "Clearing all cache entries"
-    Rails.cache.clear
-    render :nothing => true, :status => 204
+  def user_not_authorized(error)
+    Rails.logger.warn "Unauthorized request made by UID: #{session[:user_id]} to #{controller_name}\##{action_name}: #{error.message}"
+    render :nothing => true, :status => 403
   end
 
-  def ping
-    # IST's nagios and our check-alive.sh script use this endpoint to tell whether the server's up.
-    # Don't modify its content unless you have general agreement that it's necessary to do so.
-    ping_state = do_ping
-    if ping_state
-      render :json => {
-        :server_alive => true
-      }.to_json
-    else
-      render :nothing => true, :status => 503
+  def handle_api_exception(error)
+    Rails.logger.error "#{error.class} raised with UID: #{session[:user_id]} in #{controller_name}\##{action_name}: #{error.message}"
+    render json: { :error => error.message }.to_json, status: 500
+  end
+
+  def handle_client_error(error)
+    case error.class.to_s
+      when 'Errors::BadRequestError'
+        Rails.logger.debug "Bad request made to #{controller_name}\##{action_name}: #{error.message}"
+        render text: error.message, status: 400 and return
+      else
+        Rails.logger.error "Unknown Error::ClientError handled in #{controller_name}\##{action_name}: #{error.class} - #{error.message}"
+        render json: {:error => error.message}.to_json, status: 500 and return
     end
   end
 
-  def user_not_authorized
-    render :nothing => true, :status => 401
-  end
-
   private
-
-  def do_ping
-    # rate limit so we don't check server status excessively often
-    Rails.cache.fetch(
-      "server_ping_#{ServerRuntime.get_settings["hostname"]}",
-      :expires_in => 30.seconds) {
-      if !User::Data.database_alive?
-        raise "CalCentral database is currently unavailable"
-      end
-      if !CampusOracle::Queries.database_alive?
-        raise "Campus database is currently unavailable"
-      end
-      true
-    }
-  end
 
   def get_settings
     @server_settings = ServerRuntime.get_settings
   end
 
   def initialize_calcentral_config
-    @calcentral_config = {
+    @calcentral_config ||= {
       "applicationVersion" => ServerRuntime.get_settings["versions"]["application"],
       "clientHostname" => ServerRuntime.get_settings["hostname"],
       "googleAnalyticsId" => Settings.google_analytics_id,
       "sentryUrl" => Settings.sentry_url
     }.to_json.html_safe
+    @uid = session[:user_id] ? session[:user_id].to_s : ''
   end
 
   def access_log
@@ -115,6 +155,10 @@ class ApplicationController < ActionController::Base
     else
       path
     end
+  end
+
+  def disable_xframe_options
+    response.headers.except! 'X-Frame-Options'
   end
 
 end

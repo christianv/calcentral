@@ -7,13 +7,35 @@
         <h1 class="cc-heading-page-title">My Academics</h1>
       </div>
 
-      <div class="medium-8 columns cc-academics-page-left" data-ng-if="api.user.profile.has_student_history">
+      <div class="medium-8 columns cc-academics-page-left" data-ng-if="api.user.profile.hasStudentHistory || api.user.profile.roles.student">
         <div class="cc-widget">
           <div class="cc-widget-title">
             <h2>Records</h2>
           </div>
 
-          <div class="cc-widget-padding">
+          <div class="cc-widget-padding cc-academics-nocontent-container" data-ng-if="!college_and_level">
+            <h3>Status</h3>
+            <p data-ng-if="!api.user.profile.roles.student && api.user.profile.roles.exStudent">
+              You are no longer an active student.
+            </p>
+            <p data-ng-if="api.user.profile.roles.registered">
+              You are registered as a student but not currently considered active.
+            </p>
+            <p data-ng-if="api.user.profile.roles.student && !api.user.profile.roles.registered">
+              You are not yet officially registered as a student.
+            </p>
+            <div class="cc-academics-nocontent" data-ng-if="api.user.profile.roles.student && !semesters.length && studentInfo.regStatus.code === null && !requirements.length">
+              <p>More information will display here when your academic status changes. Check back often for information about:</p>
+              <ul class="cc-list-bullets">
+                <li>Class enrollments, including waitlist information.</li>
+                <li>Your academic status, including standing, GPA, units, major, college, and more.</li>
+                <li>Your registration status, including any blocks limiting your access to campus services.</li>
+                <li>Course information, including class and exam schedules, class locations, textbooks, and webcasts.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="cc-widget-padding" data-ng-if="college_and_level">
             <h3>Standing, Major and Level</h3>
 
             <div class="cc-table cc-table-top-border">
@@ -92,7 +114,9 @@
                 </tbody>
               </table>
             </div>
+          </div>
 
+          <div class="cc-widget-padding">
             <div class="cc-academics-status-and-blocks">
               <h3><span data-ng-if="studentInfo.regStatus.code !== null && api.user.profile.features.academic_status">Status and </span>Blocks</h3>
 
@@ -244,17 +268,17 @@
           </div>
         </div>
       </div>
-      <div class="medium-4 columns" data-ng-class="{'pull-8':(!api.user.profile.has_student_history)}">
+      <div class="medium-4 columns" data-ng-class="{'pull-8':(!api.user.profile.hasStudentHistory)}">
         <div class="cc-widget cc-widget-last" data-ng-if="teachingLength">
           <div class="cc-widget-title">
             <h2>Teaching</h2>
           </div>
           <div class="cc-widget-padding">
-            <div class="cc-academics-teaching-semester" data-ng-repeat="semester in teaching_semesters">
+            <div class="cc-academics-teaching-semester" data-ng-repeat="semester in teachingSemesters">
               <h3><a data-ng-href="/academics/semester/{{semester.slug}}" data-ng-bind="semester.name"></a></h3>
               <div class="cc-academics-teaching-class" data-ng-repeat="class in semester.classes">
                 <div class="cc-academics-teaching-course-number">
-                  <strong><a data-ng-bind="class.course_code" data-ng-href="/academics/teaching-semester/{{semester.slug}}/class/{{class.slug}}"></a></strong>
+                  <strong><a data-ng-bind="class.course_code" data-ng-href="{{class.url}}"></a></strong>
                 </div>
                 <div class="cc-text-light" data-ng-bind="class.title"></div>
               </div>
@@ -262,7 +286,7 @@
           </div>
         </div>
 
-        <div class="cc-widget cc-widget-last" data-ng-if="api.user.profile.has_student_history && semesters.length">
+        <div class="cc-widget cc-widget-last" data-ng-if="api.user.profile.hasStudentHistory && semesters.length">
           <div class="cc-widget-title">
             <h2 class="cc-left">Semesters</h2>
             <a href="https://telebears.berkeley.edu/tranreq/" class="cc-right cc-widget-title-link">
@@ -272,28 +296,41 @@
 
           <div class="cc-academics-semesters">
 
-            <div class="cc-table cc-academics-semester cc-academics-semester-{{semester.time_bucket}}" data-ng-repeat="semester in semesters">
+            <div class="cc-table cc-academics-semester cc-academics-semester-{{semester.timeBucket}}" data-ng-repeat="semester in semesters">
               <div>
                 <h3><a class="cc-left" data-ng-href="/academics/semester/{{semester.slug}}" data-ng-bind="semester.name"></a></h3>
-                <a class="cc-right" data-ng-href="/academics/booklist" data-ng-show="semester.time_bucket === 'current'">Book List</a>
+                <a class="cc-right cc-academics-semester-title-link" data-ng-href="/academics/booklist" data-ng-show="semester.timeBucket === 'current'">Book List</a>
                 <table data-ng-if="semester.classes">
                   <thead>
                     <tr>
                       <th width="25%" scope="col">Class</th>
                       <th width="60%" scope="col">Title</th>
-                      <th width="20%" scope="col" class="cc-table-right" data-ng-class="{'cc-table-right-spacing':(semester.time_bucket != 'current')}">
-                        <span data-ng-if="semester.time_bucket === 'current'">Units</span>
-                        <span data-ng-if="semester.time_bucket !== 'current'" title="Units">Un.</span>
+                      <th width="20%" scope="col" class="cc-table-right" data-ng-class="{'cc-table-right-spacing':(semester.timeBucket === 'past')}">
+                        <span data-ng-if="semester.timeBucket !== 'past'">Units</span>
+                        <span data-ng-if="semester.timeBucket === 'past'" title="Units">Un.</span>
                       </th>
-                      <th width="25%" scope="col" data-ng-if="semester.time_bucket === 'past'" title="Grades">Gr.</th>
+                      <th width="25%" scope="col" data-ng-if="semester.timeBucket === 'past'" title="Grades">Gr.</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr data-ng-repeat="class in semester.classes">
-                      <td><a data-ng-href="/academics/semester/{{semester.slug}}/class/{{class.slug}}" data-ng-bind="class.course_code"></a></td>
+                  <tbody data-ng-if="semester.timeBucket !== 'past'" data-ng-repeat="class in semester.classes">
+                    <tr data-ng-repeat="section in class.sections" data-ng-if="section.is_primary_section">
+                      <td><a data-ng-href="{{class.url}}" data-ng-bind="class.course_code"></a></td>
                       <td data-ng-bind="class.title"></td>
-                      <td data-ng-bind="class.units | number:1" class="cc-table-right" data-ng-class="{'cc-table-right-spacing':(semester.time_bucket != 'current')}"></td>
-                      <td data-ng-bind="class.grade" data-ng-if="semester.time_bucket === 'past'">Gr.</td>
+                      <td data-ng-bind="section.units | number:1" class="cc-table-right"></td>
+                    </tr>
+                  </tbody>
+                  <tbody data-ng-if="semester.timeBucket === 'past'" data-ng-repeat="class in semester.classes">
+                    <tr data-ng-if="class.transcript" data-ng-repeat="transcript in class.transcript">
+                      <td><a data-ng-href="{{class.url}}" data-ng-bind="class.course_code"></a></td>
+                      <td data-ng-bind="class.title"></td>
+                      <td data-ng-bind="transcript.units | number:1" class="cc-table-right cc-table-right-spacing"></td>
+                      <td data-ng-bind="transcript.grade" data-ng-if="semester.timeBucket === 'past'"></td>
+                    </tr>
+                    <tr data-ng-if="!class.transcript && section.is_primary_section" data-ng-repeat="section in class.sections">
+                      <td><a data-ng-href="{{class.url}}" data-ng-bind="class.course_code"></a></td>
+                      <td data-ng-bind="class.title"></td>
+                      <td data-ng-bind="section.units | number:1" class="cc-table-right cc-table-right-spacing"></td>
+                      <td>--</td>
                     </tr>
                   </tbody>
                 </table>
@@ -315,7 +352,7 @@
                       <tr data-ng-repeat="phase in telebears.phases">
                         <td data-ng-bind="phase.period" class="cc-telebears-phase-center"></td>
                         <td data-ng-bind="phase.startTime.epoch * 1000 | date:'EEE MMM d'" class="cc-telebears-date-padding"></td>
-                        <td data-ng-bind="phase.startTime.epoch * 1000 | cc.dateUnlessNoon:'h:mm a'"></td>
+                        <td data-ng-bind="phase.startTime.epoch * 1000 | dateUnlessNoonFilter:'h:mm a'"></td>
                       </tr>
                     </tbody>
                   </table>

@@ -1,5 +1,60 @@
 .cc-page-course-provision {
+  background: $cc-color-white;
   padding: 10px 20px;
+
+  h2, h3 {
+    color: $bc-color-headers;
+    font-family: $bc-header-font-family;
+    font-weight: normal;
+    line-height: 40px;
+    margin: 5px 0px;
+  }
+
+  h2 {
+    font-size: 23px;
+  }
+
+  h3 {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+
+  /* Reset to avoid default Foundation form styling */
+  form {
+    background: transparent;
+    border: 0;
+    padding: 0;
+  }
+
+  .cc-page-provision-pending-request {
+    margin-top: 10px;
+  }
+
+  .cc-page-provision-no-courses {
+    color: $bc-color-headers;
+    font-family: $bc-header-font-family;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 20px;
+  }
+
+  .cc-page-provision-select-rosters {
+    border-top: 1px solid $bc-color-top-border;
+  }
+
+  .cc-page-provision-step-indent {
+    padding-left: 18px;
+  }
+
+  .cc-page-provision-roster-area {
+    background: $bc-color-roster-background;
+    border: 1px solid $bc-color-roster-background;
+    padding: 10px 5px;
+  }
+
+  .cc-page-provision-acting-as {
+    height: 24px;
+  }
 
   .cc-page-provision-student-warning {
     margin: 10px 0;
@@ -9,7 +64,7 @@
     background: $cc-color-white;
     input[type="text"] {
       margin: 2px 10px 0 0;
-      padding: 0 2px;
+      padding: 3px 2px;
       width: 140px;
     }
   }
@@ -58,8 +113,58 @@
   }
 
   .cc-page-provision-margin {
-    margin: 0 0 10px;
+    margin: 0;
     overflow: hidden;
+  }
+
+  .cc-page-provision-form-course {
+    margin: 0 0 20px;
+  }
+
+  .cc-page-provision-form-select-all-option {
+    font-size: 12px;
+    font-weight: bold;
+    margin: 6px 0 0 7px;
+  }
+
+  .cc-page-provision-has-sites-message {
+    margin: 5px 0 0 23px;
+  }
+
+  .cc-page-provision-create-site-button {
+    margin: 0 0 0 23px;
+  }
+
+  .cc-page-provision-progress-bar-container {
+    margin: 25px auto;
+    width: 75%;
+  }
+
+  .cc-page-provision-progress-bar {
+    @include background(linear-gradient($bc-color-progressbar-bg-gradient1, $bc-color-progressbar-bg-gradient2));
+    border: 2px solid #c6c7c7;
+    border-radius: 5px;
+    height: 25px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cc-page-provision-progress-bar-value {
+    @include background(linear-gradient($bc-color-progressbar-fg-gradient1, $bc-color-progressbar-fg-gradient2));
+    height: 100%;
+  }
+
+  .cc-page-provision-progress-bar-status {
+    color: #2f2e2e;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    left: 50%;
+    line-height: 25px;
+    margin-left: -75px;
+    position: absolute;
+    text-align: center;
+    width: 150px;
   }
 
 }

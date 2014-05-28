@@ -3,6 +3,8 @@ application:
 logger:
   level: <%= ENV['LOGGER_LEVEL'] || DEBUG %>
   stdout: <%= ENV['LOGGER_STDOUT'] || 'only' %>
+terms:
+  fake_now: 2013-10-11 04:20:00
 postgres:
   database: calcentral_test
   username: calcentral_test
@@ -28,6 +30,8 @@ features:
   podcasts: true
   research: true
   app_alerts: true
+  cal1card: true
+  profile_page: true
 
 cache:
   store: "memory"
@@ -40,6 +44,8 @@ cache:
     MyCampusLinks: <%= 1.day %>
     MyClasses::Merged: <%= 1.day %>
     Financials::MyFinancials: <%= 1.day %>
+    Finaid::MyFinAid: <%= 1.day %>
+    Cal1card::MyCal1card: <%= 1.day %>
     MyGroups::Merged: <%= 1.day %>
     MyTasks::Merged: <%= 1.day %>
     UpNext::MyUpNext: <%= 1.day %>

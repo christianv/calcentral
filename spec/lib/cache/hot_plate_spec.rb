@@ -12,20 +12,20 @@ describe "HotPlate" do
     User::Visit.record "5678"
     Messaging.should_receive(:publish).with('/queues/hot_plate', "1234", {ttl: 86400000, persistent: false}).exactly(1).times
     Messaging.should_receive(:publish).with('/queues/hot_plate', "5678", {ttl: 86400000, persistent: false}).exactly(1).times
-    @plate.warm
+    HotPlate.request_warmups_for_all
   end
 
   it "should not explode if an error gets thrown during the warming" do
     User::Visit.record "1234"
     Cache::UserCacheWarmer.stub(:do_warm).and_raise(TypeError)
-    Calcentral::USER_CACHE_EXPIRATION.should_receive(:notify).once
+    Cache::UserCacheExpiry.should_receive(:notify).once
 
     @plate.expire_then_complete_warmup "1234"
   end
 
   it "should process warmup request messages" do
     Cache::UserCacheWarmer.stub(:do_warm).and_return(nil)
-    Calcentral::USER_CACHE_EXPIRATION.should_receive(:notify).with(@random_id)
+    Cache::UserCacheExpiry.should_receive(:notify).with(@random_id)
     HotPlate.should_receive(:increment).exactly(2).times
     Cache::UserCacheWarmer.should_receive(:do_warm).with(@random_id)
     @plate.on_message(@random_id)

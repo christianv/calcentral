@@ -20,8 +20,8 @@ describe Notifications::RegStatusTranslator do
     translator = Notifications::RegStatusTranslator.new
     translated = translator.translate saved_notification
 
-    translated[:date][:epoch].should == timestamp.to_i
-    translated[:date][:date_time].should_not be_nil
+    translated[:date][:epoch].should == timestamp.to_time.to_i
+    translated[:date][:dateTime].should_not be_nil
     translated[:source].should == "Bear Facts"
     translated[:title].should == "Registration status updated to: Registered"
     translated[:summary].should == "You are officially registered for this term and are entitled to access campus services. If you have a question about your registration status change, please contact the Office of the Registrar. orweb@berkeley.edu"

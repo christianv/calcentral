@@ -3,6 +3,7 @@ module Canvas
 
   class Proxy < BaseProxy
     include ClassLogger, SafeJsonParser
+    include Cache::UserCacheExpiry
     extend Proxies::EnableForActAs
 
     attr_accessor :client
@@ -36,7 +37,7 @@ module Canvas
     def request_uncached(api_path, vcr_id = "", fetch_options = {})
       begin
         request_internal(api_path, vcr_id, fetch_options)
-      rescue Exception => e
+      rescue => e
         self.class.handle_exception(e, @uid, "Remote server unreachable", true)
       end
     end
@@ -76,15 +77,24 @@ module Canvas
     end
 
     def self.has_account?(user_id)
-      Settings.canvas_proxy.fake || (Canvas::UserProfile.new(user_id: user_id).user_profile != nil)
+      Settings.canvas_proxy.fake || (Canvas::SisUserProfile.new(user_id: user_id).sis_user_profile != nil)
+    end
+
+    def self.canvas_current_terms
+      terms = []
+      campus_terms = Berkeley::Terms.fetch
+      if (future_term = campus_terms.future) && future_term.name == 'Fall'
+        terms.push future_term
+      end
+      terms.push campus_terms.next if campus_terms.next
+      terms.push campus_terms.current
+      terms
     end
 
     def self.current_sis_term_ids
-      sis_term_ids = []
-      Settings.canvas_proxy.current_terms_codes.each do |t|
-        sis_term_ids.push(term_to_sis_id(t.term_yr, t.term_cd))
+      canvas_current_terms.collect do |term|
+        term_to_sis_id(term.year, term.code)
       end
-      sis_term_ids
     end
 
     def self.sis_section_id_to_ccn_and_term(sis_term_id)

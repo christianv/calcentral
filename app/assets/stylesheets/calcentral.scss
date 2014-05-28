@@ -180,9 +180,9 @@ button {
     }
   }
 }
-.cc-button-disabled {
+.cc-button[disabled] {
   background: $cc-color-button-disabled-background !important;
-  border: 1px solid transparent !important;
+  border: 1px solid $cc-color-button-disabled !important;
   color: $cc-color-button-disabled !important;
   cursor: auto !important;
   opacity: 1 !important;
@@ -191,6 +191,13 @@ button {
     color: $cc-color-button-disabled !important;
   }
 }
+.cc-button-blue[disabled] {
+  background: $cc-color-button-action-disabled-background !important;
+  &:focus, &:hover {
+    background: $cc-color-button-action-disabled-background !important;
+  }
+}
+
 .cc-button-large {
   font-size: 16px;
   font-weight: normal;
@@ -219,9 +226,8 @@ button {
     background-color: transparent;
     border: none;
     color: $primary-color;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: normal;
-    line-height: 1;
   }
 }
 
@@ -273,6 +279,17 @@ button {
 }
 
 /* List */
+.cc-list-bullets {
+  margin: 10px 10px 0 15px;
+  li:before {
+    content: '\25A0';
+    color: #61889d;
+    float: left;
+    margin-left: -16px;
+    margin-top: -2px;
+    padding-right: 8px;
+  }
+}
 .cc-list-links {
   margin: 10px 0;
   a {
@@ -305,7 +322,7 @@ button {
 /* We need to wrap a select in a <div> to have consistent styling */
 .cc-select {
   background: $cc-color-white;
-  @include background(asset-data-url('select_arrow_20x28.png') no-repeat right center, linear-gradient($cc-color-white, $cc-color-button-regular));
+  @include background(asset-data-url('svg/select_arrow_20x28.svg') no-repeat right center, linear-gradient($cc-color-white, $cc-color-button-regular));
   border: 1px solid $cc-color-button-border;
   border-radius: 5px;
   overflow: hidden;
@@ -417,6 +434,7 @@ http://stackoverflow.com/questions/6269420
 @import "canvas_roster";
 
 /* My Finances */
+@import "cal1card";
 @import "myfinances";
 
 /* Settings */

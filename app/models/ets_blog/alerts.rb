@@ -14,7 +14,7 @@ module EtsBlog
                                           user_message_on_exception: "Alert server unreachable",
                                           return_nil_on_generic_error: true,
                                         }) do
-        (get_alerts.nil?) ? nil : get_alerts.first
+        (get_alerts.nil?) ? '' : get_alerts.first
       end
     end
 
@@ -23,18 +23,27 @@ module EtsBlog
     def get_alerts
       results = []
       xml = get_raw_xml
-      doc = Nokogiri::XML(xml, &:strict)
-      nodes = doc.css('node')
+      begin
+        xml_doc = Hash.from_xml(xml)
+      rescue => e
+        logger.error("Unparseable XML content: #{e}")
+        return nil
+      end
+      unless xml_doc['xml'] && xml_doc['xml']['node']
+        logger.info("Unexpected XML content: #{xml_doc}")
+        return nil
+      end
+      node_list = xml_doc['xml']['node']
+      nodes = (node_list.is_a? Array) ? node_list : [ node_list ]
       nodes.each do |node|
-        timestamp = node.css('PostDate').text.to_i
-        result = {
-          title: node.css('Title').text,
-          teaser: node.css('Teaser').text,
-          url: node.css('Link').text,
-          timestamp: format_date(Time.zone.at(timestamp).to_datetime),
+        node_entry = {
+          :title => node['Title'],
+          :url => node['Link'],
+          :timestamp => format_date( Time.zone.at( node['PostDate'].to_i ).to_datetime  )
         }
-        next unless valid_result?(result)
-        results << result
+        node_entry[:teaser] =  node['Teaser'] if node['Teaser'].present?
+        next unless valid_result?(node_entry)
+        results << node_entry
       end
       (results.empty?) ? nil : results
     end
@@ -53,17 +62,22 @@ module EtsBlog
     end
 
     def valid_result?(r=nil)
-      valid = true
-      valid = false unless r.is_a?(Hash)
-      [:title, :teaser, :url, :timestamp].each { |k|
-        if !r.key?(k) || r[k].empty?
-          valid = false
-          break
+      unless r.is_a?(Hash)
+        logger.error("expected a hash argument #{r.inspect}")
+        return false
+      end
+      [:title, :url, :timestamp].each { |k|
+        unless r.key?(k) && r[k].present?
+          logger.error("missing required #{k} field for hash argument #{r.inspect}")
+          return false
         end
       }
-      valid = false unless ((r[:timestamp].is_a?(Hash) && r[:timestamp][:epoch] > 0))
-      logger.error("Unexpected result - #{r.inspect}") unless valid
-      valid
+      unless ((r[:timestamp].is_a?(Hash) && r[:timestamp][:epoch] > 0))
+        logger.error("unexpected timestamp value #{r.inspect}")
+        return false
+      end
+      return true
     end
+
   end
 end

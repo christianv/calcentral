@@ -2,19 +2,9 @@ require "spec_helper"
 
 describe CampusOracle::Queries do
 
-  before do
-    @current_terms = Settings.sakai_proxy.current_terms_codes
-  end
-
   it "should find Oliver" do
     data = CampusOracle::Queries.get_person_attributes(2040)
     data['first_name'].should == "Oliver"
-    if CampusOracle::Queries.test_data?
-      data[:roles][:student].should == false
-      data[:roles][:ex_student].should == true
-      data[:roles][:faculty].should == false
-      data[:roles][:staff].should == true
-    end
   end
 
   it "should find a user who has a bunch of blocks" do
@@ -28,32 +18,10 @@ describe CampusOracle::Queries do
       data['reg_blk_flag'].should == "Y"
       data['tot_enroll_unit'].should == "1"
       data['cal_residency_flag'].should == "N"
-      data[:roles][:student].should == true
-      data[:roles][:ex_student].should == false
-      data[:roles][:faculty].should == false
-      data[:roles][:staff].should == true
-    end
-  end
-
-  it "should find the most currently available student data between terms" do
-    CampusOracle::Queries.stub(:current_year).and_return(2525)
-    data = CampusOracle::Queries.get_person_attributes(300846)
-    if CampusOracle::Queries.test_data?
-      data['reg_status_cd'].should == "C"
     end
   end
 
   it "should find Stu TestB's registration status" do
-    data = CampusOracle::Queries.get_reg_status(300846)
-    if CampusOracle::Queries.test_data?
-      data['ldap_uid'].should == "300846"
-      # we will only have predictable reg_status_cd values in our fake Oracle db.
-      data['reg_status_cd'].should == "C"
-    end
-  end
-
-  it "should find the most currently available registration status between terms" do
-    CampusOracle::Queries.stub(:current_year).and_return(2525)
     data = CampusOracle::Queries.get_reg_status(300846)
     if CampusOracle::Queries.test_data?
       data['ldap_uid'].should == "300846"
@@ -143,10 +111,19 @@ describe CampusOracle::Queries do
     end
   end
 
-  it "should be able to limit enrollment queries" do
-    sections = CampusOracle::Queries.get_enrolled_sections('300939', @current_terms)
-    sections.should_not be_nil
-    sections.length.should == 3 if CampusOracle::Queries.test_data?
+  context 'confined to current term' do
+    let(:current_term) {Berkeley::Terms.fetch.current}
+    it "should be able to limit enrollment queries" do
+      sections = CampusOracle::Queries.get_enrolled_sections('300939', [current_term])
+      sections.should_not be_nil
+      sections.length.should == 3 if CampusOracle::Queries.test_data?
+    end
+    it "should be able to limit teaching assignment queries" do
+      # These are only the explicitly assigned sections and do not include implicit nesting.
+      sections = CampusOracle::Queries.get_instructing_sections('238382', [current_term])
+      sections.should_not be_nil
+      sections.length.should == 2 if CampusOracle::Queries.test_data?
+    end
   end
 
   context "#get_enrolled_sections", if: Sakai::SakaiData.test_data? do
@@ -160,13 +137,6 @@ describe CampusOracle::Queries do
     sections = CampusOracle::Queries.get_instructing_sections('238382')
     sections.should_not be_nil
     sections.length.should == 4 if CampusOracle::Queries.test_data?
-  end
-
-  it "should be able to limit teaching assignment queries" do
-    # These are only the explicitly assigned sections and do not include implicit nesting.
-    sections = CampusOracle::Queries.get_instructing_sections('238382', @current_terms)
-    sections.should_not be_nil
-    sections.length.should == 2 if CampusOracle::Queries.test_data?
   end
 
   it 'finds all active secondary sections for the course' do
@@ -192,24 +162,6 @@ describe CampusOracle::Queries do
     )
     is_ok = CampusOracle::Queries.database_alive?
     is_ok.should be_false
-  end
-
-  it "should handle a person with no affiliations" do
-    # Temp Agency Staff has no affiliations
-    data = CampusOracle::Queries.get_person_attributes(321765)
-    data[:roles].each do |role_name, role_value|
-      role_value.should be_false
-    end
-  end
-
-  it "should include an ex_student role for a person with a STUDENT-STATUS-EXPIRED affiliation" do
-    result = CampusOracle::Queries.get_person_attributes( 238382 ) # Bernie!!
-    result[:roles][:ex_student].should be_true
-  end
-
-  it "should include a guest role", if: CampusOracle::Queries.test_data? do
-    result = CampusOracle::Queries.get_person_attributes(19999969)
-    result[:roles][:guest].should be_true
   end
 
   it "should return class schedule data" do
@@ -291,17 +243,18 @@ describe CampusOracle::Queries do
     CampusOracle::Queries.is_previous_ugrad?("300939").should be_true #ugrad only
   end
 
-  it "should say an instructor has instructional history", if: CampusOracle::Queries.test_data? do
-    CampusOracle::Queries.has_instructor_history?("238382", Settings.sakai_proxy.academic_terms.instructor).should be_true
-  end
-
-  it "should say a student has student history", if: CampusOracle::Queries.test_data? do
-    CampusOracle::Queries.has_student_history?("300939", Settings.sakai_proxy.academic_terms.student).should be_true
-  end
-
-  it "should say a staff member does not have instructional or student history", if: CampusOracle::Queries.test_data? do
-    CampusOracle::Queries.has_instructor_history?("2040", Settings.sakai_proxy.academic_terms.instructor).should be_false
-    CampusOracle::Queries.has_student_history?("2040", Settings.sakai_proxy.academic_terms.student).should be_false
+  context 'with default academic terms', if: CampusOracle::Queries.test_data? do
+    let(:academic_terms) {Berkeley::Terms.fetch.campus.values}
+    it "should say an instructor has instructional history" do
+      CampusOracle::Queries.has_instructor_history?("238382", academic_terms).should be_true
+    end
+    it "should say a student has student history" do
+      CampusOracle::Queries.has_student_history?("300939", academic_terms).should be_true
+    end
+    it "should say a staff member does not have instructional or student history" do
+      CampusOracle::Queries.has_instructor_history?("2040", academic_terms).should be_false
+      CampusOracle::Queries.has_student_history?("2040", academic_terms).should be_false
+    end
   end
 
   context "when searching for users by name" do
@@ -333,8 +286,8 @@ describe CampusOracle::Queries do
       expect(user_data).to be_an_instance_of Array
       if user_data.count > 0
         expect(user_data[0]).to be_an_instance_of Hash
-        expect(user_data[0]['row_number']).to be_an_instance_of String
-        expect(user_data[0]['result_count']).to be_an_instance_of String
+        expect(user_data[0]['row_number']).to be_an_instance_of BigDecimal
+        expect(user_data[0]['result_count']).to be_an_instance_of BigDecimal
       end
     end
 
@@ -374,8 +327,8 @@ describe CampusOracle::Queries do
       expect(user_data).to be_an_instance_of Array
       if user_data.count > 0
         expect(user_data[0]).to be_an_instance_of Hash
-        expect(user_data[0]['row_number']).to be_an_instance_of String
-        expect(user_data[0]['result_count']).to be_an_instance_of String
+        expect(user_data[0]['row_number']).to be_an_instance_of BigDecimal
+        expect(user_data[0]['result_count']).to be_an_instance_of BigDecimal
       end
     end
 
@@ -414,8 +367,8 @@ describe CampusOracle::Queries do
       user_data = CampusOracle::Queries.find_people_by_student_id("863980")
       expect(user_data).to be_an_instance_of Array
       expect(user_data[0]).to be_an_instance_of Hash
-      expect(user_data[0]['row_number']).to eq 1
-      expect(user_data[0]['result_count']).to eq 1
+      expect(user_data[0]['row_number'].to_i).to eq 1.0
+      expect(user_data[0]['result_count'].to_i).to eq 1.0
     end
   end
 
@@ -447,8 +400,8 @@ describe CampusOracle::Queries do
       user_data = CampusOracle::Queries.find_people_by_uid("300847")
       expect(user_data).to be_an_instance_of Array
       expect(user_data[0]).to be_an_instance_of Hash
-      expect(user_data[0]['row_number']).to eq 1
-      expect(user_data[0]['result_count']).to eq 1
+      expect(user_data[0]['row_number'].to_i).to eq 1.0
+      expect(user_data[0]['result_count'].to_i).to eq 1.0
     end
   end
 

@@ -4,15 +4,17 @@
   /**
    * Canvas Add User to Course LTI app controller
    */
-  angular.module('calcentral.controllers').controller('CanvasCourseAddUserController', function(apiService, $http, $routeParams, $scope, $window) {
+  angular.module('calcentral.controllers').controller('CanvasCourseAddUserController', function(apiService, $http, $routeParams, $scope) {
 
     apiService.util.setTitle('Add People');
 
     var resetSearchState = function() {
+      $scope.selectedUser = null;
       $scope.showUsersArea = false;
       $scope.userSearchResultsCount = 0;
       $scope.noSearchTextAlert = false;
       $scope.noSearchResultsNotice = false;
+      $scope.noUserSelectedAlert = false;
     };
 
     var resetImportState = function() {
@@ -23,15 +25,26 @@
     };
 
     $scope.resetForm = function() {
+      $scope.searchTextType = 'text';
       $scope.search_text = '';
+      $scope.searchTypeNotice = '';
       $scope.showAlerts = false;
       resetSearchState();
       resetImportState();
     };
 
+    var setSearchTypeNotice = function() {
+      if ($scope.search_type === 'student_id') {
+        $scope.searchTypeNotice = 'Student IDs must be an exact match.';
+      } else if ($scope.search_type === 'ldap_user_id') {
+        $scope.searchTypeNotice = 'CalNet UIDs must be an exact match.';
+      } else {
+        $scope.searchTypeNotice = '';
+      }
+    };
+
     // Initialize upon load
     $scope.resetForm();
-
     $scope.search_type = 'name';
     $scope.userRoles = [
       {
@@ -57,32 +70,35 @@
     ];
     $scope.selectedRole = $scope.userRoles[0];
 
-    /**
-     * Post a message to the parent
-     * @param {String|Object} message Message you want to send over.
-     */
-    var postMessage = function(message) {
-      if ($window.parent) {
-        $window.parent.postMessage(message, '*');
+    var invalidSearchForm = function() {
+      if ($scope.search_text === '') {
+        $scope.showAlerts = true;
+        $scope.noSearchTextAlert = true;
+        $scope.isLoading = false;
+        return true;
       }
+      return false;
     };
 
-    var postHeight = function() {
-      var docHeight = document.body.scrollHeight;
-      postMessage({
-        height: docHeight
-      });
+    var invalidAddUserForm = function() {
+      if ($scope.selectedUser === null) {
+        $scope.noUserSelectedAlert = true;
+        $scope.showAlerts = true;
+        return true;
+      }
+      $scope.noUserSelectedAlert = false;
+      return false;
+    };
+
+    $scope.updateSearchTextType = function() {
+      $scope.searchTextType = (['student_id', 'ldap_user_id'].indexOf($scope.search_type) === -1) ? 'text' : 'number';
     };
 
     $scope.searchUsers = function() {
       resetSearchState();
       resetImportState();
 
-      // require search text
-      if ($scope.search_text === '') {
-        $scope.showAlerts = true;
-        $scope.noSearchTextAlert = true;
-        $scope.isLoading = false;
+      if (invalidSearchForm()) {
         return false;
       }
 
@@ -102,8 +118,12 @@
       }).success(function(data) {
         $scope.userSearchResults = data.users;
         if (data.users.length > 0) {
-          $scope.userSearchResultsCount = data.users[0].result_count;
+          $scope.userSearchResultsCount = Math.floor(data.users[0].result_count);
+          if (data.users.length === 1) {
+            $scope.selectedUser = data.users[0];
+          }
         } else {
+          setSearchTypeNotice();
           $scope.userSearchResultsCount = 0;
           $scope.noSearchResultsNotice = true;
         }
@@ -122,11 +142,14 @@
     };
 
     $scope.addUser = function() {
+      if (invalidAddUserForm()) {
+        return false;
+      }
       $scope.showUsersArea = false;
       $scope.isLoading = true;
       $scope.showAlerts = true;
-      var submittedUser = $scope.selected_user;
-      var submittedSection = $scope.selected_section;
+      var submittedUser = $scope.selectedUser;
+      var submittedSection = $scope.selectedSection;
       var submittedRole = $scope.selectedRole;
       var addUserUri = '/api/academics/canvas/course_add_user/add_user';
       var addUserParams = {
@@ -158,28 +181,28 @@
     };
 
     var checkAuthorization = function() {
-      var checkAuthorizationUri = '/api/academics/canvas/course_user_profile';
-      var checkAuthorizationParams = {};
+      var courseUserRolesUri = '/api/academics/canvas/course_user_roles';
+      var courseUserRolesParams = {};
       if ($routeParams.canvas_course_id) {
-        checkAuthorizationParams.canvas_course_id = $routeParams.canvas_course_id;
+        courseUserRolesParams.canvas_course_id = $routeParams.canvas_course_id;
       }
       $http({
-        url: checkAuthorizationUri,
+        url: courseUserRolesUri,
         method: 'GET',
-        params: checkAuthorizationParams
+        params: courseUserRolesParams
       }).success(function(data) {
-        $scope.course_user_profile = data.course_user_profile;
-        $scope.is_course_admin = userIsAdmin($scope.course_user_profile);
-        if ($scope.is_course_admin) {
+        $scope.courseUserRoles = data.roles;
+        $scope.canvasCourseId = data.courseId;
+        $scope.userAuthorized = userIsAuthorized($scope.courseUserRoles);
+        if ($scope.userAuthorized) {
           getCourseSections();
-          $scope.canvas_course_id = $scope.course_user_profile.enrollments[0].course_id;
           $scope.showSearchForm = true;
         } else {
           $scope.showError = true;
           $scope.errorStatus = 'You must be a teacher in this bCourses course to import users.';
         }
       }).error(function(data) {
-        $scope.is_course_admin = false;
+        $scope.userAuthorized = false;
         $scope.showError = true;
         if (data.error) {
           $scope.errorStatus = data.error;
@@ -195,8 +218,8 @@
         url: courseSectionsUri,
         method: 'GET'
       }).success(function(data) {
-        $scope.course_sections = data.course_sections;
-        $scope.selected_section = $scope.course_sections[0];
+        $scope.courseSections = data.course_sections;
+        $scope.selectedSection = $scope.courseSections[0];
       }).error(function(data) {
         $scope.showError = true;
         if (data.error) {
@@ -207,20 +230,14 @@
       });
     };
 
-    var userIsAdmin = function(courseUserProfile) {
-      var adminRoles = ['TeacherEnrollment', 'TaEnrollment', 'DesignerEnrollment'];
-      var enrollments = courseUserProfile.enrollments;
-      for (var i = 0; i < enrollments.length; i++) {
-        var role = enrollments[i].role;
-        var isAdminRole = adminRoles.indexOf(role);
-        if (isAdminRole >= 0) {
-          return true;
-        }
+    var userIsAuthorized = function(courseUserRoles) {
+      if (courseUserRoles.globalAdmin || courseUserRoles.teacher || courseUserRoles.ta || courseUserRoles.designer){
+        return true;
       }
       return false;
     };
 
-    window.setInterval(postHeight, 250);
+    apiService.util.iframeUpdateHeight();
     checkAuthorization();
   });
 

@@ -199,20 +199,19 @@ module Canvas
       @export_filename_prefix ||= "#{@export_dir}/course_provision-#{DateTime.now.strftime('%F')}-#{SecureRandom.hex(8)}"
     end
 
-    def course_site_url(sis_id)
-      response = Canvas::Course.new(course_id: sis_id).course
-      raise RuntimeError, "Unexpected error obtaining course site URL for #{sis_id}!" if response.blank?
-      course_data = JSON.parse(response.body)
-      "#{Settings.canvas_proxy.url_root}/courses/#{course_data['id']}"
+    def course_site_url(sis_course_id)
+      course = Canvas::SisCourse.new(sis_course_id: sis_course_id).course
+      raise RuntimeError, "Unexpected error obtaining course site URL for #{sis_course_id}!" if course.blank?
+      "#{Settings.canvas_proxy.url_root}/courses/#{course['id']}"
     end
 
     def current_terms
-      @current_terms ||= Settings.canvas_proxy.current_terms_codes.collect do |term|
+      @current_terms ||= Canvas::Proxy.canvas_current_terms.collect do |term|
         {
-          yr: term.term_yr,
-          cd: term.term_cd,
-          slug: Berkeley::TermCodes.to_slug(term.term_yr, term.term_cd),
-          name: Berkeley::TermCodes.to_english(term.term_yr, term.term_cd)
+          yr: term.year.to_s,
+          cd: term.code,
+          slug: term.slug,
+          name: term.to_english
         }
       end
     end
@@ -235,7 +234,7 @@ module Canvas
       # merged model, we're probably better off selecting the desired teaching-semester from that bigger feed.
 
       academics_feed = MyAcademics::Merged.new(@uid).get_feed
-      if (teaching_semesters = academics_feed[:teaching_semesters])
+      if (teaching_semesters = academics_feed[:teachingSemesters])
         teaching_semesters.select do |teaching_semester|
           terms_filter.index { |term| teaching_semester[:slug] == term[:slug] }
         end

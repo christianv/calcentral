@@ -30,11 +30,11 @@ module User
       use_pooled_connection {
         self.destroy_all(uid: uid, app_id: app_id)
       }
-      Calcentral::USER_CACHE_EXPIRATION.notify uid
+      Cache::UserCacheExpiry.notify uid
     end
 
     def self.get_google_email(user_id)
-      get_appdata_field(Google::Proxy::APP_ID, user_id, 'email')
+      get_appdata_field(GoogleApps::Proxy::APP_ID, user_id, 'email')
     end
 
     def self.get_canvas_email(user_id)
@@ -42,15 +42,15 @@ module User
     end
 
     def self.is_google_reminder_dismissed(user_id)
-      get_appdata_field(Google::Proxy::APP_ID, user_id, 'is_reminder_dismissed')
+      get_appdata_field(GoogleApps::Proxy::APP_ID, user_id, 'is_reminder_dismissed')
     end
 
     def self.update_google_email!(user_id)
       #will be a noop if user hasn't granted google access
       use_pooled_connection {
-        authenticated_entry = self.where(uid: user_id, app_id: Google::Proxy::APP_ID).first
+        authenticated_entry = self.where(uid: user_id, app_id: GoogleApps::Proxy::APP_ID).first
         return unless authenticated_entry
-        userinfo = Google::Userinfo.new(user_id: user_id).user_info
+        userinfo = GoogleApps::Userinfo.new(user_id: user_id).user_info
         return unless userinfo && userinfo.response.status == 200
         authenticated_entry.app_data["email"] = userinfo.data["email"]
         authenticated_entry.save
@@ -62,7 +62,7 @@ module User
       use_pooled_connection {
         authenticated_entry = self.where(uid: user_id, app_id: Canvas::Proxy::APP_ID).first
         return unless authenticated_entry
-        userinfo = Canvas::UserProfile.new(user_id: user_id).user_profile
+        userinfo = Canvas::SisUserProfile.new(user_id: user_id).sis_user_profile
         return unless userinfo && userinfo.status == 200
         login_info = safe_json userinfo.body
         if login_info && login_info["primary_email"]
@@ -94,7 +94,7 @@ module User
     end
 
     def self.dismiss_google_reminder(user_id)
-      new_or_update(user_id, Google::Proxy::APP_ID, '', '', 0, {
+      new_or_update(user_id, GoogleApps::Proxy::APP_ID, '', '', 0, {
         app_data: {
           'is_reminder_dismissed' => true
         }
@@ -112,7 +112,7 @@ module User
     end
 
     def expire_user
-      Calcentral::USER_CACHE_EXPIRATION.notify @uid
+      Cache::UserCacheExpiry.notify @uid
     end
 
     def self.encrypt_with_iv(value)

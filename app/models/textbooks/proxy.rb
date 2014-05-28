@@ -35,7 +35,7 @@ module Textbooks
           book_detail = {
             :hasChoices => bl.xpath('.//h3[@class="material-group-title choice-title"]').length > 0 || bl.xpath('.//div[@class="choice-list-heading-sub"]').length > 0,
             :title => bl.xpath('.//h3[@class="material-group-title"]')[0].text.split("\n")[0],
-            :image => bl.xpath('.//span[@id="materialTitleImage"]/img/@src')[0].text,
+            :image => bl.xpath('.//span[@id="materialTitleImage"]/img/@src')[0].text.gsub("http:", ""),
             :isbn => isbn,
             :author => bl.xpath('.//span[@id="materialAuthor"]')[0].text.split(":")[1],
             :edition => bl.xpath('.//span[@id="materialEdition"]')[0].text.split(":")[1],
@@ -56,18 +56,8 @@ module Textbooks
     end
 
     def get_term(slug)
-      semester = slug.split('-')[0]
-      year = slug.split('-')[1]
-
-      case semester
-        when 'fall'
-          term = year + 'D'
-        when 'spring'
-          term = year + 'B'
-        when 'summer'
-          term = year + 'C'
-      end
-      term
+      term_hash = Berkeley::TermCodes.from_slug(slug)
+      "#{term_hash[:term_yr]}#{term_hash[:term_cd]}"
     end
 
     def initialize(options = {})
@@ -96,7 +86,7 @@ module Textbooks
       required_books = []
       recommended_books = []
       optional_books = []
-      status_code = ''
+      statusCode = ''
       url = ''
       bookstore_error_text = ''
 
@@ -115,7 +105,7 @@ module Textbooks
           raise Errors::ProxyError.new("Currently, we can't reach the bookstore. Check again later for updates, or contact your instructor directly.")
         end
 
-        status_code = response.code
+        statusCode = response.code
         text_books = Nokogiri::HTML(response.body)
         logger.debug "Remote server status #{response.code}; url = #{url}"
         text_books_items = text_books.xpath('//h2 | //ul')
@@ -180,7 +170,7 @@ module Textbooks
       book_response[:hasBooks] = !(required_books.flatten.blank? && recommended_books.flatten.blank? && optional_books.flatten.blank?)
       {
         books: book_response,
-        status_code: status_code
+        statusCode: statusCode
       }
 
     end

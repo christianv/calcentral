@@ -1,7 +1,8 @@
 <div class="cc-widget cc-widget-mycalendar" data-ng-controller="UpNextController">
   <div class="cc-widget-title">
     <h2>
-      <span data-ng-bind="lastModifiedDate | date:'EEEE'">Up Next</span>
+      <span data-ng-if="!lastModifiedDate">Up Next</span>
+      <span data-ng-bind="lastModifiedDate | date:'EEEE'"></span>
       <span data-ng-bind="lastModifiedDate | date:'MMM d'" class="cc-widget-title-sub"></span>
     </h2>
   </div>
@@ -55,11 +56,11 @@
         </div>
       </li>
     </ul>
-    <div data-ng-if="!items.length && api.user.profile.has_google_access_token" class="cc-widget-text">
+    <div data-ng-if="!items.length && api.user.profile.hasGoogleAccessToken" class="cc-widget-text">
       You have no events scheduled for the rest of the day.
     </div>
-    <div data-ng-if="!items.length && !api.user.profile.has_google_access_token" class="cc-widget-text">
-      To see events from your bCal calendar, connect CalCentral to your bConnected account on the <a href="/settings">Settings</a> page.
+    <div data-ng-if="!items.length && !api.user.profile.hasGoogleAccessToken" class="cc-widget-text">
+      <div data-ng-include="'templates/no_bconnected.html'" data-onload="mode='upnext'"></div>
     </div>
 
   </div>

@@ -3,13 +3,14 @@ require 'my_tasks/param_validator'
 module MyTasks
   class Merged < UserSpecificModel
     include MyTasks::ParamValidator
+    include Cache::LiveUpdatesEnabled
 
     attr_reader :enabled_sources
 
     def initialize(uid, options={})
       super(uid, options)
       #To avoid issues with tz, use DateTime instead of Date (http://www.elabs.se/blog/36-working-with-time-zones-in-ruby-on-rails)
-      @starting_date = Time.zone.today.to_time_in_current_zone.to_datetime
+      @starting_date = Time.zone.today.in_time_zone.to_datetime
       @now_time = Time.zone.now
       @future_count = 0
     end
@@ -19,9 +20,9 @@ module MyTasks
         Canvas::Proxy::APP_NAME => {access_granted: Canvas::Proxy.access_granted?(@uid),
                                 source: MyTasks::CanvasTasks.new(@uid, @starting_date),
                                 pseudo_enabled: Canvas::Proxy.allow_pseudo_user?},
-        Google::Proxy::APP_ID => {access_granted: Google::Proxy.access_granted?(@uid),
+        GoogleApps::Proxy::APP_ID => {access_granted: GoogleApps::Proxy.access_granted?(@uid),
                                 source: MyTasks::GoogleTasks.new(@uid, @starting_date),
-                                pseudo_enabled: Google::Proxy.allow_pseudo_user?}
+                                pseudo_enabled: GoogleApps::Proxy.allow_pseudo_user?}
       }
       @enabled_sources.select!{|k,v| v[:access_granted] == true}
     end

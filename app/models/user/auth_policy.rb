@@ -20,10 +20,6 @@ module User
       can_clear_cache? || can_author?
     end
 
-    def can_import_canvas_users?
-      can_administrate? || Canvas::Admins.new.admin_user?(user.uid)
-    end
-
     def can_refresh_log_settings?
       # Only super-users are allowed to change logging settings in production, but in development mode, anyone can.
       !Rails.env.production? || can_administrate?
@@ -35,6 +31,19 @@ module User
 
     def can_author?
       can_administrate? || (user.active? && user.is_author?)
+    end
+
+    def can_administrate_globally?
+      can_administrate? || can_administrate_canvas?
+    end
+
+    def can_administrate_canvas?
+      Canvas::Admins.new.admin_user?(user.uid)
+    end
+
+    def can_create_canvas_course_site?
+      is_current_instructor = Canvas::CurrentTeacher.new(user.uid).user_currently_teaching?
+      can_administrate? || can_administrate_canvas? || is_current_instructor
     end
 
   end

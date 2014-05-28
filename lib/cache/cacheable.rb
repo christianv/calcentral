@@ -41,7 +41,7 @@ module Cache
       begin
         entry = block.call
         entry = entry.to_json if jsonify
-      rescue Exception => e
+      rescue => e
         # don't write to cache if an exception occurs, just log the error and return a body
         response = handle_exception(e, id, return_nil_on_generic_error, user_message_on_exception)
         response = response.to_json if jsonify
@@ -71,7 +71,7 @@ module Cache
         else
           response = {
             :body => user_message_on_exception,
-            :status_code => 503
+            :statusCode => 503
           }
         end
       end
@@ -96,13 +96,13 @@ module Cache
       # Bearfacts data is refreshed daily at 0730, so we will always expire at 0800 sharp on the day after today.
       # nb: memcached interprets expiration values greater than 30 days worth of seconds as a Unix timestamp. This
       # logic may not work on caching systems other than memcached.
-      today = Time.zone.today.to_time_in_current_zone.to_datetime.advance(:hours => 8)
+      today = Time.zone.today.in_time_zone.to_datetime.advance(:hours => 8)
       now = Time.zone.now
-      if now.to_i > today.to_i
+      if now.to_i > today.to_time.to_i
         tomorrow = today.advance(:days => 1)
-        tomorrow.to_i
+        tomorrow.to_time.to_i
       else
-        today.to_i
+        today.to_time.to_i
       end
     end
 

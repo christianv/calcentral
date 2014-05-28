@@ -1,5 +1,6 @@
 module CampusOracle
   class UserCourses < BaseProxy
+    include Cache::UserCacheExpiry
     extend Proxies::EnableForActAs
 
     APP_ID = "Campus"
@@ -7,6 +8,7 @@ module CampusOracle
     def initialize(options = {})
       super(Settings.sakai_proxy, options)
       @uid = @settings.fake_user_id if @fake
+      @academic_terms = Berkeley::Terms.fetch.campus.values
     end
 
     def self.expires_in
@@ -15,10 +17,6 @@ module CampusOracle
 
     def self.access_granted?(uid)
       !uid.blank?
-    end
-
-    def academic_terms
-      @settings.academic_terms
     end
 
     def get_all_campus_courses
@@ -54,19 +52,10 @@ module CampusOracle
 
     def merge_enrollments(campus_classes)
       previous_item = {}
-      enrollments = CampusOracle::Queries.get_enrolled_sections(@uid, academic_terms.student)
+      enrollments = CampusOracle::Queries.get_enrolled_sections(@uid, @academic_terms)
       enrollments.each do |row|
         if (item = row_to_feed_item(row, previous_item))
           item[:role] = 'Student'
-          item[:unit] = row['unit']
-          item[:pnp_flag] = row['pnp_flag']
-          item[:grade] = row["grade"]
-          item[:cred_cd] = row["cred_cd"]
-          item[:transcript_unit] = row["transcript_unit"]
-          if row['enroll_status'] == 'W'
-            item[:waitlist_position] = row['wait_list_seq_num']
-            item[:enroll_limit] = row['enroll_limit']
-          end
           semester_key = "#{item[:term_yr]}-#{item[:term_cd]}"
           campus_classes[semester_key] ||= []
           campus_classes[semester_key] << item
@@ -77,7 +66,7 @@ module CampusOracle
 
     def merge_explicit_instructing(campus_classes)
       previous_item = {}
-      assigneds = CampusOracle::Queries.get_instructing_sections(@uid, academic_terms.instructor)
+      assigneds = CampusOracle::Queries.get_instructing_sections(@uid, @academic_terms)
       is_instructing = assigneds.present?
       assigneds.each do |row|
         if (item = row_to_feed_item(row, previous_item))
@@ -91,7 +80,7 @@ module CampusOracle
       is_instructing
     end
 
-    # This is done in a separate step so that implicitly nested secondary sections
+    # This is done in a separate step so that all secondary sections
     # are ordered after explicitly assigned primary sections.
     def merge_nested_instructing(campus_classes)
       campus_classes.values.each do |semester|
@@ -101,16 +90,19 @@ module CampusOracle
             if primaries.present? && Berkeley::CourseOptions::MAPPING[course[:course_option]]
               secondaries = get_all_secondary_sections(course)
               if secondaries.present?
+                # Remember any explicit assignments to avoid duplicates and maintain ordering.
+                explicit_secondaries = course[:sections].select {|s| !s[:is_primary_section] }.collect {|s| s[:ccn]}
                 # Use a hash to avoid duplicates when an instructor is assigned more than one primary.
                 nested_secondaries = {}
                 primaries.each do |prim|
                   secondaries.each do |sec|
-                    if Berkeley::CourseOptions.nested?(course[:course_option], prim[:section_number], sec)
+                    if explicit_secondaries.include?(sec['course_cntl_num']) ||
+                      Berkeley::CourseOptions.nested?(course[:course_option], prim[:section_number], sec)
                       nested_secondaries[sec['course_cntl_num']] = row_to_section_data(sec)
                     end
                   end
                 end
-                course[:sections].concat(nested_secondaries.values)
+                course[:sections] = primaries.concat(nested_secondaries.values) unless nested_secondaries.empty?
               end
             end
           end
@@ -127,19 +119,19 @@ module CampusOracle
 
     def get_all_transcripts
       self.class.fetch_from_cache "all-transcripts-#{@uid}" do
-        CampusOracle::Queries.get_transcript_grades(@uid, academic_terms.student)
+        CampusOracle::Queries.get_transcript_grades(@uid, @academic_terms)
       end
     end
 
     def has_student_history?
       self.class.fetch_from_cache "has_student_history-#{@uid}" do
-        CampusOracle::Queries.has_student_history?(@uid, academic_terms.student)
+        CampusOracle::Queries.has_student_history?(@uid, @academic_terms)
       end
     end
 
     def has_instructor_history?
       self.class.fetch_from_cache "has_instructor_history-#{@uid}" do
-        CampusOracle::Queries.has_instructor_history?(@uid, academic_terms.instructor)
+        CampusOracle::Queries.has_instructor_history?(@uid, @academic_terms)
       end
     end
 
@@ -161,34 +153,56 @@ module CampusOracle
     end
 
     def row_to_feed_item(row, previous_item)
-      course_id = "#{row['dept_name']}-#{row['catalog_id']}-#{row['term_yr']}-#{row['term_cd']}"
-      # Make it embeddable as an element in a URL path.
-      course_id = course_id.downcase.gsub(/[^a-z0-9-]+/, '_')
-      if course_id == previous_item[:id]
+      unless (course_item = new_course_item(row, previous_item))
         previous_item[:sections] << row_to_section_data(row)
         nil
       else
-        course_data = {
-          id: course_id,
+        course_item.merge!({
           term_yr: row['term_yr'],
           term_cd: row['term_cd'],
           dept: row['dept_name'],
           dept_desc: row['dept_description'],
           catid: row['catalog_id'],
-          course_code: "#{row['dept_name']} #{row['catalog_id']}",
           course_catalog: row['catalog_id'],
           emitter: 'Campus',
           name: row['course_title'],
           sections: [
             row_to_section_data(row)
           ]
-        }
+        })
         # This only applies to instructors and will be skipped for students.
         if (course_option = row['course_option'])
-          course_data[:course_option] = course_option
+          course_item[:course_option] = course_option
         end
-        course_data
+        course_item
       end
+    end
+
+    def new_course_item(row, previous_item)
+      matched = (row['dept_name'] == previous_item[:dept]) &&
+        (row['catalog_id'] == previous_item[:catid]) &&
+        (row['term_yr'] == previous_item[:term_yr]) &&
+        (row['term_cd'] == previous_item[:term_cd])
+      if matched
+        nil
+      else
+        course_ids_from_row(row)
+      end
+    end
+
+    # Create IDs for a given course item:
+    #   "id" : unique for the UserCourses feed across terms; used by Classes
+    #   "slug" : URL-friendly ID without term information; used by Academics
+    #   "course_code" : the short course name as displayed in the UX
+    def course_ids_from_row(row)
+      slug = row['dept_name'].downcase.gsub(/[^a-z0-9-]+/, '_') +
+        '-' + row['catalog_id'].downcase.gsub(/[^a-z0-9-]+/, '_')
+      course_data = {
+        id: "#{slug}-#{row['term_yr']}-#{row['term_cd']}",
+        slug: slug,
+        course_code: "#{row['dept_name']} #{row['catalog_id']}"
+      }
+      course_data
     end
 
     def row_to_section_data(row)
@@ -199,10 +213,15 @@ module CampusOracle
         section_label: "#{row['instruction_format']} #{row['section_num']}",
         section_number: row['section_num']
       }
+      if row['primary_secondary_cd'] == 'P'
+        section_data[:unit] = row['unit']
+        section_data[:pnp_flag] = row['pnp_flag']
+        section_data[:cred_cd] = row['cred_cd']
+      end
       # This only applies to enrollment records and will be skipped for instructors.
       if row['enroll_status'] == 'W'
-        section_data[:waitlist_position] = row['wait_list_seq_num']
-        section_data[:enroll_limit] = row['enroll_limit']
+        section_data[:waitlistPosition] = row['wait_list_seq_num'].to_i
+        section_data[:enroll_limit] = row['enroll_limit'].to_i
       end
       section_data
     end

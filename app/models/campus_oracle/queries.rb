@@ -2,26 +2,6 @@ module CampusOracle
   class Queries < Connection
     include ActiveRecordHelper
 
-    def self.reg_status_translator
-      @reg_status_translator ||= Notifications::RegStatusTranslator.new
-    end
-
-    def self.educ_level_translator
-      @educ_level_translator ||= Notifications::EducLevelTranslator.new
-    end
-
-    def self.cal_residency_translator
-      @cal_residency_translator ||= Notifications::CalResidencyTranslator.new
-    end
-
-    def self.current_year
-      Settings.sakai_proxy.current_terms_codes.first.term_yr
-    end
-
-    def self.current_term
-      Settings.sakai_proxy.current_terms_codes.first.term_cd
-    end
-
     def self.get_person_attributes(person_id)
       result = {}
       use_pooled_connection {
@@ -39,27 +19,7 @@ module CampusOracle
         SQL
         result = connection.select_one(sql)
       }
-      if result
-        result[:reg_status] = {
-          :code => result["reg_status_cd"],
-          :summary => self.reg_status_translator.status(result["reg_status_cd"]),
-          :explanation => self.reg_status_translator.status_explanation(result["reg_status_cd"]),
-          :needsAction => !self.reg_status_translator.is_registered(result["reg_status_cd"])
-        }
-        result[:units_enrolled] = result["tot_enroll_unit"]
-        result[:education_level] = self.educ_level_translator.translate(result["educ_level"])
-        result[:california_residency] = self.cal_residency_translator.translate(result["cal_residency_flag"])
-        result['affiliations'] ||= ""
-        result[:roles] = {
-          :student => result['affiliations'].include?("STUDENT-TYPE-"),
-          :ex_student => result['affiliations'].include?("STUDENT-STATUS-EXPIRED"),
-          :faculty => result['affiliations'].include?("EMPLOYEE-TYPE-ACADEMIC"),
-          :staff => result['affiliations'].include?("EMPLOYEE-TYPE-STAFF"),
-          :guest => result['affiliations'].include?("GUEST-TYPE-COLLABORATOR")
-        }
-
-      end
-      result
+      stringify_ints!(result, ["tot_enroll_unit"])
     end
 
     def self.get_basic_people_attributes(up_to_1000_ldap_uids)
@@ -72,7 +32,7 @@ module CampusOracle
         SQL
         result = connection.select_all(sql)
       }
-      result
+      stringify_ints! result
     end
 
     def self.find_people_by_name(name_search_string, limit = 0)
@@ -102,7 +62,7 @@ module CampusOracle
         SQL
         result = connection.select_all(sql)
       }
-      result
+      stringify_ints! result
     end
 
     def self.find_people_by_email(email_search_string, limit = 0)
@@ -130,7 +90,7 @@ module CampusOracle
         SQL
         result = connection.select_all(sql)
       }
-      result
+      stringify_ints! result
     end
 
     def self.find_people_by_student_id(student_id_string)
@@ -139,14 +99,14 @@ module CampusOracle
       result = []
       use_pooled_connection {
         sql = <<-SQL
-      select pi.ldap_uid, pi.first_name, pi.last_name, pi.email_address, pi.student_id, pi.affiliations, 1 row_number, 1 result_count
+      select pi.ldap_uid, pi.first_name, pi.last_name, pi.email_address, pi.student_id, pi.affiliations, 1.0 row_number, 1.0 result_count
       from calcentral_person_info_vw pi
       where pi.student_id = #{student_id_string}
       and rownum <= 1
         SQL
         result = connection.select_all(sql)
       }
-      result
+      stringify_ints! result
     end
 
     def self.find_people_by_uid(user_id_string)
@@ -155,14 +115,14 @@ module CampusOracle
       result = []
       use_pooled_connection {
         sql = <<-SQL
-      select pi.ldap_uid, pi.first_name, pi.last_name, pi.email_address, pi.student_id, pi.affiliations, 1 row_number, 1 result_count
+      select pi.ldap_uid, pi.first_name, pi.last_name, pi.email_address, pi.student_id, pi.affiliations, 1.0 row_number, 1.0 result_count
       from calcentral_person_info_vw pi
       where pi.ldap_uid = #{user_id_string}
       and rownum <= 1
         SQL
         result = connection.select_all(sql)
       }
-      result
+      stringify_ints! result
     end
 
     def self.is_integer_string?(string)
@@ -188,7 +148,7 @@ module CampusOracle
       if result == nil || result["reg_status_cd"] == nil
         nil
       else
-        result
+        stringify_ints! result
       end
     end
 
@@ -207,7 +167,7 @@ module CampusOracle
         SQL
         result = connection.select_all(sql)
       }
-      result
+      stringify_ints! result
     end
 
     def self.get_course_from_section(ccn, term_yr, term_cd)
@@ -222,7 +182,7 @@ module CampusOracle
         SQL
         result = connection.select_one(sql)
       }
-      result
+      stringify_ints! result
     end
 
     def self.get_sections_from_ccns(term_yr, term_cd, ccns)
@@ -240,7 +200,7 @@ module CampusOracle
         SQL
         result = connection.select_all(sql)
       }
-      result
+      stringify_ints! result
     end
 
     # Catalog ID sorting is: "99", "101L", "C103", "C107L", "110", "110L", "C112", "C112L"
@@ -268,7 +228,7 @@ module CampusOracle
         SQL
         result = connection.select_all(sql)
       }
-      result
+      stringify_ints! result
     end
 
     def self.get_transcript_grades(person_id, terms = nil)
@@ -286,7 +246,7 @@ module CampusOracle
         SQL
         result = connection.select_all(sql)
       }
-      result
+      stringify_ints! result
     end
 
     def self.get_instructing_sections(person_id, terms = nil)
@@ -310,7 +270,7 @@ module CampusOracle
         SQL
         result = connection.select_all(sql)
       }
-      result
+      stringify_ints! result
     end
 
     def self.get_course_secondary_sections(term_yr, term_cd, department, catalog_id)
@@ -329,7 +289,7 @@ module CampusOracle
         SQL
         result = connection.select_all(sql)
       }
-      result
+      stringify_ints! result
     end
 
     def self.get_section_schedules(term_yr, term_cd, ccn)
@@ -347,7 +307,7 @@ module CampusOracle
         SQL
         result = connection.select_all(sql)
       }
-      result
+      stringify_ints! result
     end
 
     def self.get_section_instructors(term_yr, term_cd, ccn)
@@ -366,7 +326,7 @@ module CampusOracle
         SQL
         result = connection.select_all(sql)
       }
-      result
+      stringify_ints! result
     end
 
     def self.get_photo(ldap_uid)
@@ -379,7 +339,7 @@ module CampusOracle
         SQL
         result = connection.select_one(sql)
       }
-      result
+      stringify_ints! result
     end
 
     def self.get_student_info(ldap_uid)
@@ -393,7 +353,7 @@ module CampusOracle
         SQL
         result = connection.select_one(sql)
       }
-      result
+      stringify_ints! result
     end
 
     def self.is_previous_ugrad?(ldap_uid)
@@ -460,6 +420,20 @@ module CampusOracle
       }
       Rails.logger.debug "Student #{ldap_uid} history for terms #{student_terms} count = #{result}"
       return result["course_count"].to_i > 0
+    end
+
+    def self.terms
+      result = []
+      use_pooled_connection {
+        sql = <<-SQL
+        select term_century || term_yr as term_yr, term_cd, trim(term_status_desc) as term_status_desc,
+          trim(term_name) as term_name, current_tb_term_flag, term_start_date, term_end_date
+        from calcentral_term_info_vw
+        order by term_start_date desc
+        SQL
+        result = connection.select_all(sql)
+      }
+      result
     end
 
   end

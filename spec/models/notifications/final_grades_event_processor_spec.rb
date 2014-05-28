@@ -36,7 +36,7 @@ describe Notifications::FinalGradesEventProcessor do
 
     User::Data.stub(:where).and_return(MockUserData.new)
 
-    Calcentral::USER_CACHE_EXPIRATION.should_receive(:notify).exactly(8).times
+    Cache::UserCacheExpiry.should_receive(:notify).exactly(8).times
 
     @processor.process(event, timestamp).should == true
 
@@ -44,7 +44,7 @@ describe Notifications::FinalGradesEventProcessor do
     saved_notification.should_not be_nil
     saved_notification.data.should_not be_nil
     saved_notification.translator.should == "FinalGradesTranslator"
-    saved_notification.occurred_at.to_i.should == timestamp.to_i
+    saved_notification.occurred_at.to_time.to_i.should == timestamp.to_time.to_i
     Rails.logger.info "Saved notification's json is #{saved_notification.data}"
 
     Notifications::Notification.where(:uid => "323487").first.data.should_not be_nil
@@ -70,8 +70,8 @@ describe Notifications::FinalGradesEventProcessor do
             {"ldap_uid" => "978966"}])
     CampusOracle::Queries.stub(:get_enrolled_students).with(7366, 2013, 'C').and_return([])
     User::Api.should_not_receive(:delete)
-    Calcentral::USER_CACHE_EXPIRATION.should_not_receive(:notify)
-    User::Data.stub(:where, "300846").and_return(NonexistentUserData.new)
+    Cache::UserCacheExpiry.should_not_receive(:notify)
+    User::Data.stub(:where, {uid: "300846"}).and_return(NonexistentUserData.new)
     @processor.process(event, timestamp).should == true
   end
 
@@ -133,6 +133,21 @@ describe Notifications::FinalGradesEventProcessor do
     saved_notifications = Notifications::Notification.where(:uid => "123456")
     saved_notifications.length.should == 2
 
+  end
+
+  it "should handle a non-array course in the payload" do
+    event = JSON.parse('{"topic":"Bearfacts:EndOfTermGrades","timestamp":"2013-05-30T07:15:11.871-07:00","payload":{"course":{"ccn":73974,"term":{"year":2013,"name":"C"}}}}')
+    timestamp = Time.now.to_datetime
+    CampusOracle::Queries.stub(:get_enrolled_students).with(73974, 2013, 'C').and_return([{"ldap_uid" => "123456"}])
+    CampusOracle::Queries.stub(:get_course_from_section).with(73974, 2013, 'C').and_return(
+      {"course_title" => "Research and Data Analysis in Psychology",
+        "dept_name" => "PSYCH",
+        "catalog_id" => "101"})
+    User::Data.stub(:where).with({uid: "123456"}).and_return(MockUserData.new)
+    @processor.process(event, timestamp).should == true
+    saved_notifications = Notifications::Notification.where(:uid => "123456")
+    saved_notifications.should_not be_nil
+    saved_notifications.length.should == 1
   end
 
   class MockUserData

@@ -2,6 +2,7 @@ module Bearfacts
 # TODO collapse this class into Bearfacts::Regblocks
   class MyRegBlocks < UserSpecificModel
     include DatedFeed
+    include Cache::LiveUpdatesEnabled
 
     def get_feed_internal
       proxy = Bearfacts::Regblocks.new({:user_id => @uid})
@@ -28,11 +29,11 @@ module Bearfacts
       doc.css("studentRegistrationBlock").each do |block|
         blocked_date = cleared_date = nil
         begin
-          blocked_date = Date.parse(block.css("blockedDate").text).to_time_in_current_zone.to_datetime
+          blocked_date = Date.parse(block.css("blockedDate").text).in_time_zone.to_datetime
         rescue ArgumentError # no date
         end
         begin
-          cleared_date = Date.parse(block.css("clearedDate").text).to_time_in_current_zone.to_datetime
+          cleared_date = Date.parse(block.css("clearedDate").text).in_time_zone.to_datetime
         rescue ArgumentError # no date
         end
 

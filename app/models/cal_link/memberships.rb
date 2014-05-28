@@ -2,6 +2,7 @@ module CalLink
   class Memberships < Proxy
 
     include SafeJsonParser
+    include Cache::UserCacheExpiry
 
     def get_memberships
       self.class.smart_fetch_from_cache({id: @uid, user_message_on_exception: "Remote server unreachable"}) do
@@ -29,7 +30,7 @@ module CalLink
       Rails.logger.debug "#{self.class.name}: Remote server status #{response.status}, Body = #{response.body}"
       {
         :body => safe_json(response.body),
-        :status_code => response.status
+        :statusCode => response.status
       }
     end
 

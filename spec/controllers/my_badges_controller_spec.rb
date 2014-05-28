@@ -4,8 +4,8 @@ describe MyBadgesController do
 
   before(:each) do
     @user_id = rand(99999).to_s
-    @fake_drive_list = Google::DriveList.new(:fake => true, :fake_options => {:match_requests_on => [:method, :path]})
-    @fake_events_list = Google::EventsList.new(:fake => true, :fake_options => {:match_requests_on => [:method, :path]})
+    @fake_drive_list = GoogleApps::DriveList.new(:fake => true, :fake_options => {:match_requests_on => [:method, :path]})
+    @fake_events_list = GoogleApps::EventsList.new(:fake => true, :fake_options => {:match_requests_on => [:method, :path]})
   end
 
   it "should be an empty badges feed on non-authenticated user" do
@@ -16,16 +16,16 @@ describe MyBadgesController do
   end
 
   it "should be an non-empty badges feed on authenticated user" do
-    Google::Proxy.stub(:access_granted?).and_return(true)
-    Google::DriveList.stub(:new).and_return(@fake_drive_list)
-    Google::EventsList.stub(:new).and_return(@fake_events_list)
+    GoogleApps::Proxy.stub(:access_granted?).and_return(true)
+    GoogleApps::DriveList.stub(:new).and_return(@fake_drive_list)
+    GoogleApps::EventsList.stub(:new).and_return(@fake_events_list)
     session[:user_id] = @user_id
     get :get_feed
     json_response = JSON.parse(response.body)
 
     if json_response["alert"].present?
       json_response["alert"].is_a?(Hash).should be_true
-      json_response["alert"].keys.count.should == 4
+      json_response["alert"].keys.count.should >= 3
     end
 
     json_response["badges"].present?.should be_true

@@ -1,25 +1,39 @@
 # TODO collapse this class into Bearfacts::Profile
-class MyAcademics::CollegeAndLevel
+module MyAcademics
+  class CollegeAndLevel
+    include AcademicsModule, ClassLogger
 
-  include MyAcademics::AcademicsModule
+    def merge(data)
+      profile_proxy = Bearfacts::Profile.new({:user_id => @uid})
+      profile_feed = profile_proxy.get
+      return unless profile_feed.present? && profile_feed[:body].present?
 
-  def merge(data)
-    profile_proxy = Bearfacts::Profile.new({:user_id => @uid})
-    profile_feed = profile_proxy.get
-    return data if profile_feed.nil?
+      begin
+        doc = Nokogiri::XML(profile_feed[:body], &:strict)
+      rescue Nokogiri::XML::SyntaxError
+        #Will only get here on >400 errors, which are already logged
+        return
+      end
 
-    begin
-      doc = Nokogiri::XML(profile_feed[:body], &:strict)
-    rescue Nokogiri::XML::SyntaxError
-      #Will only get here on >400 errors, which are already logged
-      return data
-    end
-
-    general_profile = doc.css("studentGeneralProfile")
-
-    if general_profile
+      general_profile = doc.css("studentGeneralProfile")
+      if general_profile.blank?
+        # No student profile available, probably because the user is no longer (or not yet) considered an active student.
+        return
+      end
       ug_grad_flag = to_text doc.css("ugGradFlag")
-      standing = ug_grad_flag.upcase == "U" ? "Undergraduate" : "Graduate"
+      if ug_grad_flag.blank?
+        # Partial profiles can be returned for incoming students around the start of the term.
+        return
+      end
+      case ug_grad_flag.upcase
+        when 'U'
+          standing = 'Undergraduate'
+        when 'G'
+          standing = 'Graduate'
+        else
+          logger.error("Unknown ugGradFlag '#{ug_grad_flag}' for user #{@uid}")
+          return
+      end
       level = to_text(general_profile.css("corpEducLevel")).titleize
       nonAPLevel = to_text(general_profile.css("nonAPLevel")).titleize
       futureTBLevel = to_text(general_profile.css("futureTBLevel")).titleize
@@ -84,5 +98,4 @@ class MyAcademics::CollegeAndLevel
       }
     end
   end
-
 end

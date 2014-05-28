@@ -3,10 +3,10 @@ require "spec_helper"
 describe "MyBadges" do
   before(:each) do
     @user_id = rand(999999).to_s
-    @fake_drive_list = Google::DriveList.new(:fake => true, :fake_options => {:match_requests_on => [:method, :path]})
-    @fake_events_list = Google::EventsList.new(:fake => true, :fake_options => {:match_requests_on => [:method, :path]})
-    @fake_mail_list = Google::MailList.new(:fake => true)
-    @real_drive_list = Google::DriveList.new(
+    @fake_drive_list = GoogleApps::DriveList.new(:fake => true, :fake_options => {:match_requests_on => [:method, :path]})
+    @fake_events_list = GoogleApps::EventsList.new(:fake => true, :fake_options => {:match_requests_on => [:method, :path]})
+    @fake_mail_list = GoogleApps::MailList.new(:fake => true)
+    @real_drive_list = GoogleApps::DriveList.new(
       :access_token => Settings.google_proxy.test_user_access_token,
       :refresh_token => Settings.google_proxy.test_user_refresh_token,
       :expiration_time => 0
@@ -14,9 +14,9 @@ describe "MyBadges" do
   end
 
   it "should be able to filter out entries older than one month" do
-    Google::Proxy.stub(:access_granted?).and_return(true)
-    Google::DriveList.stub(:new).and_return(@fake_drive_list)
-    Google::EventsList.stub(:new).and_return(@fake_events_list)
+    GoogleApps::Proxy.stub(:access_granted?).and_return(true)
+    GoogleApps::DriveList.stub(:new).and_return(@fake_drive_list)
+    GoogleApps::EventsList.stub(:new).and_return(@fake_events_list)
     User::Oauth2Data.stub(:get_google_email).and_return("tammi.chang.clc@gmail.com")
     badges = MyBadges::Merged.new @user_id
     filtered_feed = badges.get_feed
@@ -33,7 +33,7 @@ describe "MyBadges" do
     mangled_feed[:badges]["bcal"][:count].should == 6
     mangled_feed[:badges]["bcal"][:items].size.should == 6
     mangled_feed[:badges]["bcal"][:items].select { |entry|
-      entry[:all_day_event]
+      entry[:allDayEvent]
     }.size.should == 1
     mangled_feed[:badges]["bcal"][:items].select { |entry|
       entry[:change_state] if entry[:change_state] == "new"
@@ -44,10 +44,10 @@ describe "MyBadges" do
   end
 
   it "should be able to ignore entries with malformed fields" do
-    Google::Proxy.stub(:access_granted?).and_return(true)
-    Google::DriveList.stub(:new).and_return(@fake_drive_list)
-    Google::EventsList.stub(:new).and_return(@fake_events_list)
-    Google::MailList.stub(:new).and_return(@fake_mail_list)
+    GoogleApps::Proxy.stub(:access_granted?).and_return(true)
+    GoogleApps::DriveList.stub(:new).and_return(@fake_drive_list)
+    GoogleApps::EventsList.stub(:new).and_return(@fake_events_list)
+    GoogleApps::MailList.stub(:new).and_return(@fake_mail_list)
     MyBadges::GoogleDrive.any_instance.stub(:is_recent_message?).and_raise(ArgumentError, "foo")
     MyBadges::GoogleCalendar.any_instance.stub(:verify_and_format_date).and_raise(ArgumentError, "foo")
     badges = MyBadges::Merged.new @user_id
@@ -65,10 +65,10 @@ describe "MyBadges" do
   end
 
   it "should have contain some of the same common item-keys across the different badge endpoints" do
-    Google::Proxy.stub(:access_granted?).and_return(true)
-    Google::DriveList.stub(:new).and_return(@fake_drive_list)
-    Google::EventsList.stub(:new).and_return(@fake_events_list)
-    Google::MailList.stub(:new).and_return(@fake_mail_list)
+    GoogleApps::Proxy.stub(:access_granted?).and_return(true)
+    GoogleApps::DriveList.stub(:new).and_return(@fake_drive_list)
+    GoogleApps::EventsList.stub(:new).and_return(@fake_events_list)
+    GoogleApps::MailList.stub(:new).and_return(@fake_mail_list)
     badges_feed = MyBadges::Merged.new(@user_id).get_feed[:badges]
 
     badges_feed.each do |source_key, source_value|
@@ -79,7 +79,7 @@ describe "MyBadges" do
           feed_items[:change_state].blank?.should_not be_true
         end
         if source_key == "bcal"
-          %w(start_time end_time).each do |required_key|
+          %w(startTime endTime).each do |required_key|
             feed_items[required_key.to_sym].blank?.should_not be_true
           end
           if feed_items[:change_state] == "new"
@@ -97,10 +97,10 @@ describe "MyBadges" do
   end
 
   it "should simulate a non-responsive google", :testext => true do
-    Google::Proxy.stub(:access_granted?).and_return(true)
+    GoogleApps::Proxy.stub(:access_granted?).and_return(true)
     Google::APIClient.any_instance.stub(:execute).and_raise(StandardError)
     Google::APIClient.stub(:execute).and_raise(StandardError)
-    Google::DriveList.stub(:new).and_return(@real_drive_list)
+    GoogleApps::DriveList.stub(:new).and_return(@real_drive_list)
     badges = MyBadges::Merged.new @user_id
     badges.get_feed[:badges].each do |key, value|
       value[:count].should == 0

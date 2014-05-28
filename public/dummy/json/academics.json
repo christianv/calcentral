@@ -31,13 +31,13 @@
         "type": "FINAN",
         "blocked_date": {
           "epoch": 1366614000,
-          "date_time": "2013-04-22T00:00:00-07:00",
-          "date_string": "4/22/2013"
+          "dateTime": "2013-04-22T00:00:00-07:00",
+          "dateString": "4/22/2013"
         },
         "cleared_date": {
           "epoch": null,
-          "date_time": null,
-          "date_string": null
+          "dateTime": null,
+          "dateString": null
         },
         "reason": "CARS",
         "office": "BPS"
@@ -49,13 +49,13 @@
         "type": "ACAD",
         "blocked_date": {
           "epoch": 1366527600,
-          "date_time": "2013-04-21T00:00:00-07:00",
-          "date_string": "4/21/2013"
+          "dateTime": "2013-04-21T00:00:00-07:00",
+          "dateString": "4/21/2013"
         },
         "cleared_date": {
           "epoch": 1366614000,
-          "date_time": "2013-04-22T00:00:00-07:00",
-          "date_string": "4/22/2013"
+          "dateTime": "2013-04-22T00:00:00-07:00",
+          "dateString": "4/22/2013"
         },
         "reason": "",
         "office": "LNS"
@@ -65,13 +65,13 @@
         "type": "ADMIN",
         "blocked_date": {
           "epoch": 1332201600,
-          "date_time": "2012-03-20T00:00:00+00:00",
-          "date_string": "3/20/2012"
+          "dateTime": "2012-03-20T00:00:00+00:00",
+          "dateString": "3/20/2012"
         },
         "cleared_date": {
           "epoch": 1332201600,
-          "date_time": "2012-03-20T00:00:00+00:00",
-          "date_string": "3/20/2012"
+          "dateTime": "2012-03-20T00:00:00+00:00",
+          "dateString": "3/20/2012"
         },
         "reason": "STAT LAPSE",
         "office": "OR"
@@ -81,13 +81,13 @@
         "type": "ADMIN",
         "blocked_date": {
           "epoch": 1296691200,
-          "date_time": "2011-02-03T00:00:00+00:00",
-          "date_string": "2/03/2011"
+          "dateTime": "2011-02-03T00:00:00+00:00",
+          "dateString": "2/03/2011"
         },
         "cleared_date": {
           "epoch": 1296691200,
-          "date_time": "2011-02-03T00:00:00+00:00",
-          "date_string": "2/03/2011"
+          "dateTime": "2011-02-03T00:00:00+00:00",
+          "dateString": "2/03/2011"
         },
         "reason": "MISC",
         "office": "OR"
@@ -97,13 +97,13 @@
         "type": "FINAN",
         "blocked_date": {
           "epoch": 1296000000,
-          "date_time": "2011-01-26T00:00:00+00:00",
-          "date_string": "1/26/2011"
+          "dateTime": "2011-01-26T00:00:00+00:00",
+          "dateString": "1/26/2011"
         },
         "cleared_date": {
           "epoch": 1296000000,
-          "date_time": "2011-01-26T00:00:00+00:00",
-          "date_string": "1/26/2011"
+          "dateTime": "2011-01-26T00:00:00+00:00",
+          "dateString": "1/26/2011"
         },
         "reason": "LIBRARY",
         "office": ""
@@ -113,13 +113,13 @@
         "type": "ACAD",
         "blocked_date": {
           "epoch": 1245110400,
-          "date_time": "2009-06-16T00:00:00+00:00",
-          "date_string": "6/16/2009"
+          "dateTime": "2009-06-16T00:00:00+00:00",
+          "dateString": "6/16/2009"
         },
         "cleared_date": {
           "epoch": 1245110400,
-          "date_time": "2009-06-16T00:00:00+00:00",
-          "date_string": "6/16/2009"
+          "dateTime": "2009-06-16T00:00:00+00:00",
+          "dateString": "6/16/2009"
         },
         "reason": "",
         "office": "LNS"
@@ -129,13 +129,13 @@
         "type": "ACAD",
         "blocked_date": {
           "epoch": 1231891200,
-          "date_time": "2009-01-14T00:00:00+00:00",
-          "date_string": "1/14/2009"
+          "dateTime": "2009-01-14T00:00:00+00:00",
+          "dateString": "1/14/2009"
         },
         "cleared_date": {
           "epoch": 1231891200,
-          "date_time": "2009-01-14T00:00:00+00:00",
-          "date_string": "1/14/2009"
+          "dateTime": "2009-01-14T00:00:00+00:00",
+          "dateString": "1/14/2009"
         },
         "reason": "",
         "office": "LNS"
@@ -145,13 +145,13 @@
         "type": "ACAD",
         "blocked_date": {
           "epoch": 1173139200,
-          "date_time": "2007-03-06T00:00:00+00:00",
-          "date_string": "3/06/2007"
+          "dateTime": "2007-03-06T00:00:00+00:00",
+          "dateString": "3/06/2007"
         },
         "cleared_date": {
           "epoch": 1173139200,
-          "date_time": "2007-03-06T00:00:00+00:00",
-          "date_string": "3/06/2007"
+          "dateTime": "2007-03-06T00:00:00+00:00",
+          "dateString": "3/06/2007"
         },
         "reason": "",
         "office": "LNS"
@@ -161,13 +161,13 @@
         "type": "ACAD",
         "blocked_date": {
           "epoch": 1134345600,
-          "date_time": "2005-12-12T00:00:00+00:00",
-          "date_string": "12/12/2005"
+          "dateTime": "2005-12-12T00:00:00+00:00",
+          "dateString": "12/12/2005"
         },
         "cleared_date": {
           "epoch": 1134345600,
-          "date_time": "2005-12-12T00:00:00+00:00",
-          "date_string": "12/12/2005"
+          "dateTime": "2005-12-12T00:00:00+00:00",
+          "dateString": "12/12/2005"
         },
         "reason": "ACADEMIC",
         "office": "LNS"
@@ -177,13 +177,13 @@
         "type": "ACAD",
         "blocked_date": {
           "epoch": 1133827200,
-          "date_time": "2005-12-06T00:00:00+00:00",
-          "date_string": "12/06/2005"
+          "dateTime": "2005-12-06T00:00:00+00:00",
+          "dateString": "12/06/2005"
         },
         "cleared_date": {
           "epoch": 1133827200,
-          "date_time": "2005-12-06T00:00:00+00:00",
-          "date_string": "12/06/2005"
+          "dateTime": "2005-12-06T00:00:00+00:00",
+          "dateString": "12/06/2005"
         },
         "reason": "",
         "office": "LNS"
@@ -193,13 +193,13 @@
         "type": "ACAD",
         "blocked_date": {
           "epoch": 1133222400,
-          "date_time": "2005-11-29T00:00:00+00:00",
-          "date_string": "11/29/2005"
+          "dateTime": "2005-11-29T00:00:00+00:00",
+          "dateString": "11/29/2005"
         },
         "cleared_date": {
           "epoch": 1133222400,
-          "date_time": "2005-11-29T00:00:00+00:00",
-          "date_string": "11/29/2005"
+          "dateTime": "2005-11-29T00:00:00+00:00",
+          "dateString": "11/29/2005"
         },
         "reason": "",
         "office": "LNS"
@@ -209,13 +209,13 @@
         "type": "ACAD",
         "blocked_date": {
           "epoch": 1133222400,
-          "date_time": "2005-11-29T00:00:00+00:00",
-          "date_string": "11/29/2005"
+          "dateTime": "2005-11-29T00:00:00+00:00",
+          "dateString": "11/29/2005"
         },
         "cleared_date": {
           "epoch": 1133222400,
-          "date_time": "2005-11-29T00:00:00+00:00",
-          "date_string": "11/29/2005"
+          "dateTime": "2005-11-29T00:00:00+00:00",
+          "dateString": "11/29/2005"
         },
         "reason": "",
         "office": "LNS"
@@ -225,13 +225,13 @@
         "type": "FINAN",
         "blocked_date": {
           "epoch": 1083801600,
-          "date_time": "2004-05-06T00:00:00+00:00",
-          "date_string": "5/06/2004"
+          "dateTime": "2004-05-06T00:00:00+00:00",
+          "dateString": "5/06/2004"
         },
         "cleared_date": {
           "epoch": 1083801600,
-          "date_time": "2004-05-06T00:00:00+00:00",
-          "date_string": "5/06/2004"
+          "dateTime": "2004-05-06T00:00:00+00:00",
+          "dateString": "5/06/2004"
         },
         "reason": "CARS",
         "office": "BPS"
@@ -241,13 +241,13 @@
         "type": "ADMIN",
         "blocked_date": {
           "epoch": 1074038400,
-          "date_time": "2004-01-14T00:00:00+00:00",
-          "date_string": "1/14/2004"
+          "dateTime": "2004-01-14T00:00:00+00:00",
+          "dateString": "1/14/2004"
         },
         "cleared_date": {
           "epoch": 1074038400,
-          "date_time": "2004-01-14T00:00:00+00:00",
-          "date_string": "1/14/2004"
+          "dateTime": "2004-01-14T00:00:00+00:00",
+          "dateString": "1/14/2004"
         },
         "reason": "MISCONDUCT",
         "office": "OR"
@@ -257,13 +257,13 @@
         "type": "ACAD",
         "blocked_date": {
           "epoch": 1073606400,
-          "date_time": "2004-01-09T00:00:00+00:00",
-          "date_string": "1/09/2004"
+          "dateTime": "2004-01-09T00:00:00+00:00",
+          "dateString": "1/09/2004"
         },
         "cleared_date": {
           "epoch": 1073606400,
-          "date_time": "2004-01-09T00:00:00+00:00",
-          "date_string": "1/09/2004"
+          "dateTime": "2004-01-09T00:00:00+00:00",
+          "dateString": "1/09/2004"
         },
         "reason": "ACADEMIC",
         "office": "LNS"
@@ -273,13 +273,13 @@
         "type": "ACAD",
         "blocked_date": {
           "epoch": 1073606400,
-          "date_time": "2004-01-09T00:00:00+00:00",
-          "date_string": "1/09/2004"
+          "dateTime": "2004-01-09T00:00:00+00:00",
+          "dateString": "1/09/2004"
         },
         "cleared_date": {
           "epoch": 1073606400,
-          "date_time": "2004-01-09T00:00:00+00:00",
-          "date_string": "1/09/2004"
+          "dateTime": "2004-01-09T00:00:00+00:00",
+          "dateString": "1/09/2004"
         },
         "reason": "ACADEMIC",
         "office": "LNS"
@@ -289,13 +289,13 @@
         "type": "ADMIN",
         "blocked_date": {
           "epoch": 1021852800,
-          "date_time": "2002-05-20T00:00:00+00:00",
-          "date_string": "5/20/2002"
+          "dateTime": "2002-05-20T00:00:00+00:00",
+          "dateString": "5/20/2002"
         },
         "cleared_date": {
           "epoch": 1022112000,
-          "date_time": "2002-05-23T00:00:00+00:00",
-          "date_string": "5/23/2002"
+          "dateTime": "2002-05-23T00:00:00+00:00",
+          "dateString": "5/23/2002"
         },
         "reason": "MISC",
         "office": "OR"
@@ -305,13 +305,13 @@
         "type": "ADMIN",
         "blocked_date": {
           "epoch": 1021852800,
-          "date_time": "2002-05-20T00:00:00+00:00",
-          "date_string": "5/20/2002"
+          "dateTime": "2002-05-20T00:00:00+00:00",
+          "dateString": "5/20/2002"
         },
         "cleared_date": {
           "epoch": 1021852800,
-          "date_time": "2002-05-20T00:00:00+00:00",
-          "date_string": "5/20/2002"
+          "dateTime": "2002-05-20T00:00:00+00:00",
+          "dateString": "5/20/2002"
         },
         "reason": "STAT LAPSE",
         "office": "OR"
@@ -321,13 +321,13 @@
         "type": "ACAD",
         "blocked_date": {
           "epoch": 955497600,
-          "date_time": "2000-04-12T00:00:00+00:00",
-          "date_string": "4/12/2000"
+          "dateTime": "2000-04-12T00:00:00+00:00",
+          "dateString": "4/12/2000"
         },
         "cleared_date": {
           "epoch": 955584000,
-          "date_time": "2000-04-13T00:00:00+00:00",
-          "date_string": "4/13/2000"
+          "dateTime": "2000-04-13T00:00:00+00:00",
+          "dateString": "4/13/2000"
         },
         "reason": "ACADEMIC",
         "office": "LNS"
@@ -337,13 +337,13 @@
         "type": "ACAD",
         "blocked_date": {
           "epoch": 922233600,
-          "date_time": "1999-03-24T00:00:00+00:00",
-          "date_string": "3/24/1999"
+          "dateTime": "1999-03-24T00:00:00+00:00",
+          "dateString": "3/24/1999"
         },
         "cleared_date": {
           "epoch": 945648000,
-          "date_time": "1999-12-20T00:00:00+00:00",
-          "date_string": "12/20/1999"
+          "dateTime": "1999-12-20T00:00:00+00:00",
+          "dateString": "12/20/1999"
         },
         "reason": "ACADEMIC",
         "office": "LNS"
@@ -353,13 +353,13 @@
         "type": "ACAD",
         "blocked_date": {
           "epoch": 922233600,
-          "date_time": "1999-03-24T00:00:00+00:00",
-          "date_string": "3/24/1999"
+          "dateTime": "1999-03-24T00:00:00+00:00",
+          "dateString": "3/24/1999"
         },
         "cleared_date": {
           "epoch": 922233600,
-          "date_time": "1999-03-24T00:00:00+00:00",
-          "date_string": "3/24/1999"
+          "dateTime": "1999-03-24T00:00:00+00:00",
+          "dateString": "3/24/1999"
         },
         "reason": "ACADEMIC",
         "office": "LNS"
@@ -369,13 +369,13 @@
         "type": "ACAD",
         "blocked_date": {
           "epoch": 921801600,
-          "date_time": "1999-03-19T00:00:00+00:00",
-          "date_string": "3/19/1999"
+          "dateTime": "1999-03-19T00:00:00+00:00",
+          "dateString": "3/19/1999"
         },
         "cleared_date": {
           "epoch": 955324800,
-          "date_time": "2000-04-10T00:00:00+00:00",
-          "date_string": "4/10/2000"
+          "dateTime": "2000-04-10T00:00:00+00:00",
+          "dateString": "4/10/2000"
         },
         "reason": "ACADEMIC",
         "office": "LNS"
@@ -385,13 +385,13 @@
         "type": "FINAN",
         "blocked_date": {
           "epoch": 918086400,
-          "date_time": "1999-02-04T00:00:00+00:00",
-          "date_string": "2/04/1999"
+          "dateTime": "1999-02-04T00:00:00+00:00",
+          "dateString": "2/04/1999"
         },
         "cleared_date": {
           "epoch": 919123200,
-          "date_time": "1999-02-16T00:00:00+00:00",
-          "date_string": "2/16/1999"
+          "dateTime": "1999-02-16T00:00:00+00:00",
+          "dateString": "2/16/1999"
         },
         "reason": "CUBS",
         "office": "BPS"
@@ -401,13 +401,13 @@
         "type": "ADMIN",
         "blocked_date": {
           "epoch": 916963200,
-          "date_time": "1999-01-22T00:00:00+00:00",
-          "date_string": "1/22/1999"
+          "dateTime": "1999-01-22T00:00:00+00:00",
+          "dateString": "1/22/1999"
         },
         "cleared_date": {
           "epoch": 916963200,
-          "date_time": "1999-01-22T00:00:00+00:00",
-          "date_string": "1/22/1999"
+          "dateTime": "1999-01-22T00:00:00+00:00",
+          "dateString": "1/22/1999"
         },
         "reason": "STAT LAPSE",
         "office": "OR"
@@ -417,13 +417,13 @@
         "type": "ADMIN",
         "blocked_date": {
           "epoch": 881020800,
-          "date_time": "1997-12-02T00:00:00+00:00",
-          "date_string": "12/02/1997"
+          "dateTime": "1997-12-02T00:00:00+00:00",
+          "dateString": "12/02/1997"
         },
         "cleared_date": {
           "epoch": 884044800,
-          "date_time": "1998-01-06T00:00:00+00:00",
-          "date_string": "1/06/1998"
+          "dateTime": "1998-01-06T00:00:00+00:00",
+          "dateString": "1/06/1998"
         },
         "reason": "MISC",
         "office": "OR"
@@ -433,13 +433,13 @@
         "type": "ADMIN",
         "blocked_date": {
           "epoch": 853891200,
-          "date_time": "1997-01-22T00:00:00+00:00",
-          "date_string": "1/22/1997"
+          "dateTime": "1997-01-22T00:00:00+00:00",
+          "dateString": "1/22/1997"
         },
         "cleared_date": {
           "epoch": 856396800,
-          "date_time": "1997-02-20T00:00:00+00:00",
-          "date_string": "2/20/1997"
+          "dateTime": "1997-02-20T00:00:00+00:00",
+          "dateString": "2/20/1997"
         },
         "reason": "STAT LAPSE",
         "office": "OR"
@@ -450,28 +450,27 @@
     {
       "name": "Spring 2014",
       "slug": "spring-2014",
-      "term_cd": "B",
-      "term_yr": "2014",
-      "time_bucket": "future",
+      "termCode": "B",
+      "termYear": "2014",
+      "timeBucket": "future",
       "classes": [
         {
           "course_code": "BIOLOGY 1A",
           "dept": "BIOLOGY",
-          "grade": null,
-          "grade_option": "Letter",
           "slug": "biology-1a",
           "title": "General Biology Lecture",
-          "units": "5.0",
           "sections": [
             {
               "ccn": "07309",
               "enroll_limit": "105",
+              "grade_option": "Letter",
               "instruction_format": "LEC",
               "instructors": [],
               "is_primary_section": true,
               "schedules": [],
               "section_label": "LEC 003",
               "section_number": "003",
+              "units": "5.0",
               "waitlist_position": "29"
             },
             {
@@ -483,7 +482,7 @@
               "schedules": [],
               "section_label": "DIS 005",
               "section_number": "005",
-              "waitlist_position": "3"
+              "waitlistPosition": "3"
             },
             {
               "ccn": "07310",
@@ -494,28 +493,27 @@
               "section_label": "LEC 004",
               "section_number": "004"
             }
-          ]
+          ],
+          "url": "/academics/semester/spring-2014/class/biology-1a"
         }
       ]
     },
     {
       "name": "Fall 2013",
       "slug": "fall-2013",
-      "term_cd": "D",
-      "term_yr": "2013",
-      "time_bucket": "current",
+      "termCode": "D",
+      "termYear": "2013",
+      "timeBucket": "current",
       "classes": [
         {
           "course_code": "BIOLOGY 1A",
           "dept": "BIOLOGY",
-          "grade": null,
-          "grade_option": "Letter",
           "slug": "biology-1a",
           "title": "General Biology Lecture",
-          "units": "5.0",
           "sections": [
             {
               "ccn": "07309",
+              "grade_option": "Letter",
               "instruction_format": "LEC",
               "is_primary_section": true,
               "section_label": "LEC 003",
@@ -532,11 +530,12 @@
               ],
               "schedules": [
                 {
-                  "building_name": "VALLEY LSB",
-                  "room_number": "2030",
+                  "buildingName": "VALLEY LSB",
+                  "roomNumber": "2030",
                   "schedule": "M 4:00P-5:00P"
                 }
-              ]
+              ],
+              "units": "5.0"
             },
             {
               "ccn": "07310",
@@ -553,25 +552,24 @@
               ],
               "schedules": [
                 {
-                  "building_name": "PIMENTAL",
-                  "room_number": "1",
+                  "buildingName": "PIMENTAL",
+                  "roomNumber": "1",
                   "schedule": "M 2:00P-3:00P"
                 }
               ]
             }
-          ]
+          ],
+          "url": "/academics/semester/fall-2013/class/biology-1a"
         },
         {
           "course_code": "COG SCI C147",
           "dept": "COG SCI",
-          "grade": null,
-          "grade_option": "Letter",
           "slug": "cog_sci-c147",
           "title": "Language Disorders",
-          "units": "3.0",
           "sections": [
             {
               "ccn": "16171",
+              "grade_option": "Letter",
               "instruction_format": "LEC",
               "is_primary_section": true,
               "section_label": "LEC 001",
@@ -584,40 +582,95 @@
               ],
               "schedules": [
                 {
-                  "building_name": "WHEELER",
-                  "room_number": "0210",
+                  "buildingName": "WHEELER",
+                  "roomNumber": "0210",
                   "schedule": "TuTh 2:00P-3:30P"
                 },
                 {
-                  "building_name": "DWINELLE",
-                  "room_number": "117",
+                  "buildingName": "DWINELLE",
+                  "roomNumber": "117",
                   "schedule": "W 4:00P-5:30P"
                 }
-              ]
+              ],
+              "units": "3.0"
             }
-          ]
+          ],
+          "url": "/academics/semester/fall-2013/class/cog_sci-c147"
+        },
+        {
+          "course_code": "PHYS ED 1",
+          "dept": "PHYS ED",
+          "slug": "phys_ed-1",
+          "title": "Physical Education Activities",
+          "sections": [
+            {
+              "ccn": "72910",
+              "grade_option": "Letter",
+              "instruction_format": "LAB",
+              "is_primary_section": true,
+              "section_label": "LAB 002",
+              "section_number": "002",
+              "schedules": [
+                {
+
+                  "buildingName": "HEARST GYM",
+                  "roomNumber": "234",
+                  "schedule": "MTuWTh 8:30A-10:00A"
+                }
+              ],
+              "instructors": [
+                {
+                  "name": "Louis Pasteur",
+                  "uid": "938382"
+                }
+              ],
+              "units": ".5"
+            },
+            {
+              "ccn": "72945",
+              "grade_option": "P/NP",
+              "instruction_format": "LAB",
+              "is_primary_section": true,
+              "section_label": "LAB 104",
+              "section_number": "104",
+              "schedules": [
+                {
+                  "buildingName": "HEARST GYM",
+                  "roomNumber": "230",
+                  "schedule": "TuWTh 5:00P-7:00P"
+                }
+              ],
+              "instructors": [
+                {
+                  "name": "Richard Emanuel IVES",
+                  "uid": "38383737"
+                }
+              ],
+              "units": "1.5"
+            }
+          ],
+          "url": "/academics/semester/fall-2013/class/phys_ed-1"
         }
       ]
     },
     {
       "name": "Spring 2012",
       "slug": "spring-2012",
-      "term_cd": "B",
-      "term_yr": "2012",
-      "time_bucket": "past",
+      "termCode": "B",
+      "termYear": "2012",
+      "timeBucket": "past",
       "classes": [
         {
           "course_code": "BIOLOGY 1A",
           "dept": "BIOLOGY",
-          "grade": "B",
-          "grade_option": "Letter",
           "slug": "biology-1a",
           "title": "General Biology Lecture",
-          "units": "5.0",
           "sections": [
             {
               "ccn": "07366",
+              "grade_option": "Letter",
               "instruction_format": "DIS",
+              "is_primary_section": true,
               "section_label": "DIS 201",
               "section_number": "201",
               "schedules": [],
@@ -627,23 +680,28 @@
                   "uid": "238382"
                 }
               ],
-              "is_primary_section": true
+              "units": "5.0"
             }
-          ]
+          ],
+          "transcript": [
+            {
+              "grade": "B",
+              "units": "5.0"
+            }
+          ],
+          "url": "/academics/semester/spring-2012/class/biology-1a"
         },
         {
           "course_code": "COG SCI C147",
           "dept": "COG SCI",
-          "grade": "C+",
-          "grade_option": "Letter",
-          "is_primary_section": true,
           "slug": "cog_sci-c147",
           "title": "Language Disorders",
-          "units": "3.0",
           "sections": [
             {
               "ccn": "16171",
+              "grade_option": "Letter",
               "instruction_format": "LEC",
+              "is_primary_section": true,
               "section_label": "LEC 001",
               "section_number": "001",
               "schedules": [],
@@ -652,19 +710,78 @@
                   "name": "Bernadette Geuy",
                   "uid": "238382"
                 }
-              ]
+              ],
+              "units": "3.0"
             }
-          ]
+          ],
+          "transcript": [
+            {
+              "grade": "C+",
+              "units": "3.0"
+            }
+          ],
+          "url": "/academics/semester/spring-2012/class/cog_sci-c147"
+        },
+        {
+          "course_code": "PB HLTH 297",
+          "dept": "PB HLTH",
+          "slug": "pb_hlth-297",
+          "title": "Field Study in Public Health",
+          "sections": [
+            {
+              "ccn": "78171",
+              "grade_option": "Letter",
+              "instruction_format": "FLD",
+              "is_primary_section": true,
+              "section_label": "FLD 004",
+              "section_number": "004",
+              "schedules": [],
+              "instructors": [
+                {
+                  "name": "Louis Pasteur",
+                  "uid": "938382"
+                }
+              ],
+              "units": "3.0"
+            },
+            {
+              "ccn": "78172",
+              "grade_option": "P/NP",
+              "instruction_format": "FLD",
+              "is_primary_section": true,
+              "section_label": "FLD 015",
+              "section_number": "015",
+              "schedules": [],
+              "instructors": [
+                {
+                  "name": "Jean-Joseph Henri Toussaint",
+                  "uid": "938383"
+                }
+              ],
+              "units": "2.0"
+            }
+          ],
+          "transcript": [
+            {
+              "grade": "A-",
+              "units": "3.0"
+            },
+            {
+              "grade": "P",
+              "units": "2.0"
+            }
+          ],
+          "url": "/academics/semester/spring-2012/class/pb_hlth-297"
         }
       ]
     }
   ],
-  "teaching_semesters": [
+  "teachingSemesters": [
     {
       "name": "Summer 2013",
       "slug": "summer-2013",
-      "term_cd": "C",
-      "term_yr": "2013",
+      "termCode": "C",
+      "termYear": "2013",
       "classes": [
         {
           "course_code": "BIO 123A",
@@ -712,8 +829,8 @@
               "is_primary_section": true,
               "schedules": [
                 {
-                  "building_name": "PIMENTAL",
-                  "room_number": "1",
+                  "buildingName": "PIMENTAL",
+                  "roomNumber": "1",
                   "schedule": "MWF 8:00A-9:00A"
                 }
               ],
@@ -740,8 +857,8 @@
               ],
               "schedules": [
                 {
-                  "building_name": "LECONTE",
-                  "room_number": "0004",
+                  "buildingName": "LECONTE",
+                  "roomNumber": "0004",
                   "schedule": "F 12:00P-1:00P"
                 }
               ]
@@ -766,15 +883,16 @@
                 }
               ]
             }
-          ]
+          ],
+          "url": "/academics/teaching-semester/summer-2013/class/bio-123a"
         }
       ]
     },
     {
       "name": "Fall 2013",
       "slug": "fall-2013",
-      "term_cd": "D",
-      "term_yr": "2013",
+      "termCode": "D",
+      "termYear": "2013",
       "classes": [
         {
           "course_code": "BIO 123A",
@@ -798,13 +916,14 @@
               ],
               "schedules": [
                 {
-                  "building_name": "PIMENTAL",
-                  "room_number": "12",
+                  "buildingName": "PIMENTAL",
+                  "roomNumber": "12",
                   "schedule": "MWF 11:00A-12:00P"
                 }
               ]
             }
-          ]
+          ],
+          "url": "/academics/teaching-semester/fall-2013/class/bio-123a"
         }
       ]
     }
@@ -813,48 +932,48 @@
     {
       "date": {
         "epoch": 1387324800,
-        "date_time": "2013-12-18T00:00:00+00:00",
-        "date_string": "Wed December 18"
+        "dateTime": "2013-12-18T00:00:00+00:00",
+        "dateString": "Wed December 18"
       },
       "time": "8:00A",
       "location": {
-        "raw_location": "390 HEARST MIN",
+        "rawLocation": "390 HEARST MIN",
         "display": "Hearst Memorial Mining Building",
         "lat": "37.874459999999999",
         "lon": "-122.25727000000001",
-        "room_number": "390"
+        "roomNumber": "390"
       },
       "course_code": "Psychology C120"
     },
     {
       "date": {
         "epoch": 1387324800,
-        "date_time": "2013-12-18T00:00:00+00:00",
-        "date_string": "Wed December 18"
+        "dateTime": "2013-12-18T00:00:00+00:00",
+        "dateString": "Wed December 18"
       },
       "time": "3:00P",
       "location": {
-        "raw_location": "100 GPB",
+        "rawLocation": "100 GPB",
         "display": "Genetics & Plant Biology Building",
         "lat": "37.873429999999999",
         "lon": "-122.26473",
-        "room_number": "100"
+        "roomNumber": "100"
       },
       "course_code": "Psychology 133"
     },
     {
       "date": {
         "epoch": 1387324800,
-        "date_time": "2013-12-18T00:00:00+00:00",
-        "date_string": "Wed December 18"
+        "dateTime": "2013-12-18T00:00:00+00:00",
+        "dateString": "Wed December 18"
       },
       "time": "3:00P",
       "location": {
-        "raw_location": "2060 VALLEY LSB",
+        "rawLocation": "2060 VALLEY LSB",
         "display": "Valley Life Sciences Building",
         "lat": "37.871479999999998",
         "lon": "-122.26211000000001",
-        "room_number": "2060"
+        "roomNumber": "2060"
       },
       "course_code": "Education 140"
     }
@@ -872,37 +991,37 @@
         "period": "Tele-BEARS Phase I",
         "startTime": {
           "epoch": 1365442200,
-          "date_time": "2013-04-08T09:30:00-08:00",
-          "date_string": "4/08"
+          "dateTime": "2013-04-08T09:30:00-08:00",
+          "dateString": "4/08"
         },
         "endTime": {
           "epoch": 1365528600,
-          "date_time": "2013-04-09T09:30:00-08:00",
-          "date_string":"4/09"
+          "dateTime": "2013-04-09T09:30:00-08:00",
+          "dateString":"4/09"
         }
       },
       {
         "period": "Tele-BEARS Phase II",
         "startTime": {
           "epoch": 1373389200,
-          "date_time": "2013-07-09T09:00:00-08:00",
-          "date_string": "7/09"
+          "dateTime": "2013-07-09T09:00:00-08:00",
+          "dateString": "7/09"
         },
         "endTime": {
           "epoch": 1373475600,
-          "date_time": "2013-07-10T09:00:00-08:00",
-          "date_string": "7/10"
+          "dateTime": "2013-07-10T09:00:00-08:00",
+          "dateString": "7/10"
         }
       }
     ],
     "url": "http://registrar.berkeley.edu/tbfaqs.html"
   },
-  "last_modified": {
+  "lastModified": {
     "hash": "af8f7132a5d2efdf8bd3d88c2d1fa5d37086c389",
     "timestamp": {
       "epoch": 1383947240,
-      "date_time": "2013-11-08T13:47:20-08:00",
-      "date_string": "11/08"
+      "dateTime": "2013-11-08T13:47:20-08:00",
+      "dateString": "11/08"
     }
   }
 }

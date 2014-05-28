@@ -12,7 +12,7 @@ class UserApiController < ApplicationController
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "-1"
     render :json => {
-      :am_i_logged_in => !!session[:user_id]
+      :amILoggedIn => !!session[:user_id]
     }.to_json
   end
 
@@ -27,17 +27,19 @@ class UserApiController < ApplicationController
         true
       end
       status.merge!({
-        :is_basic_auth_enabled => Settings.developer_auth.enabled,
-        :is_logged_in => true,
+        :isBasicAuthEnabled => Settings.developer_auth.enabled,
+        :isLoggedIn => true,
         :features => Settings.features.marshal_dump,
-        :acting_as_uid => acting_as_uid
+        :actingAsUid => acting_as_uid,
+        :youtubeSplashId => Settings.youtube_splash_id
       })
       status.merge!(User::Api.new(session[:user_id]).get_feed)
     else
       status.merge!({
-        :is_basic_auth_enabled => Settings.developer_auth.enabled,
-        :is_logged_in => false,
-        :features => Settings.features.marshal_dump
+        :isBasicAuthEnabled => Settings.developer_auth.enabled,
+        :isLoggedIn => false,
+        :features => Settings.features.marshal_dump,
+        :youtubeSplashId => Settings.youtube_splash_id
       })
     end
     render :json => status.to_json

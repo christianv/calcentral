@@ -29,7 +29,7 @@ describe Notifications::RegStatusEventProcessor do
         })
     CampusOracle::Queries.stub(:get_reg_status).with(300847).and_return(nil)
     User::Api.should_not_receive(:delete)
-    Calcentral::USER_CACHE_EXPIRATION.should_receive(:notify).once
+    Cache::UserCacheExpiry.should_receive(:notify).once
     User::Data.stub(:where).with({:uid =>"300846"}).and_return(MockUserData.new)
 
     @processor.process(event, timestamp).should == true
@@ -38,7 +38,7 @@ describe Notifications::RegStatusEventProcessor do
     saved_notification.should_not be_nil
     saved_notification.data.should_not be_nil
     saved_notification.translator.should == "RegStatusTranslator"
-    saved_notification.occurred_at.to_i.should == timestamp.to_i
+    saved_notification.occurred_at.to_time.to_i.should == timestamp.to_time.to_i
     Rails.logger.info "Saved notification's json is #{saved_notification.data}"
     translator_instance = "Notifications::#{saved_notification.translator}".constantize.new
     translator_instance.should_not be_nil
@@ -88,7 +88,7 @@ describe Notifications::RegStatusEventProcessor do
             "on_probation_flag" => "N"
         })
     User::Api.should_not_receive(:delete)
-    Calcentral::USER_CACHE_EXPIRATION.should_not_receive(:notify)
+    Cache::UserCacheExpiry.should_not_receive(:notify)
     User::Data.stub(:where).and_return(NonexistentUserData.new)
     @processor.process(event, timestamp).should == true
   end

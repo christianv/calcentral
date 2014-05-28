@@ -2,6 +2,7 @@
 module MyTasks
   class GoogleTasks
     include MyTasks::TasksModule
+    include Cache::UserCacheExpiry
     attr_accessor :future_count
 
     def initialize(uid, starting_date)
@@ -15,7 +16,7 @@ module MyTasks
       self.class.fetch_from_cache(@uid) {
         all_tasks = []
         filtered_tasks = []
-        google_proxy = Google::TasksList.new(user_id: @uid)
+        google_proxy = GoogleApps::TasksList.new(user_id: @uid)
 
         Rails.logger.info "#{self.class.name} Sorting Google tasks into buckets with starting_date #{@starting_date}"
         google_proxy.tasks_list.each do |response_page|
@@ -46,7 +47,7 @@ module MyTasks
 
     def update_task(params, task_list_id="@default")
       body = format_google_update_task_request params
-      google_proxy = Google::UpdateTask.new(user_id: @uid)
+      google_proxy = GoogleApps::UpdateTask.new(user_id: @uid)
       Rails.logger.debug "#{self.class.name} update_task, sending to Google (task_list_id, task_id, body):
           {#{task_list_id}, #{params["id"]}, #{body.inspect}}"
       return_response google_proxy.update_task(task_list_id, params["id"], body)
@@ -54,14 +55,14 @@ module MyTasks
 
     def insert_task(params, task_list_id="@default")
       body = format_google_insert_task_request params
-      google_proxy = Google::InsertTask.new(user_id: @uid)
+      google_proxy = GoogleApps::InsertTask.new(user_id: @uid)
       Rails.logger.debug "#{self.class.name} insert_task, sending to Google (task_list_id, body):
             {#{task_list_id}, #{body.inspect}}"
       return_response google_proxy.insert_task(task_list_id, body)
     end
 
     def clear_completed_tasks(task_list_id="@default")
-      google_proxy = Google::ClearTaskList.new(user_id: @uid)
+      google_proxy = GoogleApps::ClearTaskList.new(user_id: @uid)
       Rails.logger.debug "#{self.class.name} clearing task list, sending to Google (task_list_id):
             {#{task_list_id}}"
       result = google_proxy.clear_task_list(task_list_id)
@@ -69,7 +70,7 @@ module MyTasks
     end
 
     def delete_task(params, task_list_id="@default")
-      google_proxy = Google::DeleteTask.new(user_id: @uid)
+      google_proxy = GoogleApps::DeleteTask.new(user_id: @uid)
       Rails.logger.debug "#{self.class.name} delete_task, sending to Google (task_list_id, params):
             {#{task_list_id}, #{params.inspect}}"
       response  = google_proxy.delete_task(task_list_id, params[:task_id])
@@ -82,7 +83,7 @@ module MyTasks
       formatted_entry = {}
       formatted_entry["title"] = entry["title"]
       if entry["dueDate"] && !entry["dueDate"].blank?
-        formatted_entry["due"] = Date.strptime(entry["dueDate"]).to_time_in_current_zone.to_datetime
+        formatted_entry["due"] = Date.strptime(entry["dueDate"]).in_time_zone.to_datetime
       end
       formatted_entry["notes"] = entry["notes"] if entry["notes"]
       Rails.logger.debug "Formatted body entry for google proxy update_task: #{formatted_entry.inspect}"
@@ -103,8 +104,8 @@ module MyTasks
       formatted_entry["status"] ||= "completed"
       formatted_entry["title"] = entry["title"] unless entry["title"].blank?
       formatted_entry["notes"] = entry["notes"] unless entry["notes"].nil?
-      if entry["dueDate"] && entry["dueDate"]["date_time"]
-        formatted_entry["due"] = Date.strptime(entry["dueDate"]["date_time"]).to_time_in_current_zone.to_datetime
+      if entry["dueDate"] && entry["dueDate"]["dateTime"]
+        formatted_entry["due"] = Date.strptime(entry["dueDate"]["dateTime"]).in_time_zone.to_datetime
       end
       Rails.logger.debug "Formatted body entry for google proxy update_task: #{formatted_entry.inspect}"
       formatted_entry
@@ -114,7 +115,7 @@ module MyTasks
       formatted_entry = {
         "type" => "task",
         "title" => entry["title"] || "",
-        "emitter" => Google::Proxy::APP_ID,
+        "emitter" => GoogleApps::Proxy::APP_ID,
         "linkUrl" => "https://mail.google.com/tasks/canvas?pli=1",
         "id" => entry["id"],
         "sourceUrl" => entry["selfLink"] || ""
@@ -137,7 +138,7 @@ module MyTasks
         # accuracy so the application will apply the proper timezone when needed.
         due_date = Date.parse(due_date.to_s)
         # Tasks are not overdue until the end of the day.
-        due_date = due_date.to_time_in_current_zone.to_datetime.advance(:hours => 23, :minutes => 59, :seconds => 59)
+        due_date = due_date.in_time_zone.to_datetime.advance(:hours => 23, :minutes => 59, :seconds => 59)
       end
       formatted_entry["bucket"] = determine_bucket(due_date, formatted_entry, @now_time, @starting_date)
 
@@ -145,7 +146,7 @@ module MyTasks
         format_date_into_entry!(convert_date(entry["updated"]), formatted_entry, "updatedDate")
       end
 
-      Rails.logger.debug "#{self.class.name} Putting Google task with dueDate #{formatted_entry["due_date"]} in #{formatted_entry["bucket"]} bucket: #{formatted_entry}"
+      Rails.logger.debug "#{self.class.name} Putting Google task with dueDate #{formatted_entry["dueDate"]} in #{formatted_entry["bucket"]} bucket: #{formatted_entry}"
       format_date_into_entry!(due_date, formatted_entry, "dueDate")
       Rails.logger.debug "#{self.class.name}: Formatted body response from google proxy - #{formatted_entry.inspect}"
       formatted_entry

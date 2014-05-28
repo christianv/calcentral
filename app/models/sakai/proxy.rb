@@ -2,6 +2,7 @@ module Sakai
   # TODO collapse this class into SakaiData (probably).
   class Proxy < BaseProxy
     extend Proxies::EnableForActAs
+    include Cache::UserCacheExpiry
 
     APP_ID = "bSpace"
 
@@ -12,10 +13,6 @@ module Sakai
 
     def self.access_granted?(uid)
       !uid.blank?
-    end
-
-    def current_terms
-      Settings.sakai_proxy.current_terms
     end
 
   end

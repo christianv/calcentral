@@ -10,10 +10,10 @@ class Ability
       can :access, :all
       can :dashboard, :all
       if user.policy.can_administrate?
-        can :manage, [User::Auth]
+        can :manage, [User::Auth, Finaid::FinAidYear]
       end
       if user.policy.can_author?
-        can :manage, [Links::Link, Links::LinkCategory, Links::LinkSection]
+        can :manage, [Links::Link, Links::LinkCategory, Links::LinkSection, Links::UserRole]
       end
     end
   end
@@ -30,8 +30,12 @@ RailsAdmin.config do |config|
 
   # We're not using Devise or Warden for RailsAdmin authentication; check for superuser in authorize_with instead.
   config.authenticate_with {
-    policy = User::Auth.get(session[:user_id]).policy
-    redirect_to main_app.root_path unless policy.can_author?
+    if cookies[:reauthenticated] || !!Settings.features.reauthentication == false
+      policy = User::Auth.get(session[:user_id]).policy
+      redirect_to main_app.root_path unless policy.can_author?
+    else
+      redirect_to main_app.reauth_admin_path
+    end
   }
 
   config.current_user_method {
@@ -56,7 +60,7 @@ RailsAdmin.config do |config|
   # config.excluded_models = ['OracleDatabase']
 
   # Include specific models (exclude the others):
-  config.included_models = ['Links::Link', 'Links::LinkCategory', 'Links::LinkSection', 'User::Auth', 'Links::UserRole']
+  config.included_models = ['Links::Link', 'Links::LinkCategory', 'Links::LinkSection', 'User::Auth', 'Links::UserRole', 'Finaid::FinAidYear']
 
   # Label methods for model instances:
   # config.label_methods << :description # Default is [:name, :title]
@@ -99,7 +103,7 @@ RailsAdmin.config do |config|
 # Represent instances of the Linksection model as:
   def link_section_label_method
     if self.id
-      "#{self.link_root_cat.name}/#{self.link_top_cat.name}/#{self.link_sub_cat.name}"
+      "#{self.link_root_cat.try(:name)}/#{self.link_top_cat.try(:name)}/#{self.link_sub_cat.try(:name)}"
     end
   end
 
@@ -118,6 +122,10 @@ RailsAdmin.config do |config|
 
   config.model 'User::Auth' do
     label "User Authorizations"
+  end
+
+  config.model 'Finaid::FinAidYear' do
+    label "Financial Aid Transition Dates"
   end
 
   config.navigation_static_label = "Tools"

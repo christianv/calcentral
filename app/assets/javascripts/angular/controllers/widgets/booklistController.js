@@ -11,7 +11,7 @@
       var semester;
       for (var s = 0; s < semesters.length; s++) {
         semester = semesters[s];
-        if (semester.time_bucket === 'current') {
+        if (semester.timeBucket === 'current') {
           break;
         }
       }
@@ -45,7 +45,7 @@
 
         requests.push(getTextbook(courseInfo, semester.classes[c].course_code));
       }
-      $scope.semester_name = semester.name;
+      $scope.semesterName = semester.name;
       $scope.semesterSlug = semester.slug;
       $q.all(requests).then(function() {
         $scope.isLoading = false;

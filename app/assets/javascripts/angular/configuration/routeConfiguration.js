@@ -53,6 +53,14 @@
       templateUrl: 'templates/myfinances.html',
       controller: 'MyFinancesController'
     }).
+    when('/profile', {
+      templateUrl: 'templates/profile.html',
+      controller: 'ProfileController'
+    }).
+    when('/finances/details', {
+      templateUrl: 'templates/cars_details.html',
+      controller: 'MyFinancesController'
+    }).
     when('/settings', {
       templateUrl: 'templates/settings.html',
       controller: 'SettingsController'
@@ -90,7 +98,7 @@
       templateUrl: 'templates/canvas_embedded/course_add_user.html',
       controller: 'CanvasCourseAddUserController'
     }).
-    when('/canvas/rosters/:canvas_course_id', {
+    when('/canvas/rosters/:canvasCourseId', {
       templateUrl: 'templates/canvas_embedded/roster.html'
     }).
     when('/canvas/course_provision', {

@@ -10,7 +10,7 @@ describe UserApiController do
     get :mystatus
     assert_response :success
     json_response = JSON.parse(response.body)
-    json_response["is_logged_in"].should == false
+    json_response["isLoggedIn"].should == false
     json_response["uid"].should be_nil
     json_response["features"].should_not be_nil
   end
@@ -19,7 +19,7 @@ describe UserApiController do
     session[:user_id] = "238382"
     get :mystatus
     json_response = JSON.parse(response.body)
-    json_response["is_logged_in"].should == true
+    json_response["isLoggedIn"].should == true
     json_response["uid"].should == "238382"
     json_response["preferred_name"].should_not be_nil
     json_response["features"].should_not be_nil
@@ -28,25 +28,23 @@ describe UserApiController do
   end
 
   it "should record first login for a new user" do
-    CampusOracle::Queries.stub(:get_person_attributes) do |uid|
-      {
-        'person_name' => "Joe Test",
-        :roles => {
-          :student => true,
-          :faculty => false,
-          :staff => false
-        }
+    CampusOracle::UserAttributes.stub(:new).and_return(double(get_feed: {
+      'person_name' => "Joe Test",
+      :roles => {
+        :student => true,
+        :faculty => false,
+        :staff => false
       }
-    end
+    }))
     session[:user_id] = @user_id
     get :mystatus
     json_response = JSON.parse(response.body)
-    json_response["first_login_at"].should == nil
+    json_response["firstLoginAt"].should == nil
     get :record_first_login
     response.status.should == 204
     get :mystatus
     json_response = JSON.parse(response.body)
-    json_response["first_login_at"].should_not be_nil
+    json_response["firstLoginAt"].should_not be_nil
   end
 
 end

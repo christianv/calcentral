@@ -99,18 +99,18 @@
     var processCalendarEvents = function(rawData) {
       if (rawData.bcal && rawData.bcal.items) {
         rawData.bcal.items.forEach(function(value) {
-          if (value.start_time && value.start_time.epoch) {
-            var momentizedStartTime = dateService.moment(value.start_time.epoch * 1000);
-            value.start_time.display = {
+          if (value.startTime && value.startTime.epoch) {
+            var momentizedStartTime = dateService.moment(value.startTime.epoch * 1000);
+            value.startTime.display = {
               'month': momentizedStartTime.format('MMM'),
               'day': momentizedStartTime.format('DD'),
-              'day_of_week': momentizedStartTime.format('ddd'),
-              'range_start': processDisplayRange(value.start_time.epoch, value.all_day_event, true)
+              'dayOfWeek': momentizedStartTime.format('ddd'),
+              'rangeStart': processDisplayRange(value.startTime.epoch, value.allDayEvent, true)
             };
 
-            if (value.end_time && value.end_time.epoch) {
-              value.end_time.display = {
-                'range_end': processDisplayRange(value.end_time.epoch, value.all_day_event, false)
+            if (value.endTime && value.endTime.epoch) {
+              value.endTime.display = {
+                'rangeEnd': processDisplayRange(value.endTime.epoch, value.allDayEvent, false)
               };
             }
           }
@@ -133,7 +133,7 @@
      * have also cleared up a rendering delay issue, since $digest might have been working unnecessarily
      * hard on $scope.badges
      */
-    $scope.$watch('api.user.profile.is_logged_in + \',\' + api.user.profile.has_google_access_token', function(newTokenTuple) {
+    $scope.$watch('api.user.profile.isLoggedIn + \',\' + api.user.profile.hasGoogleAccessToken', function(newTokenTuple) {
       if (newTokenTuple.split(',')[0] === 'true') {
         fetch();
       }

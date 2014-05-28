@@ -1,5 +1,5 @@
 module Errors
-  class ProxyError < Exception
+  class ProxyError < StandardError
     attr_accessor :wrapped_exception, :log_message, :response
 
     def initialize(log_message, *args)
@@ -11,7 +11,7 @@ module Errors
         @wrapped_exception = nil
         @response = {
           :body => log_message,
-          :status_code => 500
+          :statusCode => 500
         }
       end
     end

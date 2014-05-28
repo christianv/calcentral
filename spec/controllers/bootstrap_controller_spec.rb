@@ -20,4 +20,21 @@ describe BootstrapController do
     end
   end
 
+  context "reauthentication" do
+    before(:each) {
+      ApplicationController.any_instance.stub(:is_admin?).and_return(true)
+      Settings.features.stub(:reauthentication).and_return(true)
+      session[:user_id] = @user_id
+    }
+    context "for admin users acting as another user" do
+      it "should redirect to /auth/cas?renew=true the first time they try to act as" do
+        ApplicationController.any_instance.stub(:acting_as?).and_return(true)
+        controller.stub(:cookies).and_return({:reauthenticated => nil})
+        get :index
+        expect(response).to redirect_to('/auth/cas?renew=true')
+      end
+
+    end
+
+  end
 end

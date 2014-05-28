@@ -1,8 +1,8 @@
 #CalCentral
 
-Home of CalCentral. [![Dependency Status](https://gemnasium.com/ets-berkeley-edu/calcentral.png)](https://gemnasium.com/ets-berkeley-edu/calcentral) [![Code Climate](https://codeclimate.com/github/ets-berkeley-edu/calcentral.png)](https://codeclimate.com/github/ets-berkeley-edu/calcentral)
-* Master: [![Build Status](https://travis-ci.org/ets-berkeley-edu/calcentral.png?branch=master)](https://travis-ci.org/ets-berkeley-edu/calcentral)
-* QA: [![Build Status](https://travis-ci.org/ets-berkeley-edu/calcentral.png?branch=qa)](https://travis-ci.org/ets-berkeley-edu/calcentral)
+[![Dependency Status](https://img.shields.io/gemnasium/ets-berkeley-edu/calcentral.svg)](https://gemnasium.com/ets-berkeley-edu/calcentral) [![Code Climate](https://img.shields.io/codeclimate/github/ets-berkeley-edu/calcentral.svg)](https://codeclimate.com/github/ets-berkeley-edu/calcentral)
+* Master Build: [![Build Status](https://api.travis-ci.org/ets-berkeley-edu/calcentral.svg?branch=master)](https://travis-ci.org/ets-berkeley-edu/calcentral)
+* QA Build: [![Build Status](https://api.travis-ci.org/ets-berkeley-edu/calcentral.svg?branch=qa)](https://travis-ci.org/ets-berkeley-edu/calcentral)
 
 ## Dependencies
 
@@ -19,12 +19,23 @@ Home of CalCentral. [![Dependency Status](https://gemnasium.com/ets-berkeley-edu
 
 ## Installation
 
-1. Install Java 7:
-
+1. Install Java 7 JDK:
 http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
 1. Install postgres:
 
+    **Note**: To install postgres, you must first install homebrew.
+
+    Install homebrew with the following command:
+    ```bash
+    ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+    ```
+    Run the following command in terminal after installation:
+    ```bash
+    brew --version
+    ```
+
+    Then run the following:
     ```bash
     brew update
     brew install postgresql
@@ -58,6 +69,8 @@ http://www.oracle.com/technetwork/java/javase/downloads/index.html
     grant all privileges on database calcentral_test to calcentral_test;
     ```
 
+    **Note**: At this point, exit out of postgres. To do this, type "\q" and then press ENTER.
+
 1. Fork this repository, then:
 
     ```bash
@@ -88,7 +101,7 @@ http://www.oracle.com/technetwork/java/javase/downloads/index.html
 1. Make JRuby faster, give it lots of RAM, & enable C extensions by running this or put in your .bashrc:
 
     ``` bash
-    export JRUBY_OPTS="-Xcext.enabled=true -X-C -J-Xms900m -J-Xmx900m -J-XX:MaxPermSize=500m --headless -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-Xcompile.invokedynamic=false"
+    export JRUBY_OPTS="-Xcext.enabled=true -X-C -J-Xms900m -J-Xmx1200m -J-XX:MaxPermSize=500m --headless -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-Xcompile.invokedynamic=false -J-XX:+UseConcMarkSweepGC"
     ```
 
 1. Download and install xvfb. On a Mac, you get xvfb by [installing XQuartz](http://xquartz.macosforge.org/landing/).
@@ -107,11 +120,12 @@ http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
     Default settings are loaded from your source code in `config/settings.yml` and `config/settings/ENVIRONMENT_NAME.yml`. For example, the configuration used when running tests with `RAILS_ENV=test` is determined by the combination of `config/settings/test.yml` and `config/settings.yml`.
     Because we don't store passwords and other sensitive data in source code, any RAILS_ENV other than `test` requires overriding some default settings.
-    Do this by creating `ENVIRONMENT.local.yml` files in your `~/.calcentral_config` directory. For example, your `~.calcentral_config/development.local.yml` file may include access tokens and URLs for a locally running Canvas server.
+    Do this by creating `ENVIRONMENT.local.yml` files in your `~/.calcentral_config` directory. For example, your `~/.calcentral_config/development.local.yml` file may include access tokens and URLs for a locally running Canvas server.
     You can also create Ruby configuration files like "settings.local.rb" and "development.local.rb" to amend the standard `config/environments/*.rb` files.
 
 1. Install JDBC driver (for Oracle connection)
   * Download [ojdbc6.jar](http://svn.media.berkeley.edu/nexus/content/repositories/myberkeley/com/oracle/ojdbc6/11.2.0.3/ojdbc6-11.2.0.3.jar)
+  * Note: You do not have to open the file.
   * Rename the file to `ojdbc6.jar`
   * Copy `ojdbc6.jar` to `calcentral/lib`
 

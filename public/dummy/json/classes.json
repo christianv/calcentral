@@ -15,14 +15,14 @@
           "instruction_format": "LEC",
           "section_number": "001",
           "schedules": [
-            {"building_name": "DOE LIBRARY", "room_number": "0425", "schedule": "MTuWTh 12:00P-2:00P"}
+            {"buildingName": "DOE LIBRARY", "roomNumber": "0425", "schedule": "MTuWTh 12:00P-2:00P"}
           ],
           "instructors": [{"name": "Dr. X", "uid": "999"}]},
         {"ccn": "12346", "instruction_format": "DIS", "section_number": "101",
           "schedules": [], "instructors": [{"name": "Gee Esai", "uid": "1111"}]}
       ],
       "role": "Student",
-      "waitlist_position": "2",
+      "waitlistPosition": "2",
       "enroll_limit": "50",
       "emitter": "Campus"
     },
@@ -46,6 +46,65 @@
       ],
       "role": "Student",
       "emitter": "Campus"
+    },
+    {
+      "id": "phys_ed:11_004:2013-C",
+      "name": "Physical Education Activities",
+      "course_code": "PHYS ED 11",
+      "course_code_section": "LAB 004",
+      "term_yr": "2013",
+      "term_cd": "C",
+      "dept": "PHYS ED",
+      "catid": "11",
+      "site_url": "/academics/semester/summer-2013/class/phys_ed-11",
+      "sections": [
+        {
+          "ccn": "04568",
+          "instruction_format": "LAB",
+          "section_number": "004",
+          "schedules": [],
+          "instructors": [{"name": "Max Schreck", "uid": "9992"}]
+        }
+      ],
+      "role": "Student",
+      "emitter": "Campus"
+    },
+    {
+      "id": "phys_ed:11_022:2013-C",
+      "name": "Physical Education Activities",
+      "course_code": "PHYS ED 11",
+      "course_code_section": "LAB 022",
+      "term_yr": "2013",
+      "term_cd": "C",
+      "dept": "PHYS ED",
+      "catid": "11",
+      "site_url": "/academics/semester/summer-2013/class/phys_ed-11",
+      "sections": [
+        {
+          "ccn": "04569",
+          "instruction_format": "LAB",
+          "section_number": "022",
+          "schedules": [],
+          "instructors": [{"name": "Lon Chaney", "uid": "9993"}]
+        }
+      ],
+      "role": "Student",
+      "waitlistPosition": "3",
+      "enroll_limit": "20",
+      "emitter": "Campus"
+    },
+    {
+      "short_description": "Contorting on Camera",
+      "name": "FILM 202 / PHYS ED 11 22",
+      "id": "1093198",
+      "emitter": "bCourses",
+      "site_url": "https://notquitecanvas/courses/1093198",
+      "site_type": "course",
+      "courses": [
+        {
+          "id": "phys_ed:11_022:2013-C"
+        }
+      ]
     },
     {
       "short_description": "Lessons from the Cambrian Explosion",
@@ -102,12 +161,12 @@
     }
   ],
   "current_term": "Summer 2013",
-  "last_modified": {
+  "lastModified": {
     "hash": "af8f7132a5d2efdf8bd3d88c2d1fa5d37086c389",
     "timestamp": {
       "epoch": 1383947240,
-      "date_time": "2013-11-08T13:47:20-08:00",
-      "date_string": "11/08"
+      "dateTime": "2013-11-08T13:47:20-08:00",
+      "dateString": "11/08"
     }
   }
 }

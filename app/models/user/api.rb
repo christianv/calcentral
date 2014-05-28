@@ -1,6 +1,7 @@
 module User
   class Api < UserSpecificModel
     include ActiveRecordHelper
+    include Cache::LiveUpdatesEnabled
 
     def initialize(uid)
       super(uid)
@@ -10,7 +11,7 @@ module User
       use_pooled_connection {
         @calcentral_user_data ||= User::Data.where(:uid => @uid).first
       }
-      @campus_attributes ||= CampusOracle::Queries.get_person_attributes(@uid) || {}
+      @campus_attributes ||= CampusOracle::UserAttributes.new(user_id: @uid).get_feed
       @default_name ||= @campus_attributes['person_name']
       @first_login_at ||= @calcentral_user_data ? @calcentral_user_data.first_login_at : nil
       @first_name ||= @campus_attributes['first_name'] || ""
@@ -48,7 +49,7 @@ module User
         }
       end
 
-      Calcentral::USER_CACHE_EXPIRATION.notify uid
+      Cache::UserCacheExpiry.notify uid
     end
 
     def save
@@ -64,7 +65,7 @@ module User
           end
         end
       }
-      Calcentral::USER_CACHE_EXPIRATION.notify @uid
+      Cache::UserCacheExpiry.notify @uid
     end
 
     def update_attributes(attributes)
@@ -92,23 +93,24 @@ module User
       has_instructor_history = campus_courses_proxy.has_instructor_history?
       roles = (@campus_attributes && @campus_attributes[:roles]) ? @campus_attributes[:roles] : {}
       {
-        :is_superuser => current_user.is_superuser?,
-        :is_viewer => current_user.is_viewer?,
-        :first_login_at => @first_login_at,
+        :profilePicture => Rails.application.routes.url_helpers.my_photo_path + ".jpg",
+        :isSuperuser => current_user.is_superuser?,
+        :isViewer => current_user.is_viewer?,
+        :firstLoginAt => @first_login_at,
         :first_name => @first_name,
         :full_name => @first_name + ' ' + @last_name,
-        :is_google_reminder_dismissed => is_google_reminder_dismissed,
-        :has_canvas_account => Canvas::Proxy.has_account?(@uid),
-        :has_google_access_token => Google::Proxy.access_granted?(@uid),
-        :has_student_history => has_student_history,
-        :has_instructor_history => has_instructor_history,
-        :has_academics_tab => (
+        :isGoogleReminderDismissed => is_google_reminder_dismissed,
+        :hasCanvasAccount => Canvas::Proxy.has_account?(@uid),
+        :hasGoogleAccessToken => GoogleApps::Proxy.access_granted?(@uid),
+        :hasStudentHistory => has_student_history,
+        :hasInstructorHistory => has_instructor_history,
+        :hasAcademicsTab => (
         roles[:student] || roles[:faculty] ||
           has_instructor_history || has_student_history
         ),
-        :has_financials_tab => Settings.features.financials && (roles[:student] || roles[:ex_student]),
-        :google_email => google_mail,
-        :canvas_email => canvas_mail,
+        :hasFinancialsTab => Settings.features.financials && (roles[:student] || roles[:exStudent]),
+        :googleEmail => google_mail,
+        :canvasEmail => canvas_mail,
         :last_name => @last_name,
         :preferred_name => self.preferred_name,
         :roles => @campus_attributes[:roles],

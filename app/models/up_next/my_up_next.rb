@@ -1,11 +1,12 @@
 module UpNext
   class MyUpNext < UserSpecificModel
     include DatedFeed
+    include Cache::LiveUpdatesEnabled
 
     attr_reader :begin_today, :next_day
 
     def init
-      @begin_today = Time.zone.today.to_time_in_current_zone.to_datetime
+      @begin_today = Time.zone.today.in_time_zone.to_datetime
       @next_day = begin_today.advance(:days => 1)
     end
 
@@ -16,8 +17,8 @@ module UpNext
       }
 
       # act-as block for non-fake users.
-      return up_next if (is_acting_as_nonfake_user?) && !Google::Proxy.allow_pseudo_user?
-      return up_next if !Google::Proxy.access_granted?(@uid)
+      return up_next if (is_acting_as_nonfake_user?) && !GoogleApps::Proxy.allow_pseudo_user?
+      return up_next if !GoogleApps::Proxy.access_granted?(@uid)
 
       results = fetch_events(@uid)
       up_next[:items] = process_events(results)
@@ -29,19 +30,19 @@ module UpNext
     private
 
     def self.expires_in
-      Time.zone.today.to_time_in_current_zone.advance(:days => 1).at_midnight.to_i
+      Time.zone.today.in_time_zone.advance(:days => 1).at_midnight.to_i
     end
 
     def parse_date(hash)
       if hash["date"]
-        date = Date.parse(hash["date"].to_s).to_time_in_current_zone.to_datetime
+        date = Date.parse(hash["date"].to_s).in_time_zone.to_datetime
       else
         date = DateTime.parse(hash["dateTime"].to_s)
       end
     end
 
     def fetch_events(uid)
-      google_proxy = Google::EventsList.new(user_id: uid)
+      google_proxy = GoogleApps::EventsList.new(user_id: uid)
       # Using the PoC window of beginning of today(midnight, inclusive) - tomorrow(midnight, exclusive)
       google_proxy.events_list({
                                  "singleEvents" => true,
@@ -66,7 +67,7 @@ module UpNext
           uri.query_values = {:q => entry_location}
           location_subset[:location_url] = "https://maps.google.com/maps?" + uri.query
         end
-      rescue Exception => e
+      rescue => e
         logger.warn "#{self.class.name}: #{e} - Error handling location values #{entry_location}"
         return {location: ""}
       end
@@ -77,7 +78,7 @@ module UpNext
       begin
         organizer = entry_organizer["displayName"] if entry_organizer
         organizer ||= ""
-      rescue Exception => e
+      rescue => e
         logger.warn "#{self.class.name}: #{e} - Error handling organizer values #{entry_organizer}"
         return ""
       end
@@ -93,7 +94,7 @@ module UpNext
         else
           result[:is_all_day] = false
         end
-      rescue Exception => e
+      rescue => e
         logger.warn "#{self.class.name}: #{e} - Error handling date values START_DATE=#{start_date} END_DATE=#{end_date}"
         return {}
       end

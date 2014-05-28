@@ -22,14 +22,23 @@
             </div>
           </div>
 
+          <div data-ng-show="noUserSelectedAlert" class="bc-notice-box bc-notice-error bc-radius">
+            Please select a user.
+            <div class="bc-notice-close-button">
+              <button class="fa fa-times-circle button bc-close-button small" data-ng-click="noUserSelectedAlert=''"></button>
+            </div>
+          </div>
+
           <div data-ng-show="noSearchResultsNotice" class="bc-notice-box bc-notice-error bc-radius">
             Your search did not match any users with a CalNet ID.
+            <span data-ng-bind="searchTypeNotice"></span>
+            Please try again.
             <div class="bc-notice-close-button">
               <button class="fa fa-times-circle button bc-close-button small" data-ng-click="noSearchResultsNotice=''"></button>
             </div>
           </div>
 
-          <div data-ng-show="userSearchResultsCount > userSearchResults.length" class="bc-notice-box bc-notice-success bc-radius">
+          <div data-ng-show="userSearchResultsCount > userSearchResults.length" class="bc-notice-box bc-notice-warning bc-radius">
             Your search returned <span data-ng-bind="userSearchResultsCount"></span> results, but only the first
             <span data-ng-bind="userSearchResults.length"></span> are shown.
             Please refine your search to limit the number of results.
@@ -61,7 +70,7 @@
             <div class="row bc-horizontal-form">
               <div class="medium-5 columns">
                 <label for="search-text" class="cc-visuallyhidden">Search users</label>
-                <input id="search-text" class="bc-form-entity bc-input" type="text" placeholder="Find a person to add" data-ng-model="search_text">
+                <input id="search-text" class="bc-form-entity bc-input" type="{{searchTextType}}" placeholder="Find a person to add" data-ng-model="search_text">
               </div>
 
               <div class="medium-6 columns">
@@ -70,7 +79,7 @@
                     <label for="search-type" class="bc-label bc-label-horizontal bc-form-entities">By:</label>
                   </div>
                   <div class="medium-10 columns">
-                    <select id="search-type" data-ng-model="search_type" class="bc-form-entity">
+                    <select id="search-type" data-ng-model="search_type" data-ng-change="updateSearchTextType()" class="bc-form-entity">
                       <option value="name">Last Name, First Name</option>
                       <option value="email">Email</option>
                       <option value="student_id">Student ID</option>
@@ -144,7 +153,7 @@
                 <tbody>
                   <tr data-ng-repeat="user in userSearchResults">
                     <td>
-                      <input type="radio" name="selected_user" data-ng-model="$parent.selected_user" data-ng-value="user">
+                      <input type="radio" name="selectedUser" data-ng-model="$parent.selectedUser" data-ng-value="user" data-ng-required="true">
                     </td>
                     <td data-ng-bind="user.first_name + ' ' + user.last_name"></td>
                     <td data-ng-bind="user.student_id"></td>
@@ -170,7 +179,7 @@
                     <label for="course-section"><strong><span class="cc-required-field-indicator">*</span> Section</strong>:</label>
                   </div>
                   <div class="small-10 columns">
-                    <select id="course-section" data-ng-model="selected_section" data-ng-options="section as section.name for section in course_sections">
+                    <select id="course-section" data-ng-model="selectedSection" data-ng-options="section as section.name for section in courseSections">
                     </select>
                   </div>
                 </div>
