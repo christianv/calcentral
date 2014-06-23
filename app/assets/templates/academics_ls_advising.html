@@ -1,0 +1,62 @@
+<div class="cc-widget cc-widget-lsadvising" data-ng-controller="LsAdvisingController">
+  <div class="cc-widget-title">
+    <h2>L &amp; S Advising</h2>
+  </div>
+
+  <div class="cc-widget-padding">
+    <div data-ng-if="caseloadAdviser">
+      <h3 class="cc-widget-lsadvising-heading-first">College Advisor</h3>
+      <a data-ng-href="mailto:{{caseloadAdviser.email}}">
+        <span data-ng-bind-template="{{caseloadAdviser.firstName + ' ' + caseloadAdviser.lastName}}"></span>
+      </a>
+    </div>
+    <div data-ng-if="futureAppointments">
+      <h3>Future Appointments</h3>
+      <div class="cc-table">
+        <table>
+          <thead>
+            <th width="70x">Date</th>
+            <th width="120px">Contact Person</th>
+            <th width="120px">Contact Method</th>
+            <th width="150px">Location</th>
+            <th>Modify</th>
+          </thead>
+          <tbody>
+            <tr data-ng-repeat="appointment in futureAppointments">
+              <td data-ng-bind="appointment.dateTime | date:'MM/dd/yy'"></td>
+              <td data-ng-bind="appointment.staff.name"></td>
+              <td data-ng-bind="appointment.method"></td>
+              <td data-ng-bind="appointment.location"></td>
+              <td>
+                <a data-ng-href="{{appointment.urlToEditAppointment}}">
+                  <i class="cc-icon fa fa-edit"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    <div data-ng-if="pastAppointments">
+      <h3>Past Appointments</h3>
+      <div class="cc-table">
+        <table>
+          <thead>
+            <th width="70px">Date</th>
+            <th width="120px">Contact Person</th>
+            <th>Location</th>
+          </thead>
+          <tbody>
+            <tr data-ng-repeat="appointment in pastAppointments">
+              <td data-ng-bind="appointment.dateTime | date:'MM/dd/yy'"></td>
+              <td data-ng-bind="appointment.staff.name"></td>
+              <td data-ng-bind="appointment.location"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div data-ng-if="urlToMakeAppointment" class="cc-widget-lsadvising-appointment">
+        <a class="cc-button" data-ng-href="{{urlToMakeAppointment}}">Make Appointment</a>
+      </div>
+    </div>
+  </div>
+</div>
