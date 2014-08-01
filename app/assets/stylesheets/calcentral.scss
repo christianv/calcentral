@@ -232,7 +232,7 @@ button {
   padding: 0;
   &, &:hover, &:focus {
     background-color: transparent;
-    border: none;
+    border: 0;
     color: $primary-color;
     font-size: 13px;
     font-weight: normal;
