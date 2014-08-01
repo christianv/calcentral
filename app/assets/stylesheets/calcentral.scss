@@ -162,7 +162,7 @@ button {
 }
 .cc-button-transparent {
   background: transparent;
-  border: none;
+  border: 0;
   color: $body-font-color !important;
   padding: 0;
   &:focus, &:hover {
