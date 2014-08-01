@@ -8,4 +8,9 @@ task :travis do
   system ("jscs .")
   raise "jscs failed!" unless $?.exitstatus == 0
 
+  puts "Running scss-lint - Lint our SCSS files"
+  system ("gem install scss-lint")
+  system ("scss-lint app/assets/stylesheets/")
+  raise "scss-lint!" unless $?.exitstatus == 0
+
 end
