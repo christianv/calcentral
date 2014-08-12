@@ -133,20 +133,20 @@ module Textbooks
       end
 
       # TODO remove
-      params = [
-        {
-          dept: 'BIO ENG',
-          course: '100',
-          section: '001',
-          term: 'FALL 2014'
-        },
-        {
-          dept: 'CHEM',
-          course: '3A',
-          section: '002',
-          term: 'FALL 2014'
-        }
-      ]
+      # params = [
+      #   {
+      #     dept: 'BIO ENG',
+      #     course: '100',
+      #     section: '001',
+      #     term: 'FALL 2014'
+      #   },
+      #   {
+      #     dept: 'CHEM',
+      #     course: '3A',
+      #     section: '002',
+      #     term: 'FALL 2014'
+      #   }
+      # ]
 
       uri = Addressable::URI.encode(params.to_json)
       "#{Settings.textbooks_proxy.base_url}/course-info?courses=#{uri}"

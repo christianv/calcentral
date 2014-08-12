@@ -91,7 +91,6 @@ describe Textbooks::Proxy do
           it_is_a_normal_server_response
           it_has_at_least_one_title
           choices = subject[:books][:bookDetails][0][:books][1]
-          expect(choices[:hasChoices]).to be_true
           expect(choices[:title]).to be_present
           expect(choices[:bookstoreLink]).to be_present
         end
