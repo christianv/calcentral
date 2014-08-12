@@ -6,14 +6,11 @@ module Textbooks
     APP_ID = 'textbooks'
 
     def initialize(options = {})
-      puts options
       @section_numbers = options[:section_numbers]
       @course_catalog = options[:course_catalog]
       @dept = options[:dept]
       @slug = options[:slug]
       @term = get_term(@slug)
-      # The first section number is used as a cache key.
-      @section_number = @section_numbers[0]
 
       super(Settings.textbooks_proxy, options)
     end
@@ -22,56 +19,37 @@ module Textbooks
     def google_book(isbn)
       google_book_url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:' + isbn
       google_response = {}
-      response = ActiveSupport::Notifications.instrument('proxy', { url: google_book_url , class: self.class }) do
+      response = ActiveSupport::Notifications.instrument('proxy', {
+        url: google_book_url ,
+        class: self.class }) do
           HTTParty.get(
-        google_book_url,
-        timeout: Settings.application.outgoing_http_timeout
-      )
+            google_book_url,
+            timeout: Settings.application.outgoing_http_timeout
+        )
       end
 
       if response['totalItems'] > 0
-        volume_info = response['items'][0]['volumeInfo']
+        item = response['items'][0]
         google_response = {
-          link: volume_info['infoLink'],
-          image: volume_info['imageLinks']['thumbnail']
+          link: item['volumeInfo']['infoLink'],
+          image: "https://encrypted.google.com/books/images/frontcover/#{item['id']}?fife=w170-rw"
         }
       end
 
       return google_response
     end
 
-    def ul_to_dict(ul, bookstore_link)
-      books = []
-      amazon_url = 'http://www.amazon.com/gp/search?index=books&linkCode=qs&keywords='
-      chegg_url = 'http://www.chegg.com/search/'
-      oskicat_url = 'http://oskicat.berkeley.edu/search~S1/?searchtype=i&searcharg='
-
-      if ul.length > 0
-        book_list = ul.xpath('./li')
-        book_list.each do |bl|
-          book_detail = {
-            hasChoices: bl.xpath('.//h3[@class="material-group-title choice-title"]').length > 0 || bl.xpath('.//div[@class="choice-list-heading-sub"]').length > 0,
-            title: bl.xpath('.//h3[@class="material-group-title"]')[0].text.split("\n")[0].strip,
-            image: bl.xpath('.//span[@id="materialTitleImage"]/img/@src')[0].text.gsub('http:', '').strip,
-            author: bl.xpath('.//span[@id="materialAuthor"]')[0].text.split(':')[1].strip,
-            edition: bl.xpath('.//span[@id="materialEdition"]')[0].text.split(':')[1].strip,
-            publisher: bl.xpath('.//span[@id="materialPublisher"]')[0].text.split(':')[1].strip,
-            bookstoreLink: bookstore_link
-          }
-          if (isbn_node = bl.xpath('.//span[@id="materialISBN"]')[0])
-            isbn = isbn_node.text.split(':')[1].strip
-            book_detail.merge!({
-              isbn: isbn,
-              amazonLink: amazon_url + isbn,
-              cheggLink: chegg_url + isbn,
-              oskicatLink: oskicat_url + isbn,
-              googlebookLink: google_book(isbn)
-            })
-          end
-          books.push(book_detail)
-        end
+    def bookstore_info
+      info = []
+      @section_numbers.each do |section_number|
+        info.push({
+          dept: @dept,
+          course: @course_catalog,
+          section: section_number,
+          term: @term
+        })
       end
-      books
+      info
     end
 
     def parse_material(material)
@@ -91,7 +69,9 @@ module Textbooks
         amazonLink: amazon_url + isbn,
         cheggLink: chegg_url + isbn,
         oskicatLink: oskicat_url + isbn,
-        googlebookLink: google_info[:link]
+        googlebookLink: google_info[:link],
+        # Bookstore
+        bookstoreInfo: bookstore_info()
       }
     end
 
@@ -109,17 +89,13 @@ module Textbooks
       books
     end
 
-    def has_choices(category_books)
-      category_books.any? { |i| i[:hasChoices] == true }
-    end
-
     def get_term(slug)
       slug.sub('-', ' ').upcase
     end
 
     def get_as_json
       self.class.smart_fetch_from_cache(
-        {id: "#{@ccn}-#{@slug}",
+        {id: "#{@slug}-#{@dept}-#{@course_catalog}-#{@section_numbers.join('-')}",
          user_message_on_exception: "Currently, we can't reach the bookstore. Check again later for updates, or contact your instructor directly.",
          jsonify: true}) do
         get
@@ -130,13 +106,7 @@ module Textbooks
       return {} unless Settings.features.textbooks
 
       response = request_bookstore_list(@section_numbers)
-
-      puts "reofreof"
-      puts response
-      puts "==============================="
-      puts ""
       books = parse_response(response)
-
       book_unavailable_error = 'Currently, there is no textbook information for this course. Check again later for updates, or contact your instructor directly.'
 
       {
@@ -145,7 +115,6 @@ module Textbooks
           bookUnavailableError: book_unavailable_error
         }
       }
-
     end
 
     def bookstore_link(section_numbers)
