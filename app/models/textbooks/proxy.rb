@@ -21,7 +21,7 @@ module Textbooks
 
     def google_book(isbn)
       google_book_url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:' + isbn
-      google_response = ''
+      google_response = {}
       response = ActiveSupport::Notifications.instrument('proxy', { url: google_book_url , class: self.class }) do
           HTTParty.get(
         google_book_url,
@@ -30,7 +30,11 @@ module Textbooks
       end
 
       if response['totalItems'] > 0
-        google_response = response['items'][0]['volumeInfo']['infoLink']
+        volume_info = response['items'][0]['volumeInfo']
+        google_response = {
+          link: volume_info['infoLink'],
+          image: volume_info['imageLinks']['thumbnail']
+        }
       end
 
       return google_response
@@ -70,10 +74,39 @@ module Textbooks
       books
     end
 
+    def parse_material(material)
+      isbn = material['ean']
+      google_info = google_book(isbn)
+
+      amazon_url = 'http://www.amazon.com/gp/search?index=books&linkCode=qs&keywords='
+      chegg_url = 'http://www.chegg.com/search/'
+      oskicat_url = 'http://oskicat.berkeley.edu/search~S1/?searchtype=i&searcharg='
+
+      {
+        author: material['author'],
+        image: google_info[:image],
+        title: material['title'],
+        isbn: isbn,
+        # Links
+        amazonLink: amazon_url + isbn,
+        cheggLink: chegg_url + isbn,
+        oskicatLink: oskicat_url + isbn,
+        googlebookLink: google_info[:link]
+      }
+    end
+
     def parse_response(response)
       books = []
 
+      response.each do |item|
+        if item['materials']
+          item['materials'].each do |material|
+            books.push(parse_material(material))
+          end
+        end
+      end
 
+      books
     end
 
     def has_choices(category_books)
@@ -100,9 +133,11 @@ module Textbooks
 
       puts "reofreof"
       puts response
+      puts "==============================="
+      puts ""
       books = parse_response(response)
 
-      book_unavailable_error 'Currently, there is no textbook information for this course. Check again later for updates, or contact your instructor directly.'
+      book_unavailable_error = 'Currently, there is no textbook information for this course. Check again later for updates, or contact your instructor directly.'
 
       {
         books: {
@@ -120,10 +155,10 @@ module Textbooks
       section_numbers.each do |section_number|
         params.push(
           {
-            :dept => @dept,
-            :course => @course_catalog,
-            :section => section_number,
-            :term => @term
+            dept: @dept,
+            course: @course_catalog,
+            section: section_number,
+            term: @term
           }
         )
       end
@@ -131,16 +166,16 @@ module Textbooks
       # TODO remove
       params = [
         {
-          :dept => 'BIO ENG',
-          :course => '100',
-          :section => '001',
-          :term => 'FALL 2014'
+          dept: 'BIO ENG',
+          course: '100',
+          section: '001',
+          term: 'FALL 2014'
         },
         {
-          :dept => 'CHEM',
-          :course => '3A',
-          :section => '002',
-          :term => 'FALL 2014'
+          dept: 'CHEM',
+          course: '3A',
+          section: '002',
+          term: 'FALL 2014'
         }
       ]
 
@@ -167,7 +202,7 @@ module Textbooks
       if response.code >= 400
         raise Errors::ProxyError.new("Currently, we can't reach the bookstore. Check again later for updates, or contact your instructor directly.")
       end
-      response.body
+      JSON.parse(response.body)
     end
 
     # TODO - fix fake
