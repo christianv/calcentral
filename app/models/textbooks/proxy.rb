@@ -6,11 +6,15 @@ module Textbooks
     APP_ID = 'textbooks'
 
     def initialize(options = {})
-      @ccns = options[:ccns]
+      puts options
+      @section_numbers = options[:section_numbers]
+      @course_catalog = options[:course_catalog]
+      @dept = options[:dept]
       @slug = options[:slug]
       @term = get_term(@slug)
-      # The first CCN is used as a cache key.
-      @ccn = @ccns[0]
+      # The first section number is used as a cache key.
+      @section_number = @section_numbers[0]
+
       super(Settings.textbooks_proxy, options)
     end
 
@@ -66,13 +70,18 @@ module Textbooks
       books
     end
 
+    def parse_response(response)
+      books = []
+
+
+    end
+
     def has_choices(category_books)
       category_books.any? { |i| i[:hasChoices] == true }
     end
 
     def get_term(slug)
-      term_hash = Berkeley::TermCodes.from_slug(slug)
-      "#{term_hash[:term_yr]}#{term_hash[:term_cd]}"
+      slug.sub('-', ' ').upcase
     end
 
     def get_as_json
@@ -86,94 +95,72 @@ module Textbooks
 
     def get
       return {} unless Settings.features.textbooks
-      required_books = []
-      recommended_books = []
-      optional_books = []
-      bookstore_error_text = ''
 
-      @ccns.each do |ccn|
-        xml = request_bookstore_list(ccn)
-        text_books = Nokogiri::HTML(xml)
-        text_books_items = text_books.xpath('//h2 | //ul')
-        bookstore_link = bookstore_link(ccn)
+      response = request_bookstore_list(@section_numbers)
 
-        required_text_list = text_books_items.xpath('//h2[contains(text(), "Required")]/following::ul[1]')
-        recommended_text_list = text_books_items.xpath('//h2[contains(text(), "Recommended")]/following::ul[1]')
-        optional_text_list = text_books_items.xpath('//h2[contains(text(), "Optional")]/following::ul[1]')
-        required_books.push(ul_to_dict(required_text_list, bookstore_link))
-        recommended_books.push(ul_to_dict(recommended_text_list, bookstore_link))
-        optional_books.push(ul_to_dict(optional_text_list, bookstore_link))
-        bookstore_error_section = text_books.xpath('//div[@id="efCourseErrorSection"]/h2')
-        if bookstore_error_section.length > 0
-          bookstore_error_text = bookstore_error_section[0].text.gsub('*', '').strip
-        end
-      end
+      puts "reofreof"
+      puts response
+      books = parse_response(response)
 
-      book_unavailable_error =
-        case bookstore_error_text
-          when /No Information Received For This Course./
-            'Currently, there is no textbook information for this course. Check again later for updates, or contact your instructor directly.'
-          when /We are unable to find the specified course./
-            'Textbook information for this course could not be found.'
-          when /No Store Supplied Material/
-            'No materials for this course are supplied by the Cal Student Store. Contact the instructor regarding any custom materials.'
-          when /No Books Required For This Course./
-            'There are no required books for this course.'
-          when /We are unable to find the requested term/
-            'Textbook information for this term could not be found.'
-          else
-            bookstore_error_text
-        end
+      book_unavailable_error 'Currently, there is no textbook information for this course. Check again later for updates, or contact your instructor directly.'
 
-      book_response = {
-        :bookDetails => []
-      }
-
-      if !required_books.flatten.blank?
-        book_response[:bookDetails].push({
-                                            :type => 'Required',
-                                            :books => required_books.flatten,
-                                            :hasChoices => has_choices(required_books.flatten)
-                                          })
-      end
-
-      if !recommended_books.flatten.blank?
-        book_response[:bookDetails].push({
-                                            :type => 'Recommended',
-                                            :books => recommended_books.flatten,
-                                            :hasChoices => has_choices(recommended_books.flatten)
-                                          })
-      end
-
-      if !optional_books.flatten.blank?
-        book_response[:bookDetails].push({
-                                            :type => 'Optional',
-                                            :books => optional_books.flatten,
-                                            :hasChoices => has_choices(optional_books.flatten)
-                                          })
-      end
-
-      book_response[:bookUnavailableError] = book_unavailable_error
-      book_response[:hasBooks] = !(required_books.flatten.blank? && recommended_books.flatten.blank? && optional_books.flatten.blank?)
       {
-        books: book_response
+        books: {
+          items: books,
+          bookUnavailableError: book_unavailable_error
+        }
       }
 
     end
 
-    def bookstore_link(ccn)
-      path = "/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=554&term_id-1=#{@term}&crn-1=#{ccn}"
-      "#{Settings.textbooks_proxy.base_url}#{path}"
+    def bookstore_link(section_numbers)
+      path = "/course-info"
+      params = []
+
+      section_numbers.each do |section_number|
+        params.push(
+          {
+            :dept => @dept,
+            :course => @course_catalog,
+            :section => section_number,
+            :term => @term
+          }
+        )
+      end
+
+      # TODO remove
+      params = [
+        {
+          :dept => 'BIO ENG',
+          :course => '100',
+          :section => '001',
+          :term => 'FALL 2014'
+        },
+        {
+          :dept => 'CHEM',
+          :course => '3A',
+          :section => '002',
+          :term => 'FALL 2014'
+        }
+      ]
+
+      uri = Addressable::URI.encode(params.to_json)
+      "#{Settings.textbooks_proxy.base_url}/course-info?courses=#{uri}"
     end
 
-    def request_bookstore_list(ccn)
+    def request_bookstore_list(section_numbers)
       # We work from saved HTML since VCR does not correctly record bookstore responses.
-      return fake_list(ccn) if @fake
 
-      url = bookstore_link(ccn)
+      # TODO - fix fake
+      # return fake_list(ccn) if @fake
+
+      url = bookstore_link(section_numbers)
       logger.info "Fake = #@fake; Making request to #{url}; cache expiration #{self.class.expires_in}"
       response = HTTParty.get(
         url,
+        headers: {
+          "Authorization" => "Token token=#{Settings.textbooks_proxy.token}"
+        },
         timeout: Settings.application.outgoing_http_timeout
       )
       logger.debug "Remote server status #{response.code}; url = #{url}"
@@ -183,6 +170,7 @@ module Textbooks
       response.body
     end
 
+    # TODO - fix fake
     def fake_list(ccn)
       path = Rails.root.join('fixtures', 'html', "textbooks-#{@term}-#{ccn}.html").to_s
       logger.info "Fake = #@fake, getting data from HMTL fixture file #{path}"
