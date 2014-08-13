@@ -132,31 +132,12 @@ module Textbooks
         )
       end
 
-      # TODO remove
-      # params = [
-      #   {
-      #     dept: 'BIO ENG',
-      #     course: '100',
-      #     section: '001',
-      #     term: 'FALL 2014'
-      #   },
-      #   {
-      #     dept: 'CHEM',
-      #     course: '3A',
-      #     section: '002',
-      #     term: 'FALL 2014'
-      #   }
-      # ]
-
       uri = Addressable::URI.encode(params.to_json)
       "#{Settings.textbooks_proxy.base_url}/course-info?courses=#{uri}"
     end
 
     def request_bookstore_list(section_numbers)
-      # We work from saved HTML since VCR does not correctly record bookstore responses.
-
-      # TODO - fix fake
-      # return fake_list(ccn) if @fake
+      return fake_list(section_numbers) if @fake
 
       url = bookstore_link(section_numbers)
       logger.info "Fake = #@fake; Making request to #{url}; cache expiration #{self.class.expires_in}"
@@ -174,14 +155,13 @@ module Textbooks
       JSON.parse(response.body)
     end
 
-    # TODO - fix fake
-    def fake_list(ccn)
-      path = Rails.root.join('fixtures', 'html', "textbooks-#{@term}-#{ccn}.html").to_s
-      logger.info "Fake = #@fake, getting data from HMTL fixture file #{path}"
+    def fake_list(section_numbers)
+      path = Rails.root.join('fixtures', 'json', "textbooks-#{@slug}-#{@dept}-#{@course_catalog}-#{section_numbers.join('-')}.json").to_s
+      logger.info "Fake = #@fake, getting textbook data from JSON fixture file #{path}"
       unless File.exists?(path)
         raise Errors::ProxyError.new("Unrecorded textbook response #{path}")
       end
-      File.read(path)
+      JSON.parse(File.read(path))
     end
 
   end
