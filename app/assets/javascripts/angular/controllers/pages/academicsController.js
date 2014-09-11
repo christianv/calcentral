@@ -324,6 +324,7 @@
 
       // Get selected semester from URL params and extract data from semesters array
       var semesterSlug = ($routeParams.semesterSlug || $routeParams.teachingSemesterSlug);
+      console.log(semesterSlug);
       if (semesterSlug) {
         var isOnlyInstructor = !!$routeParams.teachingSemesterSlug;
         var selectedStudentSemester = findSemester(data.semesters, semesterSlug, selectedStudentSemester);
