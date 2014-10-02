@@ -1,3 +1,4 @@
+/* jshint camelcase: false */
 (function(window, angular) {
   'use strict';
 
@@ -115,20 +116,65 @@
     };
 
     /**
+     * Lookup student with UID or SID
+     */
+    var studentLookup = function(id, callback) {
+      var lookupUri = '/api/search_users/' + id;
+      $http.get(lookupUri).success(function(data) {
+        if (data.users.length > 0) {
+          return callback(null, data);
+        } else {
+          return callback('That does not appear to be a valid UID or SID.');
+        }
+      }).error(function(data) {
+        if (data.error) {
+          return callback(data.error);
+        } else {
+          return callback('User search failed.');
+        }
+      });
+    };
+
+    var resetUserSearch = function() {
+      $scope.admin.users = [];
+      $scope.admin.lookupErrorStatus = '';
+      $scope.admin.id = '';
+    };
+
+    $scope.admin.uidToSidLookup = function() {
+      var studentId = $scope.admin.id;
+      resetUserSearch();
+      studentLookup(studentId, function(err, data) {
+        if (err) {
+          $scope.admin.lookupErrorStatus = err;
+        } else {
+          $scope.admin.users = data.users;
+        }
+      });
+    };
+
+    /**
      * Act as someone else
      */
     $scope.admin.actAsSomeone = function() {
+      $scope.admin.actAsErrorStatus = '';
       if (!$scope.admin.actAs || !$scope.admin.actAs.uid) {
         return;
       }
       var uid = $scope.admin.actAs.uid + '';
-      if ($scope.supportsLocalStorage) {
-        $scope.admin.storeRecentUID(uid);
-      }
-      var user = {
-        uid: uid
-      };
-      $http.post('/act_as', user).success(redirectToSettings);
+      studentLookup(uid, function(err, data) {
+        if (err) {
+          $scope.admin.actAsErrorStatus = err;
+        } else {
+          if ($scope.supportsLocalStorage) {
+            $scope.admin.storeRecentUID(uid);
+          }
+          var user = {
+            uid: data.users[0].ldap_uid
+          };
+          $http.post('/act_as', user).success(redirectToSettings);
+        }
+      });
     };
 
     /**
@@ -138,28 +184,5 @@
       $http.post('/stop_act_as').success(redirectToSettings).error(redirectToSettings);
     };
 
-    var resetUserSearch = function() {
-      $scope.admin.users = [];
-      $scope.admin.errorStatus = '';
-      $scope.admin.id = '';
-    };
-
-    $scope.admin.uidToSidLookup = function() {
-      var searchUsersUri = '/api/search_users/' + $scope.admin.id;
-      resetUserSearch();
-      $http.get(searchUsersUri).success(function(data) {
-        if (data.users.length > 0) {
-          $scope.admin.users = data.users;
-        } else {
-          $scope.admin.errorStatus = 'That does not appear to be a valid UID or SID';
-        }
-      }).error(function(data) {
-        if (data.error) {
-          $scope.admin.errorStatus = data.error;
-        } else {
-          $scope.admin.errorStatus = 'User search failed.';
-        }
-      });
-    };
   });
 })(window, window.angular);

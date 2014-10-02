@@ -46,6 +46,11 @@
             type="submit">Submit</button>
         </div>
       </div>
+      <div class="row">
+        <div class="small-9 small-offset-3 columns">
+          <span data-ng-bind="admin.actAsErrorStatus"></span>
+        </div>
+      </div>
 
       <div class="row cc-settings-recent-uids" data-ng-repeat="uidDiv in admin.uidDivs">
         <div class="small-9 small-offset-3 columns" data-ng-if="supportsLocalStorage && uidDiv.UIDs.length">
@@ -82,7 +87,7 @@
       </div>
       <div class="row">
         <div class="small-8 small-offset-3 columns">
-          <span data-ng-bind="admin.errorStatus"></span>
+          <span data-ng-bind="admin.lookupErrorStatus"></span>
         </div>
       </div>
       <div data-ng-if="admin.users" class="row">
