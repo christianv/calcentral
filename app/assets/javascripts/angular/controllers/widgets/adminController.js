@@ -50,7 +50,7 @@
 
     $scope.admin = {
       actAs: {
-        uid: parseInt(UIDs[RECENT_UID_KEY][0], 10) || ''
+        id: parseInt(UIDs[RECENT_UID_KEY][0], 10) || ''
       }
     };
 
@@ -91,7 +91,7 @@
     };
 
     $scope.admin.updateUIDField = function(uid) {
-      $scope.admin.actAs.uid = parseInt(uid, 10);
+      $scope.admin.actAs.id = parseInt(uid, 10);
     };
 
     $scope.admin.uidDivs = [
@@ -116,9 +116,9 @@
     };
 
     /**
-     * Lookup student with UID or SID
+     * Lookup person using either UID or SID
      */
-    var studentLookup = function(id, callback) {
+    var lookupPerson = function(id, callback) {
       var lookupUri = '/api/search_users/' + id;
       $http.get(lookupUri).success(function(data) {
         if (data.users.length > 0) {
@@ -144,7 +144,7 @@
     $scope.admin.uidToSidLookup = function() {
       var studentId = $scope.admin.id;
       resetUserSearch();
-      studentLookup(studentId, function(err, data) {
+      lookupPerson(studentId, function(err, data) {
         if (err) {
           $scope.admin.lookupErrorStatus = err;
         } else {
@@ -156,22 +156,29 @@
     /**
      * Act as someone else
      */
-    $scope.admin.actAsSomeone = function() {
+    $scope.admin.actAsSomeone = function(uid) {
       $scope.admin.actAsErrorStatus = '';
-      if (!$scope.admin.actAs || !$scope.admin.actAs.uid) {
+      $scope.admin.userPool = [];
+      if (uid) {
+        var user = { uid: uid + '' };
+        $scope.admin.storeRecentUID(uid);
+        return $http.post('/act_as', user).success(redirectToSettings);
+      }
+      if (!$scope.admin.actAs || !$scope.admin.actAs.id) {
         return;
       }
-      var uid = $scope.admin.actAs.uid + '';
-      studentLookup(uid, function(err, data) {
+      var id = $scope.admin.actAs.id + '';
+      lookupPerson(id, function(err, data) {
         if (err) {
           $scope.admin.actAsErrorStatus = err;
         } else {
-          if ($scope.supportsLocalStorage) {
-            $scope.admin.storeRecentUID(uid);
+          if (data.users.length > 1) {
+            $scope.admin.actAsErrorStatus = 'More than one user was found. Which user did you want to act as?';
+            $scope.admin.userPool = data.users;
+            return;
           }
-          var user = {
-            uid: data.users[0].ldap_uid
-          };
+          var user = { uid: data.users[0].ldap_uid };
+          $scope.admin.storeRecentUID(id);
           $http.post('/act_as', user).success(redirectToSettings);
         }
       });
@@ -183,6 +190,5 @@
     $scope.admin.stopActAs = function() {
       $http.post('/stop_act_as').success(redirectToSettings).error(redirectToSettings);
     };
-
   });
 })(window, window.angular);
