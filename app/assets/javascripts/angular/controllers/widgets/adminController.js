@@ -5,7 +5,7 @@
   /**
    * Admin controller
    */
-  angular.module('calcentral.controllers').controller('AdminController', function(apiService, $http, $scope) {
+  angular.module('calcentral.controllers').controller('AdminController', function(adminFactory, apiService, $scope) {
     /**
      * Store recently acted as users
      */
@@ -119,8 +119,7 @@
      * Lookup user using either UID or SID
      */
     var lookupUser = function(id, callback) {
-      var lookupUri = '/api/search_users/' + id;
-      $http.get(lookupUri).success(function(data) {
+      adminFactory.userLookup({id: id}).success(function(data) {
         if (data.users.length > 0) {
           return callback(null, data);
         } else {
@@ -157,7 +156,7 @@
 
       if (user && user.ldap_uid) {
         $scope.admin.storeRecentUser(user);
-        return $http.post('/act_as', {uid: user.ldap_uid}).success(redirectToSettings);
+        return adminFactory.actAs({uid: user.ldap_uid}).success(redirectToSettings);
       }
 
       if (!$scope.admin.actAs || !$scope.admin.actAs.id) {
@@ -177,7 +176,7 @@
           var user = data.users[0];
           user.enteredID = enteredID;
           $scope.admin.storeRecentUser(user);
-          $http.post('/act_as', {uid: user.ldap_uid}).success(redirectToSettings);
+          adminFactory.actAs({uid: user.ldap_uid}).success(redirectToSettings);
         }
       });
     };
@@ -186,7 +185,7 @@
      * Stop acting as someone else
      */
     $scope.admin.stopActAs = function() {
-      $http.post('/stop_act_as').success(redirectToSettings).error(redirectToSettings);
+      adminFactory.stopActAs().success(redirectToSettings).error(redirectToSettings);
     };
   });
 })(window, window.angular);
