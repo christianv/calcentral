@@ -10,7 +10,7 @@ matrix:
 env:
   - JRUBY_OPTS="--client -Xcext.enabled=false -J-Xmx900m" DISPLAY=:99.0 LOGGER_LEVEL=WARN
 
-before_install: "./script/front-end-test.sh"
+script: "./script/front-end-test.sh"
 
 language: ruby
 cache: bundler
