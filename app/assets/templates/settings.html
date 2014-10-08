@@ -29,7 +29,7 @@
   <div data-ng-show="api.user.profile.isViewer || api.user.profile.actingAsUid" data-ng-controller="AdminController">
     <h2>Admin</h2>
     <h3>View as</h3>
-    <form data-ng-submit="admin.actAsSomeone()">
+    <form data-ng-submit="admin.actAsUser()">
       <div class="row">
         <div class="small-3 columns">
           <label for="cc-settings-act-as-uid">UID/SID</label>
@@ -55,22 +55,22 @@
         <div class="small-9 small-offset-3 columns">
           <ul data-ng-repeat="user in admin.userPool">
             <li>
-              UID:
-              <button class="cc-button-link" data-ng-bind="user.ldap_uid" data-ng-click="admin.actAsSomeone(user.ldap_uid)"></button>
-              (SID: {{user.student_id || "none"}})
+              UID: <button class="cc-button-link" data-ng-bind="user.ldap_uid" data-ng-click="admin.actAsUser(user)"></button> (SID: {{user.student_id || "none"}})
             </li>
           </ul>
         </div>
       </div>
 
-      <div class="row cc-settings-recent-uids" data-ng-repeat="uidDiv in admin.uidDivs">
-        <div class="small-9 small-offset-3 columns" data-ng-if="supportsLocalStorage && uidDiv.UIDs.length">
-          <h4>{{uidDiv.title}} (<button type="button" class="cc-button-link" data-ng-click="uidDiv.clearAllUIDs()">clear all</button>)</h4>
+      <div class="row cc-settings-recent-uids" data-ng-repeat="block in admin.userBlocks">
+        <div class="small-9 small-offset-3 columns" data-ng-if="supportsLocalStorage && block.users.length">
+          <h4>{{block.title}} (<button type="button" class="cc-button-link" data-ng-click="block.clearAllUsers()">clear all</button>)</h4>
           <ul>
-            <li data-ng-repeat="UID in uidDiv.UIDs track by $index">
-              <button type="submit" class="cc-button-link" data-ng-click="uidDiv.updateUIDField(UID)" data-ng-bind="UID"></button>
-              <span data-ng-if="uidDiv.storeUID">(<button type="button" class="cc-button-link" data-ng-click="uidDiv.storeUID(UID)">save</button>)</span>
-              <span data-ng-if="uidDiv.clearUID">(<button type="button" class="cc-button-link" data-ng-click="uidDiv.clearUID($index)">delete</button>)</span>
+            <li data-ng-repeat="user in block.users track by $index">
+              <span>
+              UID: <button type="submit" class="cc-button-link" data-ng-click="admin.updateIDField(user.ldap_uid)" data-ng-bind="user.ldap_uid"></button> (SID: {{user.student_id || "none"}})
+              </span>
+              <span data-ng-if="block.storeUser">(<button type="button" class="cc-button-link" data-ng-click="block.storeUser(user)">save</button>)</span>
+              <span data-ng-if="block.clearUser">(<button type="button" class="cc-button-link" data-ng-click="block.clearUser($index)">delete</button>)</span>
             </li>
           </ul>
         </div>
@@ -82,10 +82,10 @@
     </form>
 
     <h3>UID/SID Lookup</h3>
-    <form data-ng-submit="admin.uidToSidLookup()">
+    <form data-ng-submit="admin.lookupUser()">
       <div class="row">
         <div class="small-9 small-offset-3 columns">
-          <input id="cc-settings-id" data-ng-pattern="api.util.uidPattern" placeholder="Enter UID or SID here" data-ng-model="admin.id" type="number"/>
+          <input id="cc-settings-id" data-ng-pattern="api.util.uidPattern" placeholder="Enter UID or SID here" data-ng-model="admin.id" type="number" data-cc-select-on-click-directive />
         </div>
       </div>
       <div class="row">

@@ -7,35 +7,44 @@
    */
   angular.module('calcentral.controllers').controller('AdminController', function(apiService, $http, $scope) {
     /**
-     * Store recently entered UIDs
+     * Store recently acted as users
      */
-    var RECENT_UID_LIMIT = 6;
-    var RECENT_UID_KEY = 'admin.recentUIDs';
-    var SAVED_UID_KEY = 'admin.savedUIDs';
+    var RECENT_USER_LIMIT = 6;
+    var RECENT_USER_KEY = 'admin.recentUsers';
+    var SAVED_USER_KEY = 'admin.savedUsers';
 
     $scope.supportsLocalStorage = apiService.util.supportsLocalStorage;
 
-    var getUIDs = function(key) {
-      var UIDs = localStorage[key];
-      return UIDs && JSON.parse(UIDs) || [];
+    var getUsers = function(key) {
+      var users = localStorage[key];
+      return users && JSON.parse(users) || [];
     };
 
-    var UIDs = {};
-    UIDs[RECENT_UID_KEY] = getUIDs(RECENT_UID_KEY);
-    UIDs[SAVED_UID_KEY] = getUIDs(SAVED_UID_KEY);
+    var users = {};
+    users[RECENT_USER_KEY] = getUsers(RECENT_USER_KEY);
+    users[SAVED_USER_KEY] = getUsers(SAVED_USER_KEY);
+
+    // Get the UID of the last acted on user
+    var lastUser = users[RECENT_USER_KEY][0];
+
+    $scope.admin = {
+      actAs: {
+        id: parseInt(lastUser && lastUser.enteredID, 10) || ''
+      }
+    };
 
     var storeLocal = function(key, data) {
       localStorage[key] = JSON.stringify(data);
     };
 
-    var storeUID = function(uid, key) {
-      var current = UIDs[key];
-      current.unshift(uid);
+    var storeUser = function(user, key) {
+      var current = users[key];
+      current.unshift(user);
       storeLocal(key, current);
     };
 
-    var clearUID = function(index, key) {
-      var current = UIDs[key];
+    var clearUser = function(index, key) {
+      var current = users[key];
       current.splice(index, 1);
       if (current.length === 0) {
         return localStorage.removeItem(key);
@@ -43,71 +52,62 @@
       storeLocal(key, current);
     };
 
-    var clearAllUIDs = function(key) {
-      UIDs[key].length = 0;
+    var clearAllUsers = function(key) {
+      users[key].length = 0;
       localStorage.removeItem(key);
     };
 
-    $scope.admin = {
-      actAs: {
-        id: parseInt(UIDs[RECENT_UID_KEY][0], 10) || ''
-      }
-    };
-
-    // Expose UIDs to view
-    $scope.admin.recentUIDs = UIDs[RECENT_UID_KEY];
-    $scope.admin.savedUIDs = UIDs[SAVED_UID_KEY];
-
-    $scope.admin.storeRecentUID = function(uid) {
-      var current = UIDs[RECENT_UID_KEY];
-      if (current[0] === uid) {
+    $scope.admin.storeRecentUser = function(user) {
+      var current = users[RECENT_USER_KEY];
+      if (current[0] && current[0].ldap_uid === user.ldap_uid) {
         return;
       }
-      storeUID(uid, RECENT_UID_KEY);
-      if (current.length > RECENT_UID_LIMIT) {
+      storeUser(user, RECENT_USER_KEY);
+      if (current.length > RECENT_USER_LIMIT) {
         current.pop();
-        storeLocal(RECENT_UID_KEY, current);
+        storeLocal(RECENT_USER_KEY, current);
       }
     };
 
-    $scope.admin.storeSavedUID = function(uid) {
-      var current = UIDs[SAVED_UID_KEY];
-      // Only store uid if it isn't already stored
-      if (current.indexOf(uid) < 0) {
-        storeUID(uid, SAVED_UID_KEY);
+    $scope.admin.storeSavedUser = function(user) {
+      var current = users[SAVED_USER_KEY];
+      // Don't store user if already stored
+      for (var i = 0, len = current.length; i < len; i++) {
+        if (current[i].ldap_uid === user.ldap_uid) {
+          return;
+        }
       }
+      storeUser(user, SAVED_USER_KEY);
     };
 
-    $scope.admin.clearSavedUID = function(index) {
-      clearUID(index, SAVED_UID_KEY);
+    $scope.admin.clearSavedUser = function(index) {
+      clearUser(index, SAVED_USER_KEY);
     };
 
-    $scope.admin.clearAllSavedUIDs = function() {
-      clearAllUIDs(SAVED_UID_KEY);
+    $scope.admin.clearAllSavedUsers = function() {
+      clearAllUsers(SAVED_USER_KEY);
     };
 
-    $scope.admin.clearAllRecentUIDs = function() {
-      clearAllUIDs(RECENT_UID_KEY);
+    $scope.admin.clearAllRecentUsers = function() {
+      clearAllUsers(RECENT_USER_KEY);
     };
 
-    $scope.admin.updateUIDField = function(uid) {
-      $scope.admin.actAs.id = parseInt(uid, 10);
+    $scope.admin.updateIDField = function(id) {
+      $scope.admin.actAs.id = parseInt(id, 10);
     };
 
-    $scope.admin.uidDivs = [
+    $scope.admin.userBlocks = [
       {
-        title: 'Saved UIDs',
-        UIDs: $scope.admin.savedUIDs,
-        updateUIDField: $scope.admin.updateUIDField,
-        clearAllUIDs: $scope.admin.clearAllSavedUIDs,
-        clearUID: $scope.admin.clearSavedUID
+        title: 'Saved Users',
+        users: users[SAVED_USER_KEY],
+        clearAllUsers: $scope.admin.clearAllSavedUsers,
+        clearUser: $scope.admin.clearSavedUser
       },
       {
-        title: 'Recent UIDs',
-        UIDs: $scope.admin.recentUIDs,
-        updateUIDField: $scope.admin.updateUIDField,
-        clearAllUIDs: $scope.admin.clearAllRecentUIDs,
-        storeUID: $scope.admin.storeSavedUID
+        title: 'Recent Users',
+        users: users[RECENT_USER_KEY],
+        clearAllUsers: $scope.admin.clearAllRecentUsers,
+        storeUser: $scope.admin.storeSavedUser
       }
     ];
 
@@ -116,9 +116,9 @@
     };
 
     /**
-     * Lookup person using either UID or SID
+     * Lookup user using either UID or SID
      */
-    var lookupPerson = function(id, callback) {
+    var lookupUser = function(id, callback) {
       var lookupUri = '/api/search_users/' + id;
       $http.get(lookupUri).success(function(data) {
         if (data.users.length > 0) {
@@ -135,16 +135,10 @@
       });
     };
 
-    var resetUserSearch = function() {
-      $scope.admin.users = [];
+    $scope.admin.lookupUser = function() {
       $scope.admin.lookupErrorStatus = '';
-      $scope.admin.id = '';
-    };
-
-    $scope.admin.uidToSidLookup = function() {
-      var studentId = $scope.admin.id;
-      resetUserSearch();
-      lookupPerson(studentId, function(err, data) {
+      $scope.admin.users = [];
+      lookupUser($scope.admin.id, function(err, data) {
         if (err) {
           $scope.admin.lookupErrorStatus = err;
         } else {
@@ -154,21 +148,24 @@
     };
 
     /**
-     * Act as someone else
+     * Act as another user
+     * If 'user' is given, directly act as user.ldap_uid, else act as $scope.admin.actAs.id
      */
-    $scope.admin.actAsSomeone = function(uid) {
+    $scope.admin.actAsUser = function(user) {
       $scope.admin.actAsErrorStatus = '';
       $scope.admin.userPool = [];
-      if (uid) {
-        var user = { uid: uid + '' };
-        $scope.admin.storeRecentUID(uid);
-        return $http.post('/act_as', user).success(redirectToSettings);
+
+      if (user && user.ldap_uid) {
+        $scope.admin.storeRecentUser(user);
+        return $http.post('/act_as', {uid: user.ldap_uid}).success(redirectToSettings);
       }
+
       if (!$scope.admin.actAs || !$scope.admin.actAs.id) {
         return;
       }
-      var id = $scope.admin.actAs.id + '';
-      lookupPerson(id, function(err, data) {
+
+      var enteredID = $scope.admin.actAs.id + '';
+      lookupUser(enteredID, function(err, data) {
         if (err) {
           $scope.admin.actAsErrorStatus = err;
         } else {
@@ -177,9 +174,10 @@
             $scope.admin.userPool = data.users;
             return;
           }
-          var user = { uid: data.users[0].ldap_uid };
-          $scope.admin.storeRecentUID(id);
-          $http.post('/act_as', user).success(redirectToSettings);
+          var user = data.users[0];
+          user.enteredID = enteredID;
+          $scope.admin.storeRecentUser(user);
+          $http.post('/act_as', {uid: user.ldap_uid}).success(redirectToSettings);
         }
       });
     };
