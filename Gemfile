@@ -76,11 +76,6 @@ gem 'nokogiri', '~> 1.5.9', :platforms => :jruby
 # for parsing paged feeds
 gem 'link_header', '~> 0.0.7'
 
-# for simplified relational data management
-gem 'ccadmin', path: 'ccadmin'
-
-gem 'bootstrap-sass', '~> 3.2.0.2'
-
 # TorqueBox app server
 gem 'torquebox', '~> 3.1.1'
 gem 'torquebox-server', '~> 3.1.1'
