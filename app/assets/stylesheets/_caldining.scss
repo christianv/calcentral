@@ -1,0 +1,56 @@
+.cc-widget-caldining {
+  .cc-widget-caldining-restaurtant-title {
+    background: #efefef;
+    color: #333;
+    margin: 0;
+    padding: 0 10px;
+    width: 100%;
+  }
+  .cc-widget-caldining-restaurtant-title-open-closed {
+    border-radius: 50%;
+    color: $cc-color-white;
+    height: 10px;
+    margin: 8px;
+    padding: 3px;
+    width: 10px;
+  }
+  .cc-widget-caldining-restaurtant-title-open {
+    background: $cc-color-green;
+  }
+  .cc-widget-caldining-restaurtant-title-closed {
+    background: $cc-color-red;
+  }
+  .cc-widget-caldining-restaurtant-title-distance {
+    font-size: 12px;
+    margin-top: 7px;
+  }
+  .cc-widget-caldining-restaurtant-content > ul > li {
+    border-bottom: solid 1px #eee;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+  }
+  .cc-widget-caldining-category {
+    height: 20px;
+    margin: 0 10px;
+    width: 3px;
+  }
+  .cc-widget-caldining-category-vegan {
+    background: $cc-color-green;
+  }
+  .cc-widget-caldining-category-vegetarian {
+    background: $cc-color-red;
+  }
+  .cc-widget-caldining-legend {
+    margin-top: 5px;
+    button {
+      color: #333;
+      padding: 4px;
+    }
+    .cc-widget-caldining-category {
+      height: 16px;
+    }
+  }
+  .cc-widget-caldining-legend-selected {
+    background: #eee;
+  }
+}

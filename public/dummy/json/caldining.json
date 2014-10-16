@@ -1,0 +1,199 @@
+{
+  "locations": [
+    {
+      "name": "Café 3",
+      "location": {
+        "lat": 37.867047,
+        "long": -122.260878,
+        "address": "2400 Durant Avenue, Berkeley"
+      },
+      "open": true
+    },
+    {
+      "name": "Clark Kerr",
+      "location": {
+        "lat": 37.863323,
+        "long": -122.24989,
+        "address": "2601 Warring Street, Berkeley"
+      },
+      "open": true
+    },
+    {
+      "name": "Crossroads",
+      "location": {
+        "lat": 37.867029,
+        "long": -122.25616,
+        "address": "2415 Bowditch Street, Berkeley"
+      },
+      "open": true,
+      "food": {
+        "name": "Lunch",
+        "hours": "11:00 am - 2:00 pm",
+        "items": {
+          "BLUE PLATE": [
+            {
+              "name": "Peas and Mushrooms",
+              "vegan": true,
+              "vegetarian": false
+            },
+            {
+              "name": "Sauteed Zucchini & Mushrooms",
+              "vegan": true,
+              "vegetarian": false
+            },
+            {
+              "name": "Steamed Sweet Potatoes",
+              "vegan": true,
+              "vegetarian": false
+            },
+            {
+              "name": "Tuscan Beans with Sage and Garlic",
+              "vegan": true,
+              "vegetarian": false
+            }
+          ],
+          "CHEF'S CORNER": [
+            {
+              "name": "6' Flour Tortilla",
+              "vegan": true,
+              "vegetarian": false
+            },
+            {
+              "name": "Black Beans",
+              "vegan": true,
+              "vegetarian": false
+            },
+            {
+              "name": "Latin Condiment Bar",
+              "vegan": false,
+              "vegetarian": true
+            },
+            {
+              "name": "Shredded Mexican Chicken",
+              "vegan": false,
+              "vegetarian": false
+            },
+            {
+              "name": "Vegan Chicken Fajitas",
+              "vegan": true,
+              "vegetarian": false
+            }
+          ],
+          "THE GRILL": [
+            {
+              "name": "Brown Rice",
+              "vegan": true,
+              "vegetarian": false
+            },
+            {
+              "name": "Farfalle with Cream Peas and Cheese",
+              "vegan": false,
+              "vegetarian": true
+            },
+            {
+              "name": "Jasmine Rice",
+              "vegan": true,
+              "vegetarian": false
+            }
+          ],
+          "CALZONE": [
+            {
+              "name": "BBQ Pizza",
+              "vegan": true,
+              "vegetarian": false
+            },
+            {
+              "name": "Cheese Pizza",
+              "vegan": false,
+              "vegetarian": true
+            },
+            {
+              "name": "Meat Lovers Pizza",
+              "vegan": false,
+              "vegetarian": false
+            },
+            {
+              "name": "Mushroom Alfredo Flatbread Pizza",
+              "vegan": false,
+              "vegetarian": true
+            }
+          ],
+          "BEAR NECESSITIES": [
+            {
+              "name": "Coconut Curry Chicken Soup",
+              "vegan": false,
+              "vegetarian": false
+            },
+            {
+              "name": "Indian Lentil Stew",
+              "vegan": true,
+              "vegetarian": false
+            }
+          ],
+          "PREPARED ORGANIC SALADS": [
+            {
+              "name": "Org Zucchini Combo Salad",
+              "vegan": true,
+              "vegetarian": false
+            }
+          ],
+          "HONEY BEAR BAKERY": [
+            {
+              "name": "HB Chocolate Cake",
+              "vegan": true,
+              "vegetarian": false
+            },
+            {
+              "name": "Key Lime Pie",
+              "vegan": false,
+              "vegetarian": true
+            },
+            {
+              "name": "Otis Oatmeal Cookies",
+              "vegan": false,
+              "vegetarian": true
+            }
+          ],
+          "PROTEINS": [
+            {
+              "name": "Lemon Baked Basa",
+              "vegan": false,
+              "vegetarian": false
+            },
+            {
+              "name": "Roast Beef",
+              "vegan": false,
+              "vegetarian": false
+            },
+            {
+              "name": "Sweet and Sour Tofu (contains alcohol)",
+              "vegan": true,
+              "vegetarian": false
+            }
+          ],
+          "DINER": [
+            {
+              "name": "Burgers, Chicken Breast, Hot Dogs and Vegan Options",
+              "vegan": false,
+              "vegetarian": false
+            },
+            {
+              "name": "Spicy Waffle French Fries",
+              "vegan": true,
+              "vegetarian": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Foothill",
+      "location": {
+        "lat": 37.875443,
+        "long": -122.255818,
+        "address": "2700 Hearst Avenue, Berkeley"
+      },
+      "open": false
+    }
+  ]
+}

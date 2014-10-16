@@ -1,0 +1,41 @@
+<div class="cc-widget cc-widget-caldining" data-ng-controller="CaldiningController">
+  <div class="cc-widget-title">
+    <h2>Cal Dining</h2>
+  </div>
+  <div data-cc-spinner-directive>
+    <div class="cc-widget-padding">
+      <h3 class="cc-left">Restaurants</h3>
+      <div class="cc-right cc-widget-caldining-legend">
+        <button class="cc-button-link" data-ng-click="search.vegan = !search.vegan" data-ng-class="search.vegan ? 'cc-widget-caldining-legend-selected' : ''">
+          <div class="cc-left">Vegan</div>
+          <div class="cc-left cc-widget-caldining-category cc-widget-caldining-category-vegan"></div>
+        </button>
+        <button class="cc-button-link" data-ng-click="search.vegetarian = !search.vegetarian" data-ng-class="search.vegetarian ? 'cc-widget-caldining-legend-selected' : ''">
+          <div class="cc-left">Vegetarian</div>
+          <div class="cc-left cc-widget-caldining-category cc-widget-caldining-category-vegetarian"></div>
+        </button>
+      </div>
+      <ul>
+        <li data-ng-repeat="location in locations | orderBy:['distance','name']" class="cc-widget-caldining-restaurtant">
+          <button class="cc-button-link cc-widget-caldining-restaurtant-title cc-clearfix-container" data-ng-click="api.widget.toggleShow($event, locations, location, 'Cal Dining Location')">
+            <h4 class="cc-left" data-ng-bind="location.name"></h4>
+            <div class="cc-left cc-widget-caldining-restaurtant-title-open-closed" data-ng-class="location.open ? 'cc-widget-caldining-restaurtant-title-open' : 'cc-widget-caldining-restaurtant-title-closed'"></div>
+            <div class="cc-right cc-widget-caldining-restaurtant-title-distance" data-ng-show="location.distance" data-ng-bind-template="{{location.distance}} mi"></div>
+          </button>
+          <div data-ng-show="location.show" class="cc-widget-caldining-restaurtant-content">
+            <ul>
+              <li data-ng-repeat="(name, meals) in location.food.items">{{name}}
+                <ul>
+                  <li data-ng-repeat="meal in meals | filterFoodItems:search" class="cc-clearfix-container">
+                    <div class="cc-left" data-ng-bind="meal.name"></div>
+                    <div class="cc-left cc-widget-caldining-category" data-ng-class="{'cc-widget-caldining-category-vegan':(meal.vegan), 'cc-widget-caldining-category-vegetarian':(meal.vegetarian)}"></div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
