@@ -15,27 +15,21 @@
 
     $scope.supportsLocalStorage = apiService.util.supportsLocalStorage;
 
-    var getUserHelper = function(key, uids, d) {
-      if (!uids || uids.length === 0) {
-        return d.resolve();
-      }
-      adminFactory.userLookupByUid({id: uids.shift()}).success(function(data) {
-        if (data.users.length > 0) {
-          users[key].push(data.users[0]);
-        }
-        getUserHelper(key, uids, d);
-      });
-    };
-
+    // Get ldap user objects for all stored UIDs
     var getUsers = function(key) {
       var d = $q.defer();
       var uids = localStorage[key] && JSON.parse(localStorage[key]) || [];
-      getUserHelper(key, uids, d);
+      var requests = [];
+      for (var i = 0, len = uids.length; i < len; i++) {
+        requests.push(adminFactory.userLookupByUid({id: uids[i]}));
+      }
+      $q.all(requests).then(function(data) {
+        d.resolve(data);
+      });
       return d.promise;
     };
 
     var users = {};
-
     $scope.admin = {
       actAs: {
         id: ''
@@ -48,22 +42,37 @@
     var getRecent = getUsers(RECENT_USER_KEY);
     var getSaved = getUsers(SAVED_USER_KEY);
 
-    $q.all([getRecent, getSaved]).then(function() {
+    $q.all([getRecent, getSaved]).then(function(data) {
+      var userPool = {};
+      userPool[RECENT_USER_KEY] = data[0];
+      userPool[SAVED_USER_KEY] = data[1];
+      for (var key in userPool) {
+        if (userPool.hasOwnProperty(key)) {
+          for (var i = 0, len = userPool[key].length; i < len; i++) {
+            var user = userPool[key][i].data.users[0];
+            if (user) {
+              users[key].push(user);
+            }
+          }
+        }
+      }
       var lastUser = users[RECENT_USER_KEY][0];
+      // Display the last acted as UID in the input box
       $scope.admin.actAs.id = parseInt(lastUser && lastUser.ldap_uid, 10) || '';
     });
 
+    // Strips all user information except for UID
     var removeSensitive = function(data) {
       if (!(data instanceof Array)) {
         return data;
       }
-      var filtered = [];
+      var uids = [];
       for (var i = 0, len = data.length; i < len; i++) {
         if (data[i] && data[i].ldap_uid) {
-          filtered.push(data[i].ldap_uid);
+          uids.push(data[i].ldap_uid);
         }
       }
-      return filtered;
+      return uids;
     };
 
     var storeLocal = function(key, data) {
@@ -174,8 +183,7 @@
     $scope.admin.lookupUser = function() {
       $scope.admin.lookupErrorStatus = '';
       $scope.admin.users = [];
-      var promise = lookupUser($scope.admin.id);
-      promise.then(function(data) {
+      lookupUser($scope.admin.id).then(function(data) {
         $scope.admin.users = data.users;
       }, function(err) {
         $scope.admin.lookupErrorStatus = err;
@@ -199,8 +207,7 @@
         return;
       }
 
-      var promise = lookupUser($scope.admin.actAs.id + '');
-      promise.then(function(data) {
+      lookupUser($scope.admin.actAs.id + '').then(function(data) {
         if (data.users.length > 1) {
           $scope.admin.actAsErrorStatus = 'More than one user was found. Which user did you want to act as?';
           $scope.admin.userPool = data.users;
