@@ -5,36 +5,69 @@
   /**
    * Admin controller
    */
-  angular.module('calcentral.controllers').controller('AdminController', function(adminFactory, apiService, $scope) {
+  angular.module('calcentral.controllers').controller('AdminController', function(adminFactory, apiService, $scope, $q) {
     /**
      * Store recently acted as users
      */
     var RECENT_USER_LIMIT = 6;
-    var RECENT_USER_KEY = 'admin.recentUsers';
-    var SAVED_USER_KEY = 'admin.savedUsers';
+    var RECENT_USER_KEY = 'admin.recentUIDs';
+    var SAVED_USER_KEY = 'admin.savedUIDs';
 
     $scope.supportsLocalStorage = apiService.util.supportsLocalStorage;
 
+    var getUserHelper = function(key, uids, d) {
+      if (!uids || uids.length === 0) {
+        return d.resolve();
+      }
+      adminFactory.userLookupByUid({id: uids.shift()}).success(function(data) {
+        if (data.users.length > 0) {
+          users[key].push(data.users[0]);
+        }
+        getUserHelper(key, uids, d);
+      });
+    };
+
     var getUsers = function(key) {
-      var users = localStorage[key];
-      return users && JSON.parse(users) || [];
+      var d = $q.defer();
+      var uids = localStorage[key] && JSON.parse(localStorage[key]) || [];
+      getUserHelper(key, uids, d);
+      return d.promise;
     };
 
     var users = {};
-    users[RECENT_USER_KEY] = getUsers(RECENT_USER_KEY);
-    users[SAVED_USER_KEY] = getUsers(SAVED_USER_KEY);
-
-    // Get the UID of the last acted on user
-    var lastUser = users[RECENT_USER_KEY][0];
 
     $scope.admin = {
       actAs: {
-        id: parseInt(lastUser && lastUser.enteredID, 10) || ''
+        id: ''
       }
     };
 
+    users[RECENT_USER_KEY] = [];
+    users[SAVED_USER_KEY] = [];
+
+    var getRecent = getUsers(RECENT_USER_KEY);
+    var getSaved = getUsers(SAVED_USER_KEY);
+
+    $q.all([getRecent, getSaved]).then(function() {
+      var lastUser = users[RECENT_USER_KEY][0];
+      $scope.admin.actAs.id = parseInt(lastUser && lastUser.ldap_uid, 10) || '';
+    });
+
+    var removeSensitive = function(data) {
+      if (!(data instanceof Array)) {
+        return data;
+      }
+      var filtered = [];
+      for (var i = 0, len = data.length; i < len; i++) {
+        if (data[i] && data[i].ldap_uid) {
+          filtered.push(data[i].ldap_uid);
+        }
+      }
+      return filtered;
+    };
+
     var storeLocal = function(key, data) {
-      localStorage[key] = JSON.stringify(data);
+      localStorage[key] = JSON.stringify(removeSensitive(data));
     };
 
     var storeUser = function(user, key) {
@@ -118,31 +151,34 @@
     /**
      * Lookup user using either UID or SID
      */
-    var lookupUser = function(id, callback) {
+    var lookupUser = function(id) {
+      var d = $q.defer();
+
       adminFactory.userLookup({id: id}).success(function(data) {
         if (data.users.length > 0) {
-          return callback(null, data);
+          d.resolve(data);
         } else {
-          return callback('That does not appear to be a valid UID or SID.');
+          d.reject('That does not appear to be a valid UID or SID.');
         }
       }).error(function(data) {
         if (data.error) {
-          return callback(data.error);
+          return d.reject(data.error);
         } else {
-          return callback('User search failed.');
+          return d.reject('User search failed.');
         }
       });
+
+      return d.promise;
     };
 
     $scope.admin.lookupUser = function() {
       $scope.admin.lookupErrorStatus = '';
       $scope.admin.users = [];
-      lookupUser($scope.admin.id, function(err, data) {
-        if (err) {
-          $scope.admin.lookupErrorStatus = err;
-        } else {
-          $scope.admin.users = data.users;
-        }
+      var promise = lookupUser($scope.admin.id);
+      promise.then(function(data) {
+        $scope.admin.users = data.users;
+      }, function(err) {
+        $scope.admin.lookupErrorStatus = err;
       });
     };
 
@@ -163,21 +199,18 @@
         return;
       }
 
-      var enteredID = $scope.admin.actAs.id + '';
-      lookupUser(enteredID, function(err, data) {
-        if (err) {
-          $scope.admin.actAsErrorStatus = err;
-        } else {
-          if (data.users.length > 1) {
-            $scope.admin.actAsErrorStatus = 'More than one user was found. Which user did you want to act as?';
-            $scope.admin.userPool = data.users;
-            return;
-          }
-          var user = data.users[0];
-          user.enteredID = enteredID;
-          $scope.admin.storeRecentUser(user);
-          adminFactory.actAs({uid: user.ldap_uid}).success(redirectToSettings);
+      var promise = lookupUser($scope.admin.actAs.id + '');
+      promise.then(function(data) {
+        if (data.users.length > 1) {
+          $scope.admin.actAsErrorStatus = 'More than one user was found. Which user did you want to act as?';
+          $scope.admin.userPool = data.users;
+          return;
         }
+        var user = data.users[0];
+        $scope.admin.storeRecentUser(user);
+        adminFactory.actAs({uid: user.ldap_uid}).success(redirectToSettings);
+      }, function(err) {
+        $scope.admin.actAsErrorStatus = err;
       });
     };
 

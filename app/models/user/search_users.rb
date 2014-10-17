@@ -7,9 +7,19 @@ module User
 
     def search_users
       self.class.fetch_from_cache "#{@id}" do
-        feed1 = CampusOracle::Queries.find_people_by_uid(@id)
-        feed2 = CampusOracle::Queries.find_people_by_student_id(@id)
-        feed1 + feed2
+        search_users_by_uid + search_users_by_sid
+      end
+    end
+
+    def search_users_by_uid
+      self.class.fetch_from_cache "uid-#{@id}" do
+        CampusOracle::Queries.find_people_by_uid(@id)
+      end
+    end
+
+    def search_users_by_sid
+      self.class.fetch_from_cache "sid-#{@id}" do
+        CampusOracle::Queries.find_people_by_student_id(@id)
       end
     end
 
