@@ -17,16 +17,12 @@
 
     // Get ldap user objects for all stored UIDs
     var getUsers = function(key) {
-      var d = $q.defer();
       var uids = localStorage[key] && JSON.parse(localStorage[key]) || [];
       var requests = [];
       for (var i = 0, len = uids.length; i < len; i++) {
         requests.push(adminFactory.userLookupByUid({id: uids[i]}));
       }
-      $q.all(requests).then(function(data) {
-        d.resolve(data);
-      });
-      return d.promise;
+      return requests;
     };
 
     var users = {};
@@ -42,20 +38,33 @@
     var getRecent = getUsers(RECENT_USER_KEY);
     var getSaved = getUsers(SAVED_USER_KEY);
 
-    $q.all([getRecent, getSaved]).then(function(data) {
-      var userPool = {};
-      userPool[RECENT_USER_KEY] = data[0];
-      userPool[SAVED_USER_KEY] = data[1];
-      for (var key in userPool) {
-        if (userPool.hasOwnProperty(key)) {
-          for (var i = 0, len = userPool[key].length; i < len; i++) {
-            var user = userPool[key][i].data.users[0];
-            if (user) {
-              users[key].push(user);
-            }
-          }
+    var usersLookUp = {};
+
+    var createUsersLookup = function(data) {
+      for (var i = 0; i < data.length; i++) {
+        var user = data[i].data.users[0];
+        if (user && user.ldap_uid) {
+          usersLookUp[user.ldap_uid] = user;
         }
       }
+    };
+
+    var loadUsersForKey = function(key) {
+      var uids = localStorage[key] && JSON.parse(localStorage[key]) || [];
+
+      for (var i = 0; i < uids.length; i++) {
+        var user = usersLookUp[uids[i]];
+        if (user) {
+          users[key].push(user);
+        }
+      }
+    };
+
+    $q.all(getRecent.concat(getSaved)).then(function(data) {
+      var userPool = {};
+      createUsersLookup(data);
+      userPool[RECENT_USER_KEY] = loadUsersForKey(RECENT_USER_KEY, data);
+      userPool[SAVED_USER_KEY] = loadUsersForKey(SAVED_USER_KEY, data);
       var lastUser = users[RECENT_USER_KEY][0];
       // Display the last acted as UID in the input box
       $scope.admin.actAs.id = parseInt(lastUser && lastUser.ldap_uid, 10) || '';
