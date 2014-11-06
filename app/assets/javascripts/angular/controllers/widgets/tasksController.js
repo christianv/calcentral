@@ -56,6 +56,7 @@
       $scope.unscheduledTasks = $scope.tasks.filter(filterUnScheduled).sort(sortByUpdatedDateReverse);
       $scope.completedTasks = $scope.tasks.filter(filterCompleted).sort(sortByCompletedDateReverse);
       calculateCounts();
+      $scope.$emit('calcentral.tasks.updated', $scope.tasks);
     };
 
     var getTasks = function(options) {

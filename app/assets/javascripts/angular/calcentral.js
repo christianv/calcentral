@@ -21,6 +21,7 @@
     'calcentral.factories',
     'calcentral.filters',
     'calcentral.services',
+    'highcharts-ng',
     'ngRoute',
     'ngSanitize',
     'ngTouch',
