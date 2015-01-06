@@ -19,6 +19,7 @@
       apiService.user.handleRouteChange();
       apiService.util.changeControllerName(current.controller);
       apiService.util.hideOffCanvasMenu();
+      apiService.util.setTitle(current.$$route.title);
       apiService.auth.isLoggedInRedirect();
       apiService.updatedFeeds.initiate(current.$$route, $rootScope);
     });

@@ -14,23 +14,28 @@
     }).
     when('/academics', {
       templateUrl: 'academics.html',
-      controller: 'AcademicsController'
+      controller: 'AcademicsController',
+      title: 'My Academics'
     }).
     when('/academics/semester/:semesterSlug', {
       templateUrl: 'academics_semester.html',
-      controller: 'AcademicsController'
+      controller: 'AcademicsController',
+      title: 'My Academics'
     }).
     when('/academics/semester/:semesterSlug/class/:classSlug', {
       templateUrl: 'academics_classinfo.html',
-      controller: 'AcademicsController'
+      controller: 'AcademicsController',
+      title: 'My Academics'
     }).
     when('/academics/booklist/:semesterSlug', {
       templateUrl: 'academics_booklist.html',
-      controller: 'AcademicsController'
+      controller: 'AcademicsController',
+      title: 'My Academics - Book List'
     }).
     when('/academics/teaching-semester/:teachingSemesterSlug/class/:classSlug', {
       templateUrl: 'academics_classinfo.html',
-      controller: 'AcademicsController'
+      controller: 'AcademicsController',
+      title: 'My Academics'
     }).
     when('/campus/:category?', {
       templateUrl: 'campus.html',
@@ -39,32 +44,37 @@
     when('/dashboard', {
       templateUrl: 'dashboard.html',
       controller: 'DashboardController',
-      fireUpdatedFeeds: true
+      fireUpdatedFeeds: true,
+      title: 'Dashboard'
     }).
     when('/finances', {
       templateUrl: 'myfinances.html',
-      controller: 'MyFinancesController'
+      controller: 'MyFinancesController',
+      title: 'My Finances'
     }).
     when('/finances/details', {
       templateUrl: 'cars_details.html',
-      controller: 'MyFinancesController'
+      controller: 'MyFinancesController',
+      title: 'My Finances - Details'
     }).
     when('/settings', {
       templateUrl: 'settings.html',
-      controller: 'SettingsController'
+      controller: 'SettingsController',
+      title: 'Settings'
     }).
     when('/tools', {
       templateUrl: 'tools_index.html',
-      controller: 'ToolsController'
+      title: 'Tools'
     }).
     when('/tools/styles', {
       templateUrl: 'tools_styles.html',
-      controller: 'StylesController'
+      controller: 'StylesController',
+      title: 'Tools - Styles'
     }).
     when('/uid_error', {
       templateUrl: 'uid_error.html',
-      controller: 'uidErrorController',
-      isPublic: true
+      isPublic: true,
+      title: 'Unrecognized Log-in'
     }).
     when('/canvas/embedded/rosters', {
       templateUrl: 'canvas_embedded/roster.html'

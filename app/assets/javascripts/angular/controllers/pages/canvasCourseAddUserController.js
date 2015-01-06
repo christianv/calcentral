@@ -5,8 +5,6 @@
    * Canvas Add User to Course LTI app controller
    */
   angular.module('calcentral.controllers').controller('CanvasCourseAddUserController', function(apiService, canvasCourseAddUserFactory, $routeParams, $scope) {
-    apiService.util.setTitle('Find a Person to Add');
-
     var resetSearchState = function() {
       $scope.selectedUser = null;
       $scope.showUsersArea = false;

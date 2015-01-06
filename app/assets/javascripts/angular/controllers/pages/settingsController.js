@@ -5,8 +5,6 @@
    * Settings controller
    */
   angular.module('calcentral.controllers').controller('SettingsController', function(apiService, $scope) {
-    apiService.util.setTitle('Settings');
-
     var services = ['Google'];
 
     var refreshIsCalendarOptedIn = function(profile) {

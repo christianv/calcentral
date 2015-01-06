@@ -81,7 +81,8 @@
      * @param {String} title The title that you want to show for the current web page
      */
     var setTitle = function(title) {
-      $rootScope.title = title + ' | CalCentral';
+      title = title ? title += ' | ' : '';
+      $rootScope.title = title + 'CalCentral';
     };
 
     /**
