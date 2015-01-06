@@ -6,8 +6,6 @@
    * Canvas Manage Official Sections LTI app controller
    */
   angular.module('calcentral.controllers').controller('CanvasCourseManageOfficialSectionsController', function(apiService, canvasCourseProvisionFactory, canvasCourseProvisionService, $scope, $timeout) {
-    apiService.util.setTitle('Manage Official Sections');
-
     var statusProcessor = function(data) {
       angular.extend($scope, data);
       $scope.percentCompleteRounded = Math.round($scope.percent_complete * 100);

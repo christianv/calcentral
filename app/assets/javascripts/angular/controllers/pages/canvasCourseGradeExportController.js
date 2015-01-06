@@ -6,8 +6,6 @@
    * Canvas Add User to Course LTI app controller
    */
   angular.module('calcentral.controllers').controller('CanvasCourseGradeExportController', function(apiService, canvasCourseGradeExportFactory, $http, $scope) {
-    apiService.util.setTitle('E-Grade Export');
-
     $scope.appState = 'initializing';
 
     /**

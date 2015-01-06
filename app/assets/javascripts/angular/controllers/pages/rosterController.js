@@ -5,10 +5,6 @@
    * Canvas roster photos LTI app controller
    */
   angular.module('calcentral.controllers').controller('RosterController', function(apiService, rosterFactory, $routeParams, $scope) {
-    if ($routeParams.canvasCourseId) {
-      apiService.util.setTitle('Roster Photos');
-    }
-
     var getRoster = function() {
       $scope.context = $scope.campusCourseId ? 'campus' : 'canvas';
       $scope.courseId = $scope.campusCourseId || $routeParams.canvasCourseId || 'embedded';

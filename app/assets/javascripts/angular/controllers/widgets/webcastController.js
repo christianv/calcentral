@@ -68,6 +68,8 @@
       $scope.selectOptions = options;
     };
 
+    console.log(apiService.util.isEmbedded());
+
     if ($routeParams.canvasCourseId || $route.current.isEmbedded) {
       courseMode = 'canvas';
       var canvasCourseId;
@@ -77,7 +79,6 @@
       } else {
         canvasCourseId = $routeParams.canvasCourseId;
       }
-      apiService.util.setTitle('Course Webcasts');
       getWebcasts(canvasCourseId);
       setSelectOptions();
     } else {

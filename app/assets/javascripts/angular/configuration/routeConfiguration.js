@@ -10,7 +10,8 @@
     $routeProvider.when('/', {
       templateUrl: 'splash.html',
       controller: 'SplashController',
-      isPublic: true
+      isPublic: true,
+      title: 'Home'
     }).
     when('/academics', {
       templateUrl: 'academics.html',
@@ -39,7 +40,8 @@
     }).
     when('/campus/:category?', {
       templateUrl: 'campus.html',
-      controller: 'CampusController'
+      controller: 'CampusController',
+      title: 'Campus'
     }).
     when('/dashboard', {
       templateUrl: 'dashboard.html',
@@ -76,60 +78,54 @@
       isPublic: true,
       title: 'Unrecognized Log-in'
     }).
-    when('/canvas/embedded/rosters', {
-      templateUrl: 'canvas_embedded/roster.html'
-    }).
-    when('/canvas/embedded/course_provision_account_navigation', {
-      templateUrl: 'canvas_embedded/course_provision.html',
-      controller: 'CanvasCourseProvisionController'
-    }).
-    when('/canvas/embedded/course_provision_user_navigation', {
-      templateUrl: 'canvas_embedded/course_provision.html',
-      controller: 'CanvasCourseProvisionController'
-    }).
-    when('/canvas/embedded/user_provision', {
-      templateUrl: 'canvas_embedded/user_provision.html',
-      controller: 'CanvasUserProvisionController'
-    }).
-    when('/canvas/embedded/course_add_user', {
-      templateUrl: 'canvas_embedded/course_add_user.html',
-      controller: 'CanvasCourseAddUserController'
-    }).
-    when('/canvas/embedded/course_mediacasts', {
-      templateUrl: 'canvas_embedded/course_mediacasts.html',
-      isEmbedded: true
-    }).
     when('/canvas/embedded/course_manage_official_sections', {
       templateUrl: 'canvas_embedded/course_manage_official_sections.html',
-      controller: 'CanvasCourseManageOfficialSectionsController'
+      controller: 'CanvasCourseManageOfficialSectionsController',
+      title: 'Manage Official Sections'
     }).
     when('/canvas/embedded/course_grade_export', {
       templateUrl: 'canvas_embedded/course_grade_export.html',
-      controller: 'CanvasCourseGradeExportController'
+      controller: 'CanvasCourseGradeExportController',
+      title: 'E-Grade Export'
     }).
-    when('/canvas/rosters/:canvasCourseId', {
-      templateUrl: 'canvas_embedded/roster.html'
+    when('/canvas/rosters/:canvasCourseId' ||
+         '/canvas/embedded/rosters', {
+      templateUrl: 'canvas_embedded/roster.html',
+      title: 'Roster Photos'
     }).
-    when('/canvas/course_provision', {
+    when('/canvas/course_provision' ||
+         '/canvas/embedded/course_provision_account_navigation' ||
+         '/canvas/embedded/course_provision_user_navigation', {
       templateUrl: 'canvas_embedded/course_provision.html',
-      controller: 'CanvasCourseProvisionController'
+      controller: 'CanvasCourseProvisionController',
+      title: 'bCourses Course Provision'
     }).
-    when('/canvas/user_provision', {
+    when('/canvas/user_provision' ||
+         '/canvas/embedded/user_provision', {
       templateUrl: 'canvas_embedded/user_provision.html',
-      controller: 'CanvasUserProvisionController'
+      controller: 'CanvasUserProvisionController',
+      title: 'bCourses User Provision'
     }).
-    when('/canvas/course_add_user/:canvasCourseId', {
+    when('/canvas/course_add_user/:canvasCourseId' ||
+         '/canvas/embedded/course_add_user', {
       templateUrl: 'canvas_embedded/course_add_user.html',
-      controller: 'CanvasCourseAddUserController'
+      controller: 'CanvasCourseAddUserController',
+      title: 'bCourses Add User to Course'
+    }).
+    when('/canvas/embedded/course_mediacasts', {
+      templateUrl: 'canvas_embedded/course_mediacasts.html',
+      isEmbedded: true,
+      title: 'Course Webcasts'
     }).
     when('/canvas/course_mediacasts/:canvasCourseId', {
-      templateUrl: 'canvas_embedded/course_mediacasts.html'
+      templateUrl: 'canvas_embedded/course_mediacasts.html',
+      title: 'Course Webcasts'
     }).
     // Redirect to a 404 page
     otherwise({
       templateUrl: '404.html',
-      controller: 'ErrorController',
-      isPublic: true
+      isPublic: true,
+      title: 'Error'
     });
   });
 })(window.angular);

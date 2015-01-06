@@ -41,6 +41,10 @@
      */
     var isInIframe = !!window.parent.frames.length;
 
+    var isEmbedded = function() {
+      console.log($location.path);
+    };
+
     /**
      * Check if browser supports localStorage
      */
@@ -149,6 +153,7 @@
       iframeScrollToTop: iframeScrollToTop,
       iframeUpdateHeight: iframeUpdateHeight,
       iframeParentLocation: iframeParentLocation,
+      isEmbedded: isEmbedded,
       hideOffCanvasMenu: hideOffCanvasMenu,
       naturalSort: naturalSort,
       preventBubble: preventBubble,
