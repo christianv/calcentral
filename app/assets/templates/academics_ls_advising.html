@@ -38,9 +38,10 @@
               </div>
 
               <div class="cc-clearfix cc-widget-lsadvising-current-more" data-ng-if="appointment.show">
-                 <a data-ng-if="appointment.urlToEditAppointment" data-ng-href="{{appointment.urlToEditAppointment}}" class="cc-button">
-                    Update Appointment
-                  </a>
+                <img class="cc-widget-lsadvising-current-more-picture" data-ng-if="appointment.staff.photoUrl" data-ng-src="{{appointment.staff.photoUrl}}" data-ng-attr-alt="Picture of {{appointment.staff.name}}" />
+                <a data-ng-if="appointment.urlToEditAppointment" data-ng-href="{{appointment.urlToEditAppointment}}" class="cc-button">
+                  Update Appointment
+                </a>
               </div>
             </div>
           </li>
