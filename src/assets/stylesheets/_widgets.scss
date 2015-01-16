@@ -1,0 +1,179 @@
+.cc-widget {
+  background: #fff;
+  margin: 15px 15px 0 0;
+
+  // See https://github.com/h5bp/html5-boilerplate/blob/master/css/main.css
+  // For an explanation of this magic
+  &:before, &:after {
+    content: " ";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+.cc-column-last {
+  .cc-widget {
+    margin-right: 0;
+  }
+}
+.cc-widget-list {
+  font-size: 12px;
+  margin: 0;
+  overflow-x: hidden;
+  padding: 0 15px;
+
+  > li {
+    border-bottom: 1px solid $cc-color-widget-background;
+    &:last-child {
+      border-bottom: 0;
+    }
+    > a {
+      display: block;
+    }
+  }
+}
+.cc-widget-list-subtitle {
+  font-size: 11px;
+  line-height: 8px;
+  margin-left: 21px;
+  padding-bottom: 7px;
+}
+.cc-widget-list-column-left {
+  float: left;
+  margin-left: 4px;
+  margin-right: 5px;
+  min-height: 20px;
+  width: 20px;
+}
+.cc-widget-list-selected {
+  background: $cc-color-widget-more-background;
+}
+.cc-widget-list > li > a, .cc-widget-list .cc-widget-list-link, .cc-widget-list-hover, .cc-widget-table-hover {
+  overflow: hidden;
+  padding: 10px 0;
+  position: relative;
+  &:hover, &:focus {
+    background: $cc-color-blue-hover;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none;
+  }
+}
+.cc-widget-list > li > a, .cc-widget-list .cc-widget-list-link {
+  display: block;
+}
+.cc-widget-list-hover:not(tr):not(.cc-widget-list-hover-notriangle) {
+  &:hover, &:focus {
+    &:before {
+      border-bottom: 4px solid transparent;
+      border-right: 4px solid $body-font-color;
+      border-top: 4px solid transparent;
+      content: "";
+      height: 0;
+      position: absolute;
+      right: 7px;
+      top: 14px;
+      width: 0;
+    }
+  }
+}
+.cc-widget-list-hover-opened:not(tr):not(.cc-widget-list-hover-notriangle) {
+  &:hover, &:focus {
+    &:before {
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 4px solid $body-font-color;
+      content: "";
+      height: 0;
+      position: absolute;
+      right: 7px;
+      top: 17px;
+      width: 0;
+    }
+  }
+}
+.cc-widget-padding {
+  padding: 15px;
+}
+.cc-widget-show-more {
+  display: block;
+  margin: 10px auto;
+}
+.cc-widget-sublist {
+  margin-left: 0;
+  margin-top: 5px;
+  > li {
+    padding-top: 5px;
+    a {
+      display: block;
+    }
+    .cc-icon {
+      float: left;
+      margin-right: 5px;
+    }
+  }
+}
+.cc-widget-subtitle {
+  background: $cc-color-lighter-medium-grey;
+
+  h3 {
+    color: $cc-color-white;
+    font-size: 12px;
+    font-weight: normal;
+    margin: 0;
+    padding: 2px 15px;
+  }
+}
+.cc-widget-text {
+  line-height: 1.6;
+  padding: 15px;
+}
+.cc-widget-title {
+  background: $cc-color-widget-background;
+  overflow: hidden;
+
+  h2 {
+    color: $cc-color-medium-grey;
+    font-family: Arial, sans-serif;
+    margin: 2px 0;
+    padding: 5px 15px;
+    @media print {
+      padding: 5px 10px;
+    }
+  }
+  .cc-widget-title-button {
+    margin: 7px 15px 0 0;
+  }
+  .cc-widget-title-link {
+    margin: 12px 15px 0 0;
+  }
+}
+.cc-widget-title-sub {
+  color: $cc-color-lighter-medium-grey;
+  font-size: 13px;
+  // Margin will only kick in when there is a float on the span
+  margin-top: 5px;
+  text-transform: uppercase;
+}
+
+.cc-widget-interesting {
+  .cc-widget-title {
+    background: $cc-color-dark-blue;
+    h2 {
+      color: $cc-color-white;
+    }
+    .cc-widget-title-link {
+      color: $cc-color-popover-icon;
+    }
+  }
+}
+
+@media #{$small-only} {
+  .cc-widget-title-sub {
+    margin-top: 0;
+  }
+  .cc-widget {
+    margin: 0;
+  }
+}

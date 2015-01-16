@@ -1,0 +1,42 @@
+<div data-ng-repeat="book in books.items" class="cc-clearfix-container cc-textbooks-list">
+  <div class="small-4 columns rows">
+    <img class="cc-textbooks-image" data-ng-if="book.image" data-ng-attr-alt="Textbook cover for {{book.title}}" data-ng-src="{{book.image}}" width="128"></img>
+    <div class="cc-textbooks-image-not-available" data-ng-if="!book.image">
+      <div class="cc-textbooks-image-not-available-text">Image not available</div>
+    </div>
+  </div>
+  <div class="small-8 columns rows cc-textbooks-details">
+    <h4 class="cc-textbooks-title" data-ng-bind="book.title"></h4>
+    <ul>
+      <li data-ng-if="book.author"><strong>Author: </strong><span data-ng-bind="book.author"></span></li>
+      <li data-ng-if="book.isbn"><strong>ISBN: </strong><span data-ng-bind="book.isbn"></li>
+      <li data-ng-if="book.edition"><strong>Edition: </strong><span data-ng-bind="book.edition"></li>
+      <li data-ng-if="book.publisher"><strong>Publisher: </strong><span data-ng-bind="book.publisher"></li>
+    </ul>
+    <ul class="cc-textbooks-links cc-print-hide">
+      <li data-ng-if="book.bookstoreInfo">
+        <form class="cc-textbooks-bookstore-form" method="post" action="https://calstudentstore.berkeley.edu/courselisting/index/loadMaterials">
+          <span class="cc-icon cc-icon-inline cc-icon-calstudentstore"></span>
+          <input name="courses" type="hidden" value="{{book.bookstoreInfo}}" />
+          <button type="submit" class="cc-button-link"><strong>Purchase</strong></button>
+        </form>
+      </li>
+      <li data-ng-if="book.amazonLink">
+        <span class="cc-icon cc-icon-inline cc-icon-amazon"></span>
+        <a data-ng-href="{{book.amazonLink}}"><strong>Purchase</strong></a>
+      </li>
+      <li data-ng-if="book.cheggLink">
+        <span class="cc-icon cc-icon-inline cc-icon-chegg"></span>
+        <a data-ng-href="{{book.cheggLink}}"><strong>Rent</strong></a>
+      </li>
+      <li data-ng-if="book.googlebookLink">
+        <span class="cc-icon cc-icon-inline cc-icon-googlebook"></span>
+        <a data-ng-href="{{book.googlebookLink}}"><strong>Purchase</strong></a>
+      </li>
+      <li data-ng-if="book.oskicatLink">
+        <span class="cc-icon cc-icon-inline cc-icon-oskicat"></span>
+        <a data-ng-href="{{book.oskicatLink}}"><strong>Borrow</strong></a>
+      </li>
+    </ul>
+  </div>
+</div>

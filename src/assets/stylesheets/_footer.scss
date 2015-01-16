@@ -1,0 +1,107 @@
+// Footer
+body {
+  footer {
+    background: $cc-color-main-background;
+    clear: both;
+    line-height: 1.5;
+    overflow: hidden;
+    padding: 15px;
+
+    a {
+      font-weight: bold;
+    }
+    svg {
+      float: left;
+      margin-right: 20px;
+    }
+    ul {
+      list-style-type: disc;
+      margin-top: 20px;
+      padding-left: 18px;
+    }
+    .cc-footer-actingas {
+      padding-bottom: 90px;
+    }
+    .cc-footer-berkeley {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    .cc-footer-copyright {
+      float: left;
+      margin-top: 10px;
+    }
+    .cc-footer-confirmation {
+      padding-top: 5px;
+    }
+    .cc-footer-form {
+      background: transparent;
+      border: 0;
+    }
+    .cc-footer-links {
+      float: right;
+      margin-top: 10px;
+      text-align: right;
+      a {
+        border-left: 1px solid $cc-color-black;
+        padding-left: 7px;
+        padding-right: 5px;
+      }
+    }
+    .cc-footer-links-no-border {
+      padding-right: 3px;
+      a {
+        border-left: 0;
+        font-size: 16px;
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+
+    @media #{$small-only} {
+      background: $cc-color-footer-dark-background;
+      color: $cc-color-light-grey;
+      a {
+        color: $cc-color-footer-links;
+      }
+      .cc-footer-copyright {
+        color: $cc-color-light-grey;
+        float: right;
+        margin: 0;
+      }
+      .cc-footer-links {
+        clear: both;
+        float: left;
+        a {
+          border-left: 0;
+          border-right: 1px solid $cc-color-button-selected;
+          font-weight: normal;
+          padding-left: 2px;
+          padding-right: 5px;
+          &:first-child {
+            padding-left: 0;
+          }
+          &:last-child {
+            border-right: 0;
+            padding-right: 0;
+          }
+        }
+      }
+      .cc-footer-links-no-border {
+        a {
+          border-right: 0;
+          font-size: 16px;
+          padding-left: 0;
+        }
+      }
+      .cc-footer-form {
+        h3 {
+          color: $cc-color-white;
+        }
+      }
+      .fa-facebook-square {
+        color: $cc-color-white !important;
+      }
+    }
+  }
+}

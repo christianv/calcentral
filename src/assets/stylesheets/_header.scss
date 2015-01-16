@@ -1,0 +1,348 @@
+body {
+  // Masthead
+  .cc-masthead {
+    background: $cc-color-header;
+    height: 40px;
+    margin: 0 auto;
+    max-width: 1200px;
+    position: relative;
+
+    > div > a img {
+      padding: 10px 10px 0;
+    }
+  }
+}
+
+// Header logo
+.cc-header-logo {
+  float: left;
+  a {
+    display: block;
+    height: 40px;
+    padding-top: 6px;
+    width: 195px;
+    &:focus, &:hover {
+      border-bottom: 2px solid $cc-color-gold;
+      opacity: .9;
+    }
+  }
+  @media print {
+    a[href]:after {
+      content: "";
+    }
+  }
+  svg {
+    margin: 0 10px;
+  }
+}
+
+// Header icons
+.cc-header-icons {
+  background: $cc-color-header;
+  float: right;
+
+  .cc-popover-count {
+    font-size: 13px;
+    padding: 5px 6px;
+  }
+
+  .cc-popover-title {
+    background: $cc-color-popover-title-background;
+    border-bottom: 1px solid $cc-color-popover-border;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 5px 10px;
+
+    h4 {
+      font-size: 14px;
+      margin-bottom: 0;
+      a {
+        display: block;
+      }
+    }
+    .cc-popover-title-link {
+      padding: 2px 5px;
+    }
+  }
+
+  .cc-popover-items, .cc-popover-noitems {
+    background: $cc-color-white;
+    margin-bottom: 10px;
+
+    i {
+      color: $cc-color-popover-icon;
+      margin-right: 3px;
+    }
+  }
+
+  .cc-popover-noitems {
+    border-bottom: 1px solid $cc-color-popover-border;
+    line-height: 1.3;
+    padding: 10px;
+  }
+
+  .cc-popover-item {
+    .icon-10-audio-list {
+      background-image: asset-data-url('drive_icons/icon_10_audio_list.png');
+    }
+    .icon-10-excel-list {
+      background-image: asset-data-url('drive_icons/icon_10_excel_list.png');
+    }
+    .icon-10-generic-list {
+      background-image: asset-data-url('drive_icons/icon_10_generic_list.png');
+    }
+    .icon-10-pdf-list {
+      background-image: asset-data-url('drive_icons/icon_10_pdf_list.png');
+    }
+    .icon-10-powerpoint-list {
+      background-image: asset-data-url('drive_icons/icon_10_powerpoint_list.png');
+    }
+    .icon-10-script-list {
+      background-image: asset-data-url('drive_icons/icon_10_script_list.png');
+    }
+    .icon-10-word-list {
+      background-image: asset-data-url('drive_icons/icon_10_word_list.png');
+    }
+    .icon-11-collection-list {
+      background-image: asset-data-url('drive_icons/icon_11_collection_list.png');
+    }
+    .icon-11-document-list {
+      background-image: asset-data-url('drive_icons/icon_11_document_list.png');
+    }
+    .icon-11-drawing-list {
+      background-image: asset-data-url('drive_icons/icon_11_drawing_list.png');
+    }
+    .icon-11-form-list {
+      background-image: asset-data-url('drive_icons/icon_11_form_list.png');
+    }
+    .icon-11-image-list {
+      background-image: asset-data-url('drive_icons/icon_11_image_list.png');
+    }
+    .icon-11-presentation-list {
+      background-image: asset-data-url('drive_icons/icon_11_presentation_list.png');
+    }
+    .icon-11-script-list {
+      background-image: asset-data-url('drive_icons/icon_11_script_list.png');
+    }
+    .icon-11-shared-collection-list {
+      background-image: asset-data-url('drive_icons/icon_11_shared_collection_list.png');
+    }
+    .icon-11-spreadsheet-list {
+      background-image: asset-data-url('drive_icons/icon_11_spreadsheet_list.png');
+    }
+    .icon-11-video-list {
+      background-image: asset-data-url('drive_icons/icon_11_video_list.png');
+    }
+
+    .bdrive-icon {
+      float: left;
+      margin-right: 3px;
+      margin-top: 5px;
+      padding: 10px;
+    }
+    a, .cc-button-link {
+      border-bottom: 1px solid $cc-color-popover-border;
+      color: $body-font-color;
+      display: block;
+      line-height: 1.3;
+      margin: 0;
+      overflow: hidden;
+      padding: 5px 10px;
+      &:hover, &:focus {
+        background: $cc-color-popover-hover;
+        text-decoration: none;
+        i {
+          color: $cc-color-popover-icon-hover;
+        }
+      }
+    }
+    .cc-popover-link {
+      color: $primary-color !important;
+    }
+  }
+
+  .cc-badgepopover {
+
+    .cc-popover-items {
+      max-height: 300px;
+      -webkit-overflow-scrolling: touch;
+      overflow-y: scroll;
+      width: 100%;
+    }
+
+    .cc-badgepopover-item-calendar-container {
+      .cc-badgepopover-item-calendar {
+        background-color: $cc-color-popover-calendar;
+        border: 1px solid $cc-color-popover-border;
+        margin-right: 5px;
+        text-align: center;
+        width: 45px;
+        .cc-badgepopover-item-calendar-day-of-week {
+          background-color: $cc-color-popover-calendar-week;
+          color: $cc-color-white;
+          font-size: 11px;
+        }
+        .cc-badgepopover-item-calendar-day {
+          font-size: 16px;
+          font-weight: bold;
+        }
+        .cc-badgepopover-item-calendar-month {
+          font-size: 11px;
+        }
+      }
+      .cc-badgepopover-item-calendar-details {
+        margin-top: 1px;
+      }
+    }
+    .cc-badgepopover-item-drive i {
+      margin-right: 8px;
+    }
+
+    .cc-badgepopover-item-details {
+      .cc-badgepopover-item-details-title {
+        font-weight: bold;
+      }
+      .cc-badgepopover-item-details-summary {
+        color: $cc-color-popover-text;
+        font-size: 11px;
+        i {
+          margin-top: 2px;
+        }
+      }
+      .cc-badgepopover-item-details-all-day {
+        font-size: 10px;
+      }
+    }
+  }
+
+  .cc-button-link {
+    width: auto;
+  }
+
+  .cc-header-icon {
+    background: transparent;
+    border: 0;
+    border-radius: 5px;
+    margin: 5px 5px 0 0;
+    padding: 2px 3px;
+    position: relative;
+    i:first-child {
+      font-size: 20px;
+    }
+    &.cc-header-icon-selected, &:hover, &:focus {
+      background: $cc-color-header-icon-background;
+      text-decoration: none;
+      i {
+        text-decoration: none;
+      }
+    }
+  }
+  .cc-header-icon-font {
+    padding: 5px 5px 4px;
+  }
+  .cc-icon-status-person-haslayover {
+    margin-right: 0;
+    padding-right: 18px;
+  }
+  .cc-icon-status-person-layover {
+    background: $cc-color-red-dark;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 9px;
+    height: 16px;
+    left: 21px;
+    line-height: 11px;
+    padding: 3px;
+    position: absolute;
+    top: 2px;
+    width: 16px;
+    z-index: 1;
+  }
+  .cc-popover-gear {
+    .cc-header-icon {
+      &.cc-header-icon-selected {
+        background: $cc-color-popover-title-background;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        color: $cc-color-popover-text;
+      }
+    }
+  }
+  .cc-launcher-dropdown-menu {
+    border-top-right-radius: 0;
+    right: 5px;
+    &:before {
+      border: 0;
+    }
+    h4 {
+      white-space: nowrap;
+    }
+    button {
+      color: $body-font-color;
+      font-weight: normal !important;
+      padding-left: 10px;
+      text-align: left;
+      width: 100%;
+    }
+  }
+  .cc-launcher-status-description {
+    padding: 5px 0;
+  }
+  .cc-launcher-status-loading {
+    padding: 10px 0 5px;
+    text-align: center;
+  }
+  .cc-popover-status {
+    margin-right: 5px;
+    p {
+      margin-top: 12px;
+    }
+    .cc-popover {
+      margin-left: -243px;
+      top: 40px;
+      width: 300px;
+      .fa-stop {
+        font-size: 8px;
+        margin: 3px;
+      }
+      .fa-check-circle, .fa-exclamation-circle {
+        font-size: 14px;
+      }
+    }
+  }
+  .cc-popover-academic-status {
+    padding-bottom: 5px;
+  }
+}
+
+@media #{$small-only} {
+
+  @mixin cc-badges-small-screen($cc-badge-difference) {
+    .cc-badgepopover-bcal {
+      margin-left: -172px + $cc-badge-difference;
+      &::after, &::before {
+        right: 92px + $cc-badge-difference;
+      }
+    }
+    .cc-badgepopover-bmail {
+      margin-left: -113px + $cc-badge-difference;
+      &::after, &::before {
+        right: 152px + $cc-badge-difference;
+      }
+    }
+    .cc-badgepopover-bdrive {
+      margin-left: -231px + $cc-badge-difference;
+      &::after, &::before {
+        right: 43px + $cc-badge-difference;
+      }
+    }
+  }
+  .cc-header-icons .cc-popover-status {
+    @include cc-badges-small-screen(0);
+  }
+  .cc-badge-hasacademic .cc-popover-status {
+    @include cc-badges-small-screen(44);
+  }
+
+}
+

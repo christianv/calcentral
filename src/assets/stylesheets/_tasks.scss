@@ -1,0 +1,155 @@
+// Tasks and Assigments widget
+.cc-widget-tasks {
+  .cc-button-group {
+    margin-top: 10px;
+    .cc-button {
+      text-transform: capitalize;
+    }
+  }
+  .cc-widget-list-hover {
+    padding: 10px;
+  }
+  .cc-alert-text {
+    margin-bottom: 5px;
+  }
+  .cc-widget-tasks-addtask-calendar-icon {
+    margin: 2px;
+  }
+  .cc-widget-text {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .cc-widget-tasks-bcourses-name {
+    color: $cc-color-dark-grey;
+    font-size: 11px;
+  }
+  .cc-widget-tasks-bottom-margin {
+    margin-bottom: 16px;
+  }
+  .cc-widget-tasks-button-top-margin {
+    margin-bottom: 15px;
+    margin-top: 15px;
+  }
+  // d.alistapart.com/holygrail/example_3.html
+  .cc-widget-tasks-col {
+    float: left;
+    position: relative;
+  }
+  .cc-widget-tasks-col-left {
+    margin-left: -100%;
+    width: 30px;
+  }
+  .cc-widget-tasks-col-title {
+    padding: 0 80px 0 30px;
+    width: 100%;
+  }
+  .cc-widget-tasks-col-date {
+    margin-right: -100%;
+    padding-right: 10px;
+    right: 75px;
+    text-align: right;
+    width: 75px;
+  }
+  .cc-widget-tasks-date-input .ng-invalid {
+    margin-bottom: 2px;
+  }
+  .cc-widget-tasks-form {
+    line-height: 1;
+    margin-top: 5px;
+  }
+  .cc-widget-tasks-list {
+    border-left: 4px solid $cc-color-button-grey;
+    clear: both;
+    margin: 0;
+    padding: 0;
+
+    li {
+      border-bottom: 1px solid $cc-color-widget-background;
+      margin-right: 10px;
+      &:first-child {
+        border-top: 1px solid $cc-color-widget-background;
+        margin-top: 12px;
+      }
+      .cc-widget-tasks-form {
+        .row {
+          padding-bottom: 0;
+          padding-top: 0;
+        }
+      }
+    }
+
+    input[type="checkbox"] {
+      margin-left: 2px;
+    }
+
+    .cc-widget-list-selected {
+      .cc-widget-tasks-col-title {
+        margin-bottom: 10px;
+      }
+    }
+    .cc-widget-tasks-form {
+      border: 0;
+      margin: 0;
+    }
+  }
+  .cc-widget-tasks-list-green {
+    border-left-color: $cc-color-green-label;
+  }
+  .cc-widget-tasks-list-red {
+    border-left-color: $cc-color-red;
+  }
+  .cc-widget-tasks-more {
+    padding-left: 30px;
+    div {
+      margin-bottom: 10px;
+    }
+  }
+  .cc-widget-tasks-no-items {
+    p {
+      margin-bottom: 0;
+      padding: 0 20px 5px;
+    }
+  }
+  .cc-widget-tasks-no-items-first {
+    border-top: 1px solid $cc-color-widget-background;
+    margin-bottom: 12px;
+    margin-top: 12px;
+    padding-top: 12px;
+  }
+  .cc-widget-tasks-section-label {
+    clear: both;
+    color: $cc-color-widget-section-label;
+    font-size: 14px;
+    margin: 10px 30px 0 10px;
+    overflow: hidden;
+  }
+  .cc-widget-tasks-section-label-red {
+    color: $cc-color-red;
+  }
+  .cc-widget-tasks-section-label-count {
+    background: $cc-color-button-grey;
+    color: $cc-color-white;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 5px;
+  }
+  .cc-widget-tasks-section-label-count-green {
+    background: $cc-color-green-label;
+  }
+  .cc-widget-tasks-section-label-count-red {
+    background: $cc-color-red;
+  }
+  .cc-widget-tasks-taskslider {
+    margin: 10px 0;
+  }
+  .cc-widget-tasks-timestamp {
+    font-size: 11px;
+    font-weight: bold;
+    margin-top: -2px;
+  }
+  @media #{$small-only} {
+    .cc-widget-tasks-container {
+      padding: 0 10px 10px;
+    }
+  }
+}

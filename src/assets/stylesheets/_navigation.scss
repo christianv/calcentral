@@ -1,0 +1,38 @@
+.cc-navigation-bar {
+  background-color: $cc-color-navigation;
+  clear: both;
+  ul {
+    float: left;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    width: 70%;
+    > li {
+      margin: 0;
+      padding: 0;
+      &.active a, a:hover, a:focus {
+        background: #61889e;
+        border-radius: 5px;
+        color: #fff;
+      }
+      &.active a {
+        font-weight: bold;
+      }
+      > a {
+        color: $cc-color-lighter-grey;
+        display: block;
+        float: left;
+        margin: 5px 0 5px 10px;
+        padding: 2px 5px;
+        position: relative;
+        text-decoration: none;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+      i {
+        padding-right: 5px;
+      }
+    }
+  }
+}
