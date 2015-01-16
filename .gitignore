@@ -65,3 +65,7 @@ app/assets/stylesheets/application.css
 
 # Npm log
 npm-debug.log
+
+# Generated front-end assets
+public/index.html
+public/assets
