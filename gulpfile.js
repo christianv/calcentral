@@ -7,10 +7,11 @@
   var paths = {
     src: {
       css: [
+        'src/assets/stylesheets/lib/foundation.css',
         'node_modules/pikaday/css/pikaday.css'
       ],
       scss: [
-        'src/assets/stylesheets/**/*.scss'
+        'src/assets/stylesheets/calcentral.scss'
       ],
       fonts: 'src/fonts/**/*.*',
       img: 'src/img/**/*.*',
