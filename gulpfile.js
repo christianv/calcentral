@@ -1,4 +1,4 @@
-/* jshint node: true */
+/* jshint node:true */
 (function() {
   'use strict';
 
@@ -7,15 +7,47 @@
   var paths = {
     src: {
       css: [
+        // CSS Framework
         'src/assets/stylesheets/lib/foundation.css',
+        // Font Awesome
+        'node_modules/font-awesome/css/font-awesome.css',
+        // Datepicker
         'node_modules/pikaday/css/pikaday.css'
       ],
       scss: [
+        // Main CSS File
         'src/assets/stylesheets/calcentral.scss'
       ],
-      fonts: 'src/fonts/**/*.*',
-      img: 'src/img/**/*.*',
-      js: ['src/js/lib-base/**/*.js', 'src/js/lib/**/*.js', 'src/js/**/*.js'],
+      fonts: [
+        'node_modules/font-awesome/fonts/**/*.*'
+      ],
+      img: 'src/assets/images/**/*.*',
+      js: [
+        // Date parsing
+        'node_modules/moment/moment.js',
+        // Libraries (google analytics)
+        'src/assets/javascripts/lib/**/*.js',
+        // Human Sorting in JavaScript
+        'node_modules/js-natural-sort/naturalSort.js',
+        // Remote JavaScript error logging
+        // TODO - update to official version when
+        //  https://github.com/getsentry/raven-js/issues/197 is resolved
+        'node_modules/raven-js-temp/dist/raven.js',
+        // Datepicker
+        'node_modules/pikaday/pikaday.js',
+        // Angular
+        'node_modules/angular/angular.js',
+        // Angular Routing
+        'node_modules/angular-route/angular-route.js',
+        // Angular Sanitize (avoid XSS exploits)
+        'node_modules/angular-sanitize/angular-sanitize.js',
+        // Angular Swipe Directive
+        // TODO - remove as soon as
+        //  https://github.com/angular/angular.js/issues/4030 is fixed
+        'src/assets/javascripts/angularlib/swipeDirective.js',
+        // All the other files
+        'src/assets/javascripts/**/*.js'
+      ],
       html: 'src/index.html'
     },
     build: {
@@ -28,13 +60,18 @@
   gulp.task('images', function() {
     var imagemin = require('gulp-imagemin');
     var pngcrush = require('imagemin-pngcrush');
+
     return gulp.src(paths.src.img)
-    .pipe(imagemin({
-      progressive: true,
-      svgoPlugins: [{removeViewBox: false}],
-      use: [pngcrush()]
-    }))
-    .pipe(gulp.dest('public/img'));
+      .pipe(imagemin({
+        progressive: true,
+        svgoPlugins: [{
+          removeViewBox: false
+        }],
+        use: [
+          pngcrush()
+        ]
+      }))
+      .pipe(gulp.dest('public/assets/images'));
   });
 
   /**
@@ -64,47 +101,52 @@
     // Combine the files
     .pipe(concat('application.css'))
     // Output to the correct directory
-    .pipe(gulp.dest('public/assets/css'));
+    .pipe(gulp.dest('public/assets/stylesheets'));
   });
 
   gulp.task('fonts', function() {
     return gulp.src(paths.src.fonts)
-      .pipe(gulp.dest('public/fonts'));
+      .pipe(gulp.dest('public/assets/fonts'));
   });
 
   gulp.task('js', function() {
-    var uglify = require('gulp-uglify');
     var concat = require('gulp-concat');
+    var ngAnnotate = require('gulp-ng-annotate');
+    var uglify = require('gulp-uglify');
 
     return gulp.src(paths.src.js)
-      .pipe(uglify())
-      .pipe(concat('app.js'))
-      .pipe(gulp.dest('public/js'));
+      .pipe(ngAnnotate({
+        single_quotes: true
+      }))
+      // .pipe(uglify())
+      .pipe(concat('application.js'))
+      .pipe(gulp.dest('public/assets/javascripts'));
   });
 
   gulp.task('index', ['images', 'js', 'css', 'fonts'], function() {
     var inject = require('gulp-inject');
-    var target = gulp.src('./src/index.html');
     var sources = gulp.src([paths.build.js, paths.build.css], {
       read: false
     });
 
-    return target
-    .pipe(inject(sources, {
-      addRootSlash: false,
-      ignorePath: 'public'
-    }))
+    return gulp.src(paths.src.html)
+    // .pipe(inject(sources, {
+    //   addRootSlash: false,
+    //   ignorePath: 'public'
+    // }))
     .pipe(gulp.dest('public'));
   });
 
   gulp.task('build-clean', function(cb) {
     var del = require('del');
     del([
-      'public/'
+      'public/assets/',
+      'public/index.html'
     ], cb);
   });
 
-  gulp.task('build', ['images', 'js', 'css', 'fonts', 'index', 'browser-sync']);
+  gulp.task('build', ['build-clean', 'images', 'js', 'css', 'fonts', 'index']);
+  //gulp.task('build', ['images', 'js', 'css', 'fonts', 'index', 'browser-sync']);
 
   // gulp.task('default', ['build'], function() {
   //   gulp.watch(paths.src.html, ['index', browserSync.reload]);

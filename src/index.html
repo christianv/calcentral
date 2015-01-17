@@ -15,19 +15,19 @@
   <meta name="apple-mobile-web-app-title" content="CalCentral">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-  <!-- TODO https://mathiasbynens.be/notes/touch-icons -->
-<!--   <%= favicon_link_tag 'app_icons/icon-small@2x.png', :rel => 'apple-touch-icon', :type => '' %>
-  <%= favicon_link_tag 'app_icons/icon-72.png', :rel => 'apple-touch-icon', :sizes => '72x72', :type => '' %>
-  <%= favicon_link_tag 'app_icons/icon-76.png', :rel => 'apple-touch-icon', :sizes => '76x76', :type => '' %>
-  <%= favicon_link_tag 'app_icons/icon-60@2x.png', :rel => 'apple-touch-icon', :sizes => '120x120', :type => '' %>
-  <%= favicon_link_tag 'app_icons/icon-72@2x.png', :rel => 'apple-touch-icon', :sizes => '144x144', :type => '' %>
-  <%= favicon_link_tag 'app_icons/icon-76@2x.png', :rel => 'apple-touch-icon', :sizes => '152x152', :type => '' %>
-  <%= favicon_link_tag 'app_icons/icon-60@3x.png', :rel => 'apple-touch-icon', :sizes => '180x180', :type => '' %>
-  <%= favicon_link_tag 'app_icons/192.png', :rel => 'icon', :sizes => '192x192', :type => '' %>
+  <!-- https://mathiasbynens.be/notes/touch-icons -->
+  <link href="/assets/app_icons/icon-small@2x.png" rel="apple-touch-icon" />
+  <link href="/assets/app_icons/icon-72.png" rel="apple-touch-icon" sizes="72x72" />
+  <link href="/assets/app_icons/icon-76.png" rel="apple-touch-icon" sizes="76x76" />
+  <link href="/assets/app_icons/icon-60@2x.png" rel="apple-touch-icon" sizes="120x120" />
+  <link href="/assets/app_icons/icon-72@2x.png" rel="apple-touch-icon" sizes="144x144" />
+  <link href="/assets/app_icons/icon-76@2x.png" rel="apple-touch-icon" sizes="152x152" />
+  <link href="/assets/app_icons/icon-60@3x.png" rel="apple-touch-icon" sizes="180x180" />
+  <link href="/assets/app_icons/192.png" rel="icon" sizes="192x192" />
 
-  <%= favicon_link_tag 'favicon.ico' %>
-  <%= favicon_link_tag 'favicon_32x32.png', :rel => 'icon', :type => 'image/png', :sizes => '32x32' %>
-  <%= favicon_link_tag 'favicon_16x16.png', :rel => 'icon', :type => 'image/png', :sizes => '16x16' %> -->
+  <link href="/assets/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+  <link href="/assets/favicon_16x16.png" rel="icon" sizes="16x16" type="image/png" />
+  <link href="/assets/favicon_32x32.png" rel="icon" sizes="32x32" type="image/png" />
 
   <link rel="manifest" href="manifest.json">
 
@@ -39,13 +39,15 @@
   <script>
     // window.calcentralConfig = <%= @calcentral_config %>;
     // window.calcentralConfig.uid = '<%= @uid %>';
+    window.calcentralConfig = {"applicationVersion":"50","clientHostname":"ets-calcentral-dev-02","googleAnalyticsId":"UA-21809393-3","sentryUrl":"https://2a78b85ba5bb4b2087b8070d73f64f6a@app.getsentry.com/7113"};
+    window.calcentralConfig.uid = '1085579';
   </script>
 
-  <!-- Included CSS Files -->
-  <!-- TODO <%= stylesheet_link_tag "application", :media => '' %> -->
+  <!-- TODO Included CSS Files -->
+  <link href="/assets/stylesheets/application.css" media="" rel="stylesheet" />
 
-  <!-- Included JS Files  -->
-  <!-- TODO <%= javascript_include_tag "application" %> -->
+  <!-- TODO Included JS Files  -->
+  <script src="/assets/javascripts/application.js"></script>
 
   <!-- TODO <%= csrf_meta_tags %> -->
 </head>
