@@ -35,12 +35,35 @@
 
   <base href="/" />
 
-  <!-- TODO Pass rails variables to JS -->
   <script>
-    // window.calcentralConfig = <%= @calcentral_config %>;
-    // window.calcentralConfig.uid = '<%= @uid %>';
-    window.calcentralConfig = {"applicationVersion":"50","clientHostname":"ets-calcentral-dev-02","googleAnalyticsId":"UA-21809393-3","sentryUrl":"https://2a78b85ba5bb4b2087b8070d73f64f6a@app.getsentry.com/7113"};
-    window.calcentralConfig.uid = '1085579';
+    /**
+     * Expose the CalCentral config to the JS code
+     * Includes
+     *   csrf tokens
+     *   uid
+     *   google analytics id
+     *   app version
+     *   hostname
+     */
+    (function() {
+      // Create a new Ajax request
+      var request = new XMLHttpRequest();
+
+      // Callback when the Ajax request is loaded
+      var loaded = function() {
+        // Only set the calcentralConfig variable when the request was succesful
+        if (request.readyState === 4 && request.status === 200) {
+          window.calcentralConfig = JSON.parse(this.responseText);
+        }
+      };
+
+      // Add the onload listner
+      request.onload = loaded;
+      // The false option will make sure the request happens synchronously.
+      request.open('GET', '/api/calcentral_config', false);
+      // Send the XHR request
+      request.send();
+    })();
   </script>
 
   <!-- TODO Included CSS Files -->
@@ -48,12 +71,10 @@
 
   <!-- TODO Included JS Files  -->
   <script src="/assets/javascripts/application.js"></script>
-
-  <!-- TODO <%= csrf_meta_tags %> -->
 </head>
 
 <body
-  data-ng-class="{'cc-page-splash':(controllerName=='SplashController'),'cc-offcanvas-show':(offCanvasMenu.show)}"
+  data-ng-class="{'cc-page-splash':(controllerName==='SplashController'),'cc-offcanvas-show':(offCanvasMenu.show)}"
   data-ng-show="api.user.events.isLoaded"
   data-cc-iosfix-directive>
 
