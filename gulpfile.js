@@ -62,7 +62,7 @@
           // Angular Swipe Directive
           // TODO - remove as soon as
           // https://github.com/angular/angular.js/issues/4030 is fixed
-          'src/assets/javascripts/angularlib/swipeDirective.js',
+          'src/assets/javascripts/angularlib/swipeDirective.js'
         ],
         // Our own files, we put this in a separate array to make sure we run
         // ng-annotate on it
@@ -90,7 +90,7 @@
 
   /**
    * Images task
-   *   Optimize images
+   *   Optimize images (production)
    *   Copy files
    */
   gulp.task('images', function() {
@@ -98,15 +98,19 @@
     var pngcrush = require('imagemin-pngcrush');
 
     return gulp.src(paths.src.img)
-      .pipe(imagemin({
-        progressive: true,
-        svgoPlugins: [{
-          removeViewBox: false
-        }],
-        use: [
-          pngcrush()
-        ]
-      }))
+      .pipe(
+        gulpif(isProduction,
+          imagemin({
+            progressive: true,
+            svgoPlugins: [{
+              removeViewBox: false
+            }],
+            use: [
+              pngcrush()
+            ]
+          })
+        )
+      )
       .pipe(gulp.dest(paths.dist.img));
   });
 
@@ -114,7 +118,8 @@
    * CSS Task
    *   Add prefixes
    *   Convert SASS to CSS
-   *   Minify
+   *   Base64 (production)
+   *   Minify (production)
    *   Concatenate
    *   Copy files
    */
@@ -173,7 +178,7 @@
 
     return gulp.src(paths.src.templates)
       .pipe(templateCache({
-        // We create a standalone module called 'templates'
+        // Creates a standalone module called 'templates'
         // This makes it easier to load in CalCentral
         standalone: true
       }))
@@ -182,10 +187,9 @@
 
   /**
    * JavaScript task
-   *   Add annotations
+   *   Add annotations (production)
+   *   Minify (production)
    *   Concatenate
-   *   Minify
-   *   Hash
    * We need to make sure the templates.js file is included into the
    * concatenated files.
    */
@@ -201,8 +205,8 @@
       },
       gulp.src(paths.src.js.external),
       gulp.src(paths.src.js.internal)
-        // Annotate the internal AngularJS files
-        .pipe(ngAnnotate()
+        // Annotate the internal AngularJS files in production
+        .pipe(gulpif(isProduction, ngAnnotate())
       ),
       gulp.src(paths.src.js.templates))
       .pipe(gulpif(isProduction, uglify()))
@@ -219,7 +223,7 @@
   });
 
   /**
-   * Mode the index file back to the main public directory.
+   * Mode the index file back to the main public directory. (production)
    */
   gulp.task('revmove', function() {
     if (!isProduction) {
@@ -231,7 +235,7 @@
   });
 
   /**
-   * Add hashes to the files and update the includes
+   * Add hashes to the files and update the includes (production)
    */
   gulp.task('revall', function() {
     if (!isProduction) {
@@ -282,6 +286,7 @@
       ], callback);
   });
 
+  // http://www.browsersync.io/docs/gulp/#gulp-manual-reload
   // gulp.task('watch', function() {
   //   gulp.watch(paths.src.index, ['index', browserSync.reload]);
   //   gulp.watch(paths.src.css, ['css']);
