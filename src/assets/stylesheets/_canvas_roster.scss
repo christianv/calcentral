@@ -45,7 +45,7 @@
   }
 
   .cc-page-roster-image-unavailable {
-    background-image: url('/assets/images/svg/photo_unavailable_official_72x96.svg');
+    background-image: url('../images/svg/photo_unavailable_official_72x96.svg');
     height: 96px;
     margin: 0 auto;
     max-width: 72px;
@@ -60,7 +60,7 @@
 
   @media print {
     .cc-page-roster-image-unavailable:before {
-      content: url('/assets/images/svg/photo_unavailable_official_72x96.svg');
+      content: url('../images/svg/photo_unavailable_official_72x96.svg');
     }
     .cc-page-roster-list {
       a[href]:after {

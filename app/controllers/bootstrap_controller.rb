@@ -8,7 +8,7 @@ class BootstrapController < ApplicationController
 
   # Always redirect to public/index.html and let the front-end handle the routes
   def index
-    render "public/assets/index.html"
+    render "public/index.html"
   end
 
   # CalCentral cannot fully trust a user session which was initiated via an LTI embedded app,

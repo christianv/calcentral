@@ -9,7 +9,7 @@
   var gulpif = require('gulp-if');
 
   // Check whether we're in production mode
-  var isProduction = process.env.RAILS_ENV === 'production'
+  var isProduction = process.env.RAILS_ENV === 'production';
 
   // List all the used paths
   var paths = {
@@ -127,6 +127,8 @@
     var sass = require('gulp-sass');
     // We need the to combine the CSS and SCSS streams
     var streamqueue = require('streamqueue');
+    // Base 64 encoding of images
+    var base64 = require('gulp-base64');
     // Minify the CSS in production
     var minifyCSS = require('gulp-minify-css');
 
@@ -140,6 +142,8 @@
           cascade: false
         })
       ))
+      // Base 64 encode certain images
+      .pipe(gulpif(isProduction, base64()))
       // Minify CSS
       .pipe(gulpif(isProduction, minifyCSS()))
       // Combine the files
@@ -218,6 +222,10 @@
    * Mode the index file back to the main public directory.
    */
   gulp.task('revmove', function() {
+    if (!isProduction) {
+      return;
+    }
+
     return gulp.src(paths.src.indexRev)
       .pipe(gulp.dest('public'));
   });
@@ -226,6 +234,10 @@
    * Add hashes to the files and update the includes
    */
   gulp.task('revall', function() {
+    if (!isProduction) {
+      return;
+    }
+
     var path = require('path');
     var revall = require('gulp-rev-all');
 
@@ -239,7 +251,7 @@
           'manifest.json',
           '.html'
         ],
-        base: 'src/',
+        base: 'assets/',
         // Increase the hashlength from 5 to 20 to avoid collisions
         hashLength: 20,
         // We can't have dots in our filenames, other wise we get a InvalidCrossOriginRequest response
@@ -270,6 +282,14 @@
       ], callback);
   });
 
+  // gulp.task('watch', function() {
+  //   gulp.watch(paths.src.index, ['index', browserSync.reload]);
+  //   gulp.watch(paths.src.css, ['css']);
+  //   gulp.watch(paths.src.fonts, ['fonts', browserSync.reload]);
+  //   gulp.watch(paths.src.js, ['js', browserSync.reload]);
+  //   gulp.watch(paths.src.img, ['images', browserSync.reload]);
+  // });)
+
   /**
    * Build task
    * We build all the files in this task, we need to make sure the clean-up
@@ -293,13 +313,8 @@
       callback);
   });
 
-  // TODO - 'browser-sync'
-
-  // gulp.task('default', ['build'], function() {
-  //   gulp.watch(paths.src.index, ['index', browserSync.reload]);
-  //   gulp.watch(paths.src.css, ['css']);
-  //   gulp.watch(paths.src.fonts, ['fonts', browserSync.reload]);
-  //   gulp.watch(paths.src.js, ['js', browserSync.reload]);
-  //   gulp.watch(paths.src.img, ['images', browserSync.reload]);
-  // });
+  /**
+   * Default task - executed when you run the 'gulp' command
+   */
+  gulp.task('default', ['build']);
 })();
