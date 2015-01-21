@@ -37,6 +37,8 @@
       img: 'src/assets/images/**/*.*',
       // Main index.html file
       index: 'src/index.html',
+      // Main index.html rev'ed file
+      indexRev: 'public/assets/index.html',
       js: {
         external: [
           // Date parsing
@@ -105,8 +107,7 @@
           pngcrush()
         ]
       }))
-      .pipe(gulp.dest(paths.dist.img)
-    );
+      .pipe(gulp.dest(paths.dist.img));
   });
 
   /**
@@ -144,8 +145,7 @@
       // Combine the files
       .pipe(concat('application.css'))
       // Output to the correct directory
-      .pipe(gulp.dest(paths.dist.css)
-    );
+      .pipe(gulp.dest(paths.dist.css));
   });
 
   /**
@@ -173,8 +173,7 @@
         // This makes it easier to load in CalCentral
         standalone: true
       }))
-      .pipe(gulp.dest(paths.dist.templates)
-    );
+      .pipe(gulp.dest(paths.dist.templates));
   });
 
   /**
@@ -204,8 +203,7 @@
       gulp.src(paths.src.js.templates))
       .pipe(gulpif(isProduction, uglify()))
       .pipe(concat('application.js'))
-      .pipe(gulp.dest(paths.dist.js)
-    );
+      .pipe(gulp.dest(paths.dist.js));
   });
 
   /**
@@ -213,13 +211,24 @@
    */
   gulp.task('index', ['images', 'templates', 'js', 'css', 'fonts'], function() {
     return gulp.src(paths.src.index)
-      .pipe(gulp.dest('public')
-    );
+      .pipe(gulp.dest('public'));
   });
 
+  /**
+   * Mode the index file back to the main public directory.
+   */
+  gulp.task('revmove', function() {
+    return gulp.src(paths.src.indexRev)
+      .pipe(gulp.dest('public'));
+  });
+
+  /**
+   * Add hashes to the files and update the includes
+   */
   gulp.task('revall', function() {
     var path = require('path');
     var revall = require('gulp-rev-all');
+
     return gulp.src([
         'public/assets/**',
         'public/index.html'
@@ -240,13 +249,12 @@
           return path.basename(file.path, extension) + '-'  + hash.substr(0, 20) + extension;
         }
       }))
-      .pipe(gulp.dest('public/assets/'))
+      .pipe(gulp.dest('public/assets/'));
       // Keep the following lines for debugging purposes
       // This puts out a manifest file with the links to all the resources
       // e.g. "fonts/FontAwesome.otf": "/fonts/FontAwesome.4f97a8a6.otf",
-      .pipe(revall.manifest())
-      .pipe(gulp.dest('public/assets/')
-    );
+      // .pipe(revall.manifest())
+      // .pipe(gulp.dest('public/assets/'));
   });
 
   /**
@@ -259,8 +267,7 @@
       [
         'public/assets/',
         'public/index.html'
-      ], callback
-    );
+      ], callback);
   });
 
   /**
@@ -281,9 +288,9 @@
         'fonts',
         'index'
       ],
-      //'revall',
-      callback
-    );
+      'revall',
+      'revmove',
+      callback);
   });
 
   // TODO - 'browser-sync'
