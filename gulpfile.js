@@ -218,6 +218,7 @@
   });
 
   gulp.task('revall', function() {
+    var path = require('path');
     var revall = require('gulp-rev-all');
     return gulp.src([
         'public/assets/**',
@@ -229,11 +230,22 @@
           'manifest.json',
           '.html'
         ],
-        base: 'dd'
+        base: 'src/',
+        // Increase the hashlength from 5 to 20 to avoid collisions
+        hashLength: 20,
+        // We can't have dots in our filenames, other wise we get a InvalidCrossOriginRequest response
+        transformFilename: function(file, hash) {
+          var extension = path.extname(file.path);
+          // filename-6546259a4f83fd81debc.extension
+          return path.basename(file.path, extension) + '-'  + hash.substr(0, 20) + extension;
+        }
       }))
-      .pipe(gulp.dest('cdn'))
+      .pipe(gulp.dest('public/assets/'))
+      // Keep the following lines for debugging purposes
+      // This puts out a manifest file with the links to all the resources
+      // e.g. "fonts/FontAwesome.otf": "/fonts/FontAwesome.4f97a8a6.otf",
       .pipe(revall.manifest())
-      .pipe(gulp.dest('cdn')
+      .pipe(gulp.dest('public/assets/')
     );
   });
 
