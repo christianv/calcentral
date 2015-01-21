@@ -217,15 +217,22 @@
     );
   });
 
-  gulp.task('revall', ['index'], function() {
+  gulp.task('revall', function() {
     var revall = require('gulp-rev-all');
-    return gulp.src('public/assets/**', 'public/index.html')
+    return gulp.src([
+        'public/assets/**',
+        'public/index.html'
+      ])
       .pipe(revall({
         ignore: [
           /^\/favicon.ico$/g,
+          'manifest.json',
           '.html'
-        ]
+        ],
+        base: 'dd'
       }))
+      .pipe(gulp.dest('cdn'))
+      .pipe(revall.manifest())
       .pipe(gulp.dest('cdn')
     );
   });
@@ -262,7 +269,7 @@
         'fonts',
         'index'
       ],
-      'revall',
+      //'revall',
       callback
     );
   });
