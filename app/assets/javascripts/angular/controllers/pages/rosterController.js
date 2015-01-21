@@ -9,6 +9,13 @@
       apiService.util.setTitle('Roster Photos');
     }
 
+    $scope.studentInSectionFilter = function(student) {
+      if (!$scope.searchSection) {
+        return true;
+      }
+      return (student.section_ccns.indexOf($scope.searchSection) !== -1);
+    };
+
     var getRoster = function() {
       $scope.context = $scope.campusCourseId ? 'campus' : 'canvas';
       $scope.courseId = $scope.campusCourseId || $routeParams.canvasCourseId || 'embedded';
