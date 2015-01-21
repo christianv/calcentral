@@ -47,7 +47,7 @@
           'node_modules/js-natural-sort/naturalSort.js',
           // Remote JavaScript error logging
           // TODO - update to official version when
-          //  https://github.com/getsentry/raven-js/issues/197 is resolved
+          // https://github.com/getsentry/raven-js/issues/197 is resolved
           'node_modules/raven-js-temp/dist/raven.js',
           // Datepicker
           'node_modules/pikaday/pikaday.js',
@@ -59,7 +59,7 @@
           'node_modules/angular-sanitize/angular-sanitize.js',
           // Angular Swipe Directive
           // TODO - remove as soon as
-          //  https://github.com/angular/angular.js/issues/4030 is fixed
+          // https://github.com/angular/angular.js/issues/4030 is fixed
           'src/assets/javascripts/angularlib/swipeDirective.js',
         ],
         // Our own files, we put this in a separate array to make sure we run
@@ -77,10 +77,11 @@
       templates: 'src/assets/templates/**/*.html'
     },
     // Build files
-    build: {
-      css: 'public/**/*.css',
-      js: 'public/**/*.js',
-      main: 'public',
+    dist: {
+      css: 'public/assets/stylesheets',
+      fonts: 'public/assets/fonts',
+      img: 'public/assets/images',
+      js: 'public/assets/javascripts',
       templates: 'public/assets/templates'
     }
   };
@@ -104,7 +105,7 @@
           pngcrush()
         ]
       }))
-      .pipe(gulp.dest('public/assets/images')
+      .pipe(gulp.dest(paths.dist.img)
     );
   });
 
@@ -143,7 +144,7 @@
       // Combine the files
       .pipe(concat('application.css'))
       // Output to the correct directory
-      .pipe(gulp.dest('public/assets/stylesheets')
+      .pipe(gulp.dest(paths.dist.css)
     );
   });
 
@@ -153,7 +154,7 @@
    */
   gulp.task('fonts', function() {
     return gulp.src(paths.src.fonts)
-      .pipe(gulp.dest('public/assets/fonts')
+      .pipe(gulp.dest(paths.dist.fonts)
     );
   });
 
@@ -172,7 +173,7 @@
         // This makes it easier to load in CalCentral
         standalone: true
       }))
-      .pipe(gulp.dest(paths.build.templates)
+      .pipe(gulp.dest(paths.dist.templates)
     );
   });
 
@@ -203,26 +204,29 @@
       gulp.src(paths.src.js.templates))
       .pipe(gulpif(isProduction, uglify()))
       .pipe(concat('application.js'))
-      .pipe(gulp.dest('public/assets/javascripts')
+      .pipe(gulp.dest(paths.dist.js)
     );
   });
 
   /**
    * Index task
-   *   Inject the
    */
-  gulp.task('index', ['images', 'js', 'css', 'fonts'], function() {
-    var inject = require('gulp-inject');
-    var sources = gulp.src([paths.build.js, paths.build.css], {
-      read: false
-    });
-
+  gulp.task('index', ['images', 'templates', 'js', 'css', 'fonts'], function() {
     return gulp.src(paths.src.index)
-      // .pipe(inject(sources, {
-      //   addRootSlash: false,
-      //   ignorePath: 'public'
-      // }))
       .pipe(gulp.dest('public')
+    );
+  });
+
+  gulp.task('revall', ['index'], function() {
+    var revall = require('gulp-rev-all');
+    return gulp.src('public/assets/**', 'public/index.html')
+      .pipe(revall({
+        ignore: [
+          /^\/favicon.ico$/g,
+          '.html'
+        ]
+      }))
+      .pipe(gulp.dest('cdn')
     );
   });
 
@@ -256,8 +260,9 @@
         'js',
         'css',
         'fonts',
-        'index',
+        'index'
       ],
+      'revall',
       callback
     );
   });
