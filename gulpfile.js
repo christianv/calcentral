@@ -291,18 +291,18 @@
 
   /**
    * Watch task - watch files for changes (development)
-   * ttp://www.browsersync.io/docs/gulp/#gulp-manual-reload
+   * TODO add http://www.browsersync.io/docs/gulp/#gulp-manual-reload
    */
-  gulp.task('watch', ['browser-sync'], function() {
+  gulp.task('watch', function() {
     if (isProduction) {
       return;
     }
-
+    console.log('Watching files for changes');
     gulp.watch(paths.src.index, ['index']);
     gulp.watch(paths.src.cssWatch, ['css']);
     gulp.watch(paths.src.fonts, ['fonts']);
     gulp.watch(paths.src.js.internal, ['js']);
-    gulp.watch(paths.src.template, ['js']);
+    gulp.watch(paths.src.templates, ['js']);
     gulp.watch(paths.src.img, ['images']);
   });
 
