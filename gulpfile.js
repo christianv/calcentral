@@ -11,9 +11,6 @@
   // Check whether we're in production mode
   var isProduction = process.env.RAILS_ENV === 'production';
 
-  // BrowserSync allows for live-reload & live-edit
-  var browserSync = require('browser-sync');
-
   // List all the used paths
   var paths = {
     // Source files
@@ -160,11 +157,7 @@
       // Combine the files
       .pipe(concat('application.css'))
       // Output to the correct directory
-      .pipe(gulp.dest(paths.dist.css))
-      // Liveedit - we need to add this to the pipe to avoid a complete reload
-      .pipe(gulpif(!isProduction, browserSync.reload({
-        stream: true
-      })));
+      .pipe(gulp.dest(paths.dist.css));
   });
 
   /**
@@ -297,23 +290,6 @@
   });
 
   /**
-   * BrowserSync - livereload & edit (development)
-   */
-  gulp.task('browser-sync', function() {
-    if (isProduction) {
-      return;
-    }
-
-    browserSync({
-      server: {
-        baseDir: './public',
-        proxy: 'localhost:3000',
-        port: 3111
-      }
-    });
-  });
-
-  /**
    * Watch task - watch files for changes (development)
    * ttp://www.browsersync.io/docs/gulp/#gulp-manual-reload
    */
@@ -322,12 +298,12 @@
       return;
     }
 
-    gulp.watch(paths.src.index, ['index', browserSync.reload]);
+    gulp.watch(paths.src.index, ['index']);
     gulp.watch(paths.src.cssWatch, ['css']);
-    gulp.watch(paths.src.fonts, ['fonts', browserSync.reload]);
-    gulp.watch(paths.src.js.internal, ['js', browserSync.reload]);
-    gulp.watch(paths.src.template, ['js', browserSync.reload]);
-    gulp.watch(paths.src.img, ['images', browserSync.reload]);
+    gulp.watch(paths.src.fonts, ['fonts']);
+    gulp.watch(paths.src.js.internal, ['js']);
+    gulp.watch(paths.src.template, ['js']);
+    gulp.watch(paths.src.img, ['images']);
   });
 
   /**
