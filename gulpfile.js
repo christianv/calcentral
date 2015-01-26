@@ -141,12 +141,16 @@
     var minifyCSS = require('gulp-minify-css');
 
     return streamqueue({
+        // Streams that are in object mode can emit generic JavaScript values
+        // other than Buffers and Strings.
         objectMode: true
       },
       gulp.src(paths.src.css),
       gulp.src(paths.src.scss)
         .pipe(sass())
         .pipe(autoprefixer({
+          // We don't need the visual cascade of prefixes
+          // https://github.com/postcss/autoprefixer#visual-cascade
           cascade: false
         })
       ))
@@ -297,7 +301,7 @@
     if (isProduction) {
       return;
     }
-    console.log('Watching files for changes');
+
     gulp.watch(paths.src.index, ['index']);
     gulp.watch(paths.src.cssWatch, ['css']);
     gulp.watch(paths.src.fonts, ['fonts']);
