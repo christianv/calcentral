@@ -111,6 +111,13 @@ Spork.prefork do
     if ENV['RAILS_ENV'] == 'testext'
       puts 'Front-end build task'
       system ('node_version=`node --version` && echo "Node version: $node_version"')
+
+      # Update node - TODO - remove when CLC-4770 is resolved
+      system ('npm cache clean -f')
+      system ('npm install -g n')
+      system ('n stable')
+      system ('node_version=`node --version` && echo "Node version: $node_version"')
+
       system ('npm config set strict-ssl false')
       system ("npm install -verbose && gulp build")
     end
