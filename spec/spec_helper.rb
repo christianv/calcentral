@@ -110,7 +110,9 @@ Spork.prefork do
     # Make sure the front-end assets are available when running the testext tests
     if ENV['RAILS_ENV'] == 'testext'
       puts 'Front-end build task'
-      system ("npm install && gulp build")
+      system ('node_version=`node --version` && echo "Node version: $node_version"')
+      system ('npm config set strict-ssl false')
+      system ("npm install -verbose && gulp build")
     end
 
     # Run the UI tests (and only the UI tests) if UI_TEST is present in environment
