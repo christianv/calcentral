@@ -1,13 +1,25 @@
 {
   "name": "calcentral",
   "description": "UC Berkeley portal",
+  "version": "51.0.0",
+  "keywords": [
+    "CalCentral",
+    "portal",
+    "UC Berkeley"
+  ],
+  "homepage": "https://github.com/ets-berkeley-edu/calcentral",
   "repository": {
     "type": "git",
     "url": "https://github.com/ets-berkeley-edu/calcentral.git"
   },
-  "author": "",
+  "bugs": {
+    "url" : "https://ets.berkeley.edu/forms/request-calcentral-support-feedback"
+  },
+  "author": {
+    "name": "CalCentral Developers",
+    "email": "portal-dev@media.berkeley.edu"
+  },
   "license": "ECL 2.0",
-  "homepage": "https://github.com/ets-berkeley-edu/calcentral",
   "devDependencies": {
     "del": "^1.1.1",
     "gulp": "^3.8.10",
