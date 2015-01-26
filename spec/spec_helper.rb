@@ -107,6 +107,12 @@ Spork.prefork do
       config.filter_run_excluding :testext => true
     end
 
+    # Make sure the front-end assets are available when running the testext tests
+    if ENV['RAILS_ENV'] == 'testext'
+      puts 'Front-end build task'
+      system ("npm install && gulp build")
+    end
+
     # Run the UI tests (and only the UI tests) if UI_TEST is present in environment
     if ENV["UI_TEST"]
       config.filter_run_including :testui => true
