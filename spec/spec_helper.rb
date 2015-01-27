@@ -112,7 +112,7 @@ Spork.prefork do
       puts 'Front-end build task - spec helper'
       system ('node_version=`node --version` && echo "Node version: $node_version"')
       system ('cal_whoami=`whoami` && echo "whoami: $cal_whoami"')
-      system ('cal_which_node=`which node` && "which node: $cal_which_node"')
+      system ('cal_which_node=`which node` && echo "which node: $cal_which_node"')
       system ('echo "path: $PATH"')
       system ('node_version=`node --version` && echo "Node version: $node_version"')
 
