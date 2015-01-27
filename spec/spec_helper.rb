@@ -110,14 +110,7 @@ Spork.prefork do
     # Make sure the front-end assets are available when running the back-end tests
     if !File.exist?('#{::Rails.root}/public/index.html')
       puts 'Front-end build task - spec helper'
-      system ('node_version=`node --version` && echo "Node version: $node_version"')
-      system ('cal_whoami=`whoami` && echo "whoami: $cal_whoami"')
-      system ('cal_which_node=`which node` && echo "which node: $cal_which_node"')
-      system ('echo "path: $PATH"')
-      system ('node_version=`node --version` && echo "Node version: $node_version"')
-
-      system ('npm config set strict-ssl false')
-      system ("npm install -verbose && gulp build")
+      system ('./#{::Rails.root}/script/front-end-test.sh')
     end
 
     # Run the UI tests (and only the UI tests) if UI_TEST is present in environment

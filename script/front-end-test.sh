@@ -1,10 +1,6 @@
 node_version=`node --version`
 echo "Node version: $node_version"
-cal_whoami=`whoami`
-echo "whoami: $cal_whoami"
-cal_which_node=`which node`
-echo "which node: $cal_which_node"
-echo "path: $PATH"
+npm config set strict-ssl false
 npm install
 export CALCENTRAL_WATCH="false"
 gulp build
