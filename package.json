@@ -19,6 +19,9 @@
     "name": "CalCentral Developers",
     "email": "portal-dev@media.berkeley.edu"
   },
+  "scripts": {
+    "build": "gulp build"
+  },
   "license": "ECL 2.0",
   "devDependencies": {
     "del": "^1.1.1",
