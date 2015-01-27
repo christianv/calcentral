@@ -8,11 +8,22 @@
   // Allows for conditional statements in gulp
   var gulpif = require('gulp-if');
 
-  // Check whether we're in production mode
-  var isProduction = process.env.RAILS_ENV === 'production';
+  // Read options from the command line
+  var minimist = require('minimist');
 
-  // Whether we should start the watch tasks at the end of the build
-  var shouldWatch = process.env.CALCENTRAL_WATCH !== 'false';
+  // Base options for the command line
+  var baseOptions = {
+    string: 'env',
+    default: {
+      env: process.env.RAILS_ENV || 'development'
+    }
+  };
+
+  // Slice all the command options and set the defaults
+  var options = minimist(process.argv.slice(2), baseOptions);
+
+  // Are we in production mode?
+  var isProduction = options.env === 'production';
 
   // List all the used paths
   var paths = {
@@ -101,7 +112,7 @@
    */
   gulp.task('images', function() {
     var imagemin = require('gulp-imagemin');
-    var pngcrush = require('imagemin-pngcrush');
+    var pngquant = require('imagemin-pngquant');
 
     return gulp.src(paths.src.img)
       .pipe(
@@ -112,7 +123,7 @@
               removeViewBox: false
             }],
             use: [
-              pngcrush()
+              pngquant()
             ]
           })
         )
@@ -301,7 +312,7 @@
    * TODO add http://www.browsersync.io/docs/gulp/#gulp-manual-reload
    */
   gulp.task('watch', function() {
-    if (isProduction || !shouldWatch) {
+    if (isProduction) {
       return;
     }
 
