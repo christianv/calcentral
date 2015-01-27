@@ -108,19 +108,13 @@ Spork.prefork do
     end
 
     # Make sure the front-end assets are available when running the back-end tests
-    # if !File.exist?('#{::Rails.root}/public/index.html')
-    #   puts 'Front-end build task'
-    #   system ('node_version=`node --version` && echo "Node version: $node_version"')
+    if !File.exist?('#{::Rails.root}/public/index.html')
+      puts 'Front-end build task'
+      system ('node_version=`node --version` && echo "Node version: $node_version"')
 
-    #   # Update node - TODO - remove when CLC-4770 is resolved
-    #   system ('npm cache clean -f')
-    #   system ('npm install -g n')
-    #   system ('n stable')
-    #   system ('node_version=`node --version` && echo "Node version: $node_version"')
-
-    #   system ('npm config set strict-ssl false')
-    #   system ("npm install -verbose && gulp build")
-    # end
+      system ('npm config set strict-ssl false')
+      system ("npm install -verbose && gulp build")
+    end
 
     # Run the UI tests (and only the UI tests) if UI_TEST is present in environment
     if ENV["UI_TEST"]
