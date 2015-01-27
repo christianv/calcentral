@@ -107,8 +107,8 @@ Spork.prefork do
       config.filter_run_excluding :testext => true
     end
 
-    # Make sure the front-end assets are available when running the testext tests
-    if ENV['RAILS_ENV'] == 'testext'
+    # Make sure the front-end assets are available when running the back-end tests
+    if !File.exist?('#{::Rails.root}/public/index.html')
       puts 'Front-end build task'
       system ('node_version=`node --version` && echo "Node version: $node_version"')
 
