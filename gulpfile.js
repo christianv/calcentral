@@ -11,6 +11,9 @@
   // Check whether we're in production mode
   var isProduction = process.env.RAILS_ENV === 'production';
 
+  // Whether we should start the watch tasks at the end of the build
+  var shouldWatch = process.env.CALCENTRAL_WATCH !== 'false';
+
   // List all the used paths
   var paths = {
     // Source files
@@ -298,7 +301,7 @@
    * TODO add http://www.browsersync.io/docs/gulp/#gulp-manual-reload
    */
   gulp.task('watch', function() {
-    if (isProduction) {
+    if (isProduction || !shouldWatch) {
       return;
     }
 

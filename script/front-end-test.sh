@@ -1,6 +1,7 @@
 node_version=`node --version`
 echo "Node version: $node_version"
 npm install
+export CALCENTRAL_WATCH='false'
 gulp build
 gem install scss-lint --version 0.31.0
 scss-lint src/assets/stylesheets/
