@@ -25,6 +25,9 @@
   // Are we in production mode?
   var isProduction = options.env === 'production';
 
+  // Running on bamboo?
+  var isBamboo = process.env.USER === 'bamboo';
+
   // List all the used paths
   var paths = {
     // Source files
@@ -116,7 +119,11 @@
 
     return gulp.src(paths.src.img)
       .pipe(
-        gulpif(isProduction,
+        // Only run on production and not on bamboo
+        // Optipng doesn't seem to compile on CentOS 5
+        // https://github.com/imagemin/optipng-bin/issues/48
+        // https://github.com/imagemin/optipng-bin/issues/40
+        gulpif(isProduction && !isBamboo,
           imagemin({
             progressive: true,
             svgoPlugins: [{
