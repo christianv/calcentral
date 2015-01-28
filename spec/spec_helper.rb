@@ -110,7 +110,6 @@ Spork.prefork do
     # Make sure the front-end assets are available when running the back-end tests
     if !File.exist?("#{::Rails.root}/public/index.html")
       puts 'Front-end build task - spec helper'
-      puts "#{::Rails.root}/script/front-end-test.sh"
       system ("sh #{::Rails.root}/script/front-end-test.sh")
     end
 
