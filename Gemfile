@@ -99,6 +99,15 @@ gem 'cancan', '~> 1.6.10'
 
 gem 'icalendar', '~> 2.2.2'
 
+##################################
+# Front-end Gems for Rails Admin #
+##################################
+
+
+# Closure Compiler Gem for JS compression
+# https://github.com/documentcloud/closure-compiler
+gem 'closure-compiler', '~> 1.1.11'
+
 # Oracle adapter
 # Purposely excluding this for test environments since folks have to install ojdbc6
 group :development, :testext, :production do
