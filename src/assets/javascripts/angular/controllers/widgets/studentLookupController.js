@@ -3,9 +3,18 @@
   'use strict';
 
   /**
-   * Admin controller
+   * Student Lookup controller
    */
-  angular.module('calcentral.controllers').controller('AdminController', function(adminFactory, apiService, $scope, $q) {
+  angular.module('calcentral.controllers').controller('StudentLookupController', function(adminFactory, apiService, $scope, $q) {
+
+    $scope.selectOptions = ['Search', 'Saved', 'Recent'];
+
+    $scope.currentSelection = $scope.selectOptions[0];
+
+    $scope.switchSelectedOption = function(selectedOption) {
+      $scope.currentSelection = selectedOption;
+    };
+
     /**
      * Store recently acted as users
      */

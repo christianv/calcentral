@@ -1,0 +1,25 @@
+.cc-widget-student-lookup {
+  form {
+    background: white;
+    border: none;
+
+    label {
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      text-align: left;
+    }
+
+    input {
+      height: 25px;
+      margin-right: 2px;
+      width: 70%;
+    }
+
+    button {
+      width: 28%;
+    }
+
+  }
+}
+
