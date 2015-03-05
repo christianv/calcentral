@@ -9,6 +9,7 @@
     var stopActAsUrl = '/stop_act_as';
     var searchUsersUrl = '/api/search_users/';
     var searchUsersByUidUrl = '/api/search_users/uid/';
+    var storedUsersUrl = '/stored_users';
 
     var actAs = function(user) {
       return $http.post(actAsUrl, user);
@@ -26,8 +27,13 @@
       return apiService.http.request(options, searchUsersByUidUrl + options.id);
     };
 
+    var getStoredUsers = function() {
+      return $http.get(storedUsersUrl);
+    };
+
     return {
       actAs: actAs,
+      getStoredUsers: getStoredUsers,
       stopActAs: stopActAs,
       userLookup: userLookup,
       userLookupByUid: userLookupByUid
