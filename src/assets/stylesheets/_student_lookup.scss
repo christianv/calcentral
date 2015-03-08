@@ -16,6 +16,10 @@
       width: 70%;
     }
   }
+
+  tbody tr:hover {
+    background: #EBEBEB;
+  }
 }
 
 .cc-widget-student-lookup-search-button {
@@ -24,4 +28,9 @@
 
 .cc-widget-student-lookup-tab {
   padding: 10px 5px;
+}
+
+.cc-widget-student-lookup-sid {
+  padding-right: 15px !important;
+  text-align: right !important;
 }
