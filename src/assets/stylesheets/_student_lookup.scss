@@ -20,6 +20,10 @@
   tbody tr:hover {
     background: #EBEBEB;
   }
+
+  tbody tr:hover i {
+    color: #474747;
+  }
 }
 
 .cc-widget-student-lookup-search-button {
@@ -33,4 +37,18 @@
 .cc-widget-student-lookup-sid {
   padding-right: 15px !important;
   text-align: right !important;
+}
+
+.cc-widget-student-lookup-star-button {
+  background: transparent;
+  border: 0;
+  color: $body-font-color !important;
+  padding: 0;
+  &:focus, &:hover {
+    background: transparent;
+  }
+}
+
+.cc-widget-student-lookup-star-grey {
+  color: #9A9A9A;
 }

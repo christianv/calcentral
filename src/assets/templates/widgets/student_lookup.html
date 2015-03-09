@@ -45,13 +45,20 @@
                 <tr data-ng-repeat="user in admin.searchedUsers">
                   <td class="cc-widget-student-lookup-sid" data-ng-bind="user.student_id || 'none'"></td>
                   <td><button type="button" class="cc-button-link" data-ng-bind="admin.titleCaseName(user)" data-ng-click="admin.actAsUser(user)"></button></td>
-                  <td><button type="button" class="cc-button-link" data-ng-click="admin.storeSavedUser(user)">Star</button></td>
+                  </button></td>
+                  <td>
+                    <span>
+                      <button type="button" class="cc-widget-student-lookup-star-button" data-ng-click="admin.toggleSaveState(user)">
+                        <i data-ng-if="user.saved" class="fa fa-star fa-stack-1x cc-icon-gold"></i>
+                        <i class="fa fa-star-o" data-ng-class="{'cc-widget-student-lookup-star-grey': (!user.saved)}"></i>
+                      </button>
+                    </span>
+                  </td>
                 </tr>
               </tbody>
             </table>
         </div>
       </form>
-
     </div>
 
     <!-- Saved Users -->
@@ -61,15 +68,22 @@
         <table>
           <thead>
             <tr>
-              <th width="30%" scope="col" class="cc-widget-student-lookup-sid">SID</th>
-              <th width="60%" scope="col">Name</th>
+              <th width="32%" scope="col" class="cc-widget-student-lookup-sid">SID</th>
+              <th width="58%" scope="col">Name</th>
             </tr>
           </thead>
           <tbody>
           <tr data-ng-repeat="user in admin.storedUsers.saved">
             <td class="cc-widget-student-lookup-sid" data-ng-bind="user.student_id || 'none'"></td>
             <td><button type="button" class="cc-button-link" data-ng-bind="admin.titleCaseName(user)" data-ng-click="admin.actAsUser(user)"></button></td>
-            <td><button type="button" class="cc-button-link" data-ng-click="">Star</button></td>
+            <td>
+              <span>
+                <button type="button" class="cc-widget-student-lookup-star-button" data-ng-click="admin.deleteSavedUser(user)">
+                  <i class="fa fa-star fa-stack-1x cc-icon-gold"></i>
+                  <i class="fa fa-star-o"></i>
+                </button>
+              </span>
+            </td>
           </tr>
           </tbody>
         </table>
@@ -83,15 +97,22 @@
         <table>
           <thead>
             <tr>
-              <th class="cc-widget-student-lookup-sid" width="30%" scope="col">SID</th>
-              <th width="60%" scope="col">Name</th>
+              <th width="32%" scope="col" class="cc-widget-student-lookup-sid">SID</th>
+              <th width="58%" scope="col">Name</th>
             </tr>
           </thead>
           <tbody>
           <tr data-ng-repeat="user in admin.storedUsers.recent">
             <td class="cc-widget-student-lookup-sid" data-ng-bind="user.student_id || 'none'"></td>
             <td><button type="button" class="cc-button-link" data-ng-bind="admin.titleCaseName(user)" data-ng-click="admin.actAsUser(user)"></button></td>
-            <td><button type="button" class="cc-button-link" data-ng-click="">Star</button></td>
+            <td>
+              <span>
+                <button type="button" class="cc-widget-student-lookup-star-button" data-ng-click="admin.deleteRecentUser(user)">
+                  <i class="fa fa-star fa-stack-1x cc-icon-gold"></i>
+                  <i class="fa fa-star-o"></i>
+                </button>
+              </span>
+            </td>
           </tr>
           </tbody>
         </table>

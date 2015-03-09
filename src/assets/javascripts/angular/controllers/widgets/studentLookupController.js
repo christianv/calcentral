@@ -29,9 +29,9 @@
 
     $scope.admin = {
       searchedUsers: [],
-      storedUsers: [],
-      savedUsersError: 'No saved items yet.', // Change to 'No saved users yet.' ?
-      recentUsersError: 'No recent items yet.' // Change to 'No recently viewed users yet.' ?
+      storedUsers: {},
+      savedUsersError: 'No saved users yet.',
+      recentUsersError: 'No recently viewed users yet.'
     };
 
     /**
@@ -41,6 +41,8 @@
       adminFactory.getStoredUsers(options)
         .success(function(data) {
           $scope.admin.storedUsers = data.users;
+          // Make sure the searched users have the latest save state
+          checkIfSaved($scope.admin.searchedUsers);
         })
         .error(function() {
           var err = 'There was a problem fetching your items.';
@@ -70,11 +72,27 @@
      * Delete recent/saved user
      */
     $scope.admin.deleteRecentUser = function(user) {
-      return adminFactory.deleteUser({ uid: user.ldap_uid }, 'recent');
+      return adminFactory.deleteUser({ uid: user.ldap_uid }, 'recent').success(function() {
+        getStoredUsers({ refreshCache: true });
+      });
     };
 
     $scope.admin.deleteSavedUser = function(user) {
-      adminFactory.deleteUser({ uid: user.ldap_uid }, 'saved');
+      adminFactory.deleteUser({ uid: user.ldap_uid }, 'saved').success(function() {
+        getStoredUsers({ refreshCache: true });
+      });
+    };
+
+    /**
+     * Used by 'Search' tab to toggle save state of user
+     */
+    $scope.admin.toggleSaveState = function(user) {
+      if (user.saved) {
+        $scope.admin.deleteSavedUser(user);
+      } else {
+        $scope.admin.storeSavedUser(user);
+      }
+      user.saved = !user.saved;
     };
 
     /**
@@ -113,9 +131,26 @@
         if (response.error) {
           $scope.admin.lookupErrorStatus = response.error;
         } else {
-          $scope.admin.searchedUsers = response.users;
+          $scope.admin.searchedUsers = checkIfSaved(response.users);
         }
       });
+    };
+
+    /**
+     * Mark users as 'saved' if they are stored
+     */
+    var checkIfSaved = function(users) {
+      var savedUsers = $scope.admin.storedUsers.saved;
+      for (var i = 0; i < users.length; i++) {
+        users[i].saved = false;
+        for (var j = 0; j < savedUsers.length; j++) {
+          if (users[i].ldap_uid === savedUsers[j].ldap_uid) {
+            users[i].saved = true;
+            break;
+          }
+        }
+      }
+      return users;
     };
 
     var titleCase = function(str) {
