@@ -8,30 +8,47 @@
   angular.module('calcentral.controllers').controller('StudentLookupController', function(adminFactory, apiService, $scope) {
 
     $scope.selectOptions = ['Search', 'Saved', 'Recent'];
-    var CURRENT_SELECTION_KEY = 'admin.currentSelection';
+    $scope.showUsersLimit = 2;
+    $scope.showSavedLimit = $scope.showUsersLimit;
+    $scope.showRecentLimit = $scope.showUsersLimit;
+    var CURRENT_SELECTION_KEY = 'cc-admin-currentSelection';
+    console.log($scope.showSavedLimit);
+    var LAST_QUERY_KEY = 'cc-admin-lastQuery';
 
+    /**
+     * Retrieve the last selected tab from localStorage, or default to 'Search'
+     */
     var getCurrentSelection = function() {
       if (apiService.util.supportsLocalStorage) {
-        var selection = localStorage.getItem(CURRENT_SELECTION_KEY);
-        return selection ? selection : $scope.selectOptions[0];
+        return localStorage.getItem(CURRENT_SELECTION_KEY) || $scope.selectOptions[0];
       }
       return $scope.selectOptions[0];
     };
 
-    $scope.currentSelection = getCurrentSelection();
-
-    $scope.switchSelectedOption = function(selectedOption) {
-      $scope.currentSelection = selectedOption;
+    /**
+     * Retrieve the last searched query from localStorage, or default to ''
+     */
+    var getLastQuery = function() {
       if (apiService.util.supportsLocalStorage) {
-        localStorage.setItem(CURRENT_SELECTION_KEY, selectedOption);
+        return localStorage.getItem(LAST_QUERY_KEY) || '';
       }
+      return '';
     };
 
     $scope.admin = {
+      currentSelection: getCurrentSelection(),
+      query: parseInt(getLastQuery()),
       searchedUsers: [],
       storedUsers: {},
       savedUsersError: 'No saved users yet.',
-      recentUsersError: 'No recently viewed users yet.'
+      recentUsersError: 'No recently viewed users yet.',
+    };
+
+    $scope.admin.switchSelectedOption = function(selectedOption) {
+      $scope.admin.currentSelection = selectedOption;
+      if (apiService.util.supportsLocalStorage) {
+        localStorage.setItem(CURRENT_SELECTION_KEY, selectedOption);
+      }
     };
 
     /**
@@ -52,35 +69,43 @@
     };
     getStoredUsers();
 
+    var getStoredUsersUncached = function() {
+      getStoredUsers({
+        refreshCache: true
+      });
+    };
+
     /**
      * Store recent/saved user
      */
     $scope.admin.storeRecentUser = function(user) {
       // Make sure the most recently viewed user is at the top of the list
       $scope.admin.deleteRecentUser(user).success(function() {
-        adminFactory.storeUser({ uid: user.ldap_uid }, 'recent');
+        adminFactory.storeUser({
+          uid: user.ldap_uid
+        }, 'recent');
       });
     };
 
     $scope.admin.storeSavedUser = function(user) {
-      adminFactory.storeUser({ uid: user.ldap_uid }, 'saved').success(function() {
-        getStoredUsers({ refreshCache: true });
-      });
+      adminFactory.storeUser({
+        uid: user.ldap_uid
+      }, 'saved').success(getStoredUsersUncached);
     };
 
     /**
      * Delete recent/saved user
      */
     $scope.admin.deleteRecentUser = function(user) {
-      return adminFactory.deleteUser({ uid: user.ldap_uid }, 'recent').success(function() {
-        getStoredUsers({ refreshCache: true });
-      });
+      return adminFactory.deleteUser({
+        uid: user.ldap_uid
+      }, 'recent').success(getStoredUsersUncached);
     };
 
     $scope.admin.deleteSavedUser = function(user) {
-      adminFactory.deleteUser({ uid: user.ldap_uid }, 'saved').success(function() {
-        getStoredUsers({ refreshCache: true });
-      });
+      adminFactory.deleteUser({
+        uid: user.ldap_uid
+      }, 'saved').success(getStoredUsersUncached);
     };
 
     /**
@@ -99,7 +124,9 @@
      * Lookup user using either UID or SID
      */
     var lookupUser = function(id) {
-      return adminFactory.userLookup({ id: id }).then(handleLookupUserSuccess, handleLookupUserError);
+      return adminFactory.userLookup({
+        id: id
+      }).then(handleLookupUserSuccess, handleLookupUserError);
     };
 
     var handleLookupUserSuccess = function(data) {
@@ -128,6 +155,9 @@
       $scope.admin.searchedUsers = [];
 
       lookupUser($scope.admin.query + '').then(function(response) {
+        if (apiService.util.supportsLocalStorage) {
+          localStorage.setItem(LAST_QUERY_KEY, $scope.admin.query);
+        }
         if (response.error) {
           $scope.admin.lookupErrorStatus = response.error;
         } else {
@@ -157,8 +187,11 @@
       return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase();
     };
 
+    /**
+     * Convert user.last_name to title case since LDAP returns last names fully capitalized
+     */
     $scope.admin.titleCaseName = function(user) {
-      return titleCase(user.first_name) + ' ' + titleCase(user.last_name);
+      return user.first_name + ' ' + titleCase(user.last_name);
     };
 
     var redirectToSettings = function() {
@@ -170,7 +203,9 @@
      */
     $scope.admin.actAsUser = function(user) {
       $scope.admin.storeRecentUser(user);
-      return adminFactory.actAs({ uid: user.ldap_uid }).success(redirectToSettings);
+      return adminFactory.actAs({
+        uid: user.ldap_uid
+      }).success(redirectToSettings);
     };
 
     /**

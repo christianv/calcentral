@@ -8,9 +8,9 @@
       <ul class="cc-button-group cc-even-3" role="tablist">
         <li data-ng-repeat="selectOption in selectOptions">
           <button class="cc-button"
-            data-ng-click="switchSelectedOption(selectOption)"
-            data-ng-class="{'cc-button-selected':(currentSelection === selectOption)}"
-            aria-selected="{{currentSelection === selectOption}}"
+            data-ng-click="admin.switchSelectedOption(selectOption)"
+            data-ng-class="{'cc-button-selected':(admin.currentSelection === selectOption)}"
+            aria-selected="{{admin.currentSelection === selectOption}}"
             role="tab"
             data-ng-bind="selectOption">
           </button>
@@ -19,12 +19,12 @@
     </div>
 
     <!-- Search Users -->
-    <div data-ng-if="currentSelection === 'Search'">
+    <div data-ng-if="admin.currentSelection === 'Search'">
       <form data-ng-submit="admin.lookupUser()">
         <div class="row">
           <label for="cc-widget-student-lookup-search">Enter UID or SID</label>
           <div>
-            <input id="cc-widget-student-lookup-search"class="cc-left" data-ng-pattern="api.util.uidPattern" data-ng-model="admin.query" type="number" data-cc-select-on-click-directive />
+            <input id="cc-widget-student-lookup-search" class="cc-left" data-ng-pattern="api.util.uidPattern" data-ng-model="admin.query" type="number" data-cc-select-on-click-directive />
             <button
               class="cc-button cc-button-blue cc-widget-student-lookup-search-button"
               data-ng-disabled="!admin.query"
@@ -37,15 +37,14 @@
             <table>
               <thead>
                 <tr>
-                  <th class="cc-widget-student-lookup-sid" width="30%" scope="col">SID</th>
-                  <th width="60%" scope="col">Name</th>
+                  <th width="32%" scope="col" class="cc-widget-student-lookup-sid">SID</th>
+                  <th width="58%" scope="col">Name</th>
                 </tr>
               </thead>
               <tbody>
                 <tr data-ng-repeat="user in admin.searchedUsers">
                   <td class="cc-widget-student-lookup-sid" data-ng-bind="user.student_id || 'none'"></td>
-                  <td><button type="button" class="cc-button-link" data-ng-bind="admin.titleCaseName(user)" data-ng-click="admin.actAsUser(user)"></button></td>
-                  </button></td>
+                  <td><button type="button" class="cc-button-link cc-widget-student-lookup-actas-button" data-ng-bind="admin.titleCaseName(user)" data-ng-click="admin.actAsUser(user)"></button></td>
                   <td>
                     <span>
                       <button type="button" class="cc-widget-student-lookup-star-button" data-ng-click="admin.toggleSaveState(user)">
@@ -62,7 +61,7 @@
     </div>
 
     <!-- Saved Users -->
-    <div data-ng-if="currentSelection === 'Saved'" class="cc-widget-student-lookup-tab">
+    <div data-ng-if="admin.currentSelection === 'Saved'" class="cc-widget-student-lookup-tab">
       <div data-ng-if="!admin.storedUsers.saved.length" data-ng-bind="admin.savedUsersError"></div>
       <div data-ng-if="admin.storedUsers.saved.length" class="row cc-table">
         <table>
@@ -73,9 +72,9 @@
             </tr>
           </thead>
           <tbody>
-          <tr data-ng-repeat="user in admin.storedUsers.saved">
+          <tr data-ng-repeat="user in admin.storedUsers.saved | limitTo: showSavedLimit">
             <td class="cc-widget-student-lookup-sid" data-ng-bind="user.student_id || 'none'"></td>
-            <td><button type="button" class="cc-button-link" data-ng-bind="admin.titleCaseName(user)" data-ng-click="admin.actAsUser(user)"></button></td>
+            <td><button type="button" class="cc-button-link cc-widget-student-lookup-actas-button" data-ng-bind="admin.titleCaseName(user)" data-ng-click="admin.actAsUser(user)"></button></td>
             <td>
               <span>
                 <button type="button" class="cc-widget-student-lookup-star-button" data-ng-click="admin.deleteSavedUser(user)">
@@ -87,11 +86,12 @@
           </tr>
           </tbody>
         </table>
+        <div data-ng-if="admin.storedUsers.saved.length > showUsersLimit" data-cc-show-infinite-directive data-cc-show-infinite-limit="showSavedLimit"></div>
       </div>
     </div>
 
     <!-- Recent Users -->
-    <div data-ng-if="currentSelection === 'Recent'" class="cc-widget-student-lookup-tab">
+    <div data-ng-if="admin.currentSelection === 'Recent'" class="cc-widget-student-lookup-tab">
       <div data-ng-if="!admin.storedUsers.recent.length" data-ng-bind="admin.recentUsersError"></div>
       <div data-ng-if="admin.storedUsers.recent.length" class="row cc-table">
         <table>
@@ -102,9 +102,9 @@
             </tr>
           </thead>
           <tbody>
-          <tr data-ng-repeat="user in admin.storedUsers.recent">
+          <tr data-ng-repeat="user in admin.storedUsers.recent | limitTo: showRecentLimit">
             <td class="cc-widget-student-lookup-sid" data-ng-bind="user.student_id || 'none'"></td>
-            <td><button type="button" class="cc-button-link" data-ng-bind="admin.titleCaseName(user)" data-ng-click="admin.actAsUser(user)"></button></td>
+            <td><button type="button" class="cc-button-link cc-widget-student-lookup-actas-button" data-ng-bind="admin.titleCaseName(user)" data-ng-click="admin.actAsUser(user)"></button></td>
             <td>
               <span>
                 <button type="button" class="cc-widget-student-lookup-star-button" data-ng-click="admin.deleteRecentUser(user)">
@@ -116,6 +116,7 @@
           </tr>
           </tbody>
         </table>
+        <div data-ng-if="admin.storedUsers.recent.length > showUsersLimit" data-cc-show-infinite-directive data-cc-show-infinite-limit="showRecentLimit"></div>
       </div>
     </div>
 
