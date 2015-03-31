@@ -16,6 +16,7 @@
   <div data-ng-if="api.user.profile.roles.student">
     <input type="checkbox"
         id="cc-settings-service-calendar-optin"
+        class="cc-settings-service-calendar-optin"
         data-ng-change="settings.isCalendarOptedIn ? api.user.calendarOptIn() : api.user.calendarOptOut()"
         data-ng-disabled="!api.user.profile.hasGoogleAccessToken"
         data-ng-model="settings.isCalendarOptedIn"
