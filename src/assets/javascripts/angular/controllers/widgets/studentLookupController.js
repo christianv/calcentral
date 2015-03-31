@@ -12,8 +12,13 @@
     $scope.showSavedLimit = $scope.showUsersLimit;
     $scope.showRecentLimit = $scope.showUsersLimit;
     var CURRENT_SELECTION_KEY = 'cc-admin-currentSelection';
-    console.log($scope.showSavedLimit);
     var LAST_QUERY_KEY = 'cc-admin-lastQuery';
+
+    console.log($scope.showSavedLimit);
+    $scope.$watch('showSavedLimit', function(a, b) {
+      console.log('a', a);
+      console.log('b', b);
+    })
 
     /**
      * Retrieve the last selected tab from localStorage, or default to 'Search'

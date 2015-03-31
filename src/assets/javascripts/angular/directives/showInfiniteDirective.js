@@ -15,6 +15,7 @@
     var setLimit = function(scope, limit) {
       if (limit && !scope.limit) {
         scope.limit = scope[limit];
+        console.log('scope.limit:', scope.limit);
       }
     };
 
@@ -25,6 +26,7 @@
       link: function(scope, elem, attrs) {
         setTextScope(scope, attrs.ccShowInfiniteText);
         setLimit(scope, attrs.ccShowInfiniteLimit);
+        console.log('limit: ' + attrs.ccShowInfiniteLimit);
         scope.showList = false;
         scope.showHideList = function() {
           scope.showList = !scope.showList;

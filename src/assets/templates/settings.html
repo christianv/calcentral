@@ -26,7 +26,7 @@
 
   <a class="cc-settings-dashboard-link" href="/dashboard">&laquo; Take me to my Dashboard</a>
 
-  <div data-ng-show="api.user.profile.isViewer || api.user.profile.actingAsUid" data-ng-controller="StudentLookupController">
+  <div data-ng-show="api.user.profile.isViewer || api.user.profile.actingAsUid">
     <h2>Admin</h2>
 
     <form data-ng-if="api.user.profile.actingAsUid" data-ng-submit="admin.stopActAs()">
