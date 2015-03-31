@@ -61,7 +61,7 @@
     </div>
 
     <!-- Saved Users -->
-    <div data-ng-if="admin.currentSelection === 'Saved'" class="cc-widget-student-lookup-tab">
+    <div data-ng-show="admin.currentSelection === 'Saved'" class="cc-widget-student-lookup-tab">
       <div data-ng-if="!admin.storedUsers.saved.length" data-ng-bind="admin.savedUsersError"></div>
       <div data-ng-if="admin.storedUsers.saved.length" class="row cc-table">
         <table>
