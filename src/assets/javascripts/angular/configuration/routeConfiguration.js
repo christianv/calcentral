@@ -45,6 +45,10 @@
       controller: 'DashboardController',
       fireUpdatedFeeds: true
     }).
+    when('/finaid', {
+      templateUrl: 'finaid.html',
+      controller: 'FinaidController'
+    }).
     when('/finances', {
       templateUrl: 'myfinances.html',
       controller: 'MyFinancesController'

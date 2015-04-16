@@ -1,0 +1,37 @@
+{
+  "finaidBudget": {
+    "startTerm": "Fall 2014",
+    "endTerm": "Spring 2015",
+    "total": 60000,
+    "items": [
+      {
+        "title": "Tuition and Fees",
+        "amount": 28577
+      },
+      {
+        "title": "Housing",
+        "amount": 18734
+      },
+      {
+        "title": "Meals",
+        "amount": 1495
+      },
+      {
+        "title": "Books and Supplies",
+        "amount": 2116
+      },
+      {
+        "title": "Transportation",
+        "amount": 528
+      },
+      {
+        "title": "Health Insurance",
+        "amount": "Waived"
+      },
+      {
+        "title": "Personal Expenses",
+        "amount": 4078
+      }
+    ]
+  }
+}
