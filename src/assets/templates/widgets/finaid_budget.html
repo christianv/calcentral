@@ -1,0 +1,20 @@
+<div class="cc-widget cc-widget-finaid-budget" data-ng-controller="FinaidBudgetController">
+  <div class="cc-widget-title">
+    <h2 class="cc-left">Budget</h2>
+    <button class="cc-button-link cc-right cc-widget-title-link">View Term Budgets
+    </button>
+  </div>
+
+  <div class="cc-widget-text">
+    <div class="cc-right cc-text-right cc-widget-finaid-budget-header">
+      <div class="cc-text-small cc-text-light cc-uppercase">
+        <span data-ng-bind="finaidBudget.startTerm"></span> - <span data-ng-bind="finaidBudget.endTerm"></span>
+      </div>
+      <strong>
+        Total<span data-cc-amount-directive="finaidBudget.total"></span>
+      </strong>
+    </div>
+    <div class="cc-clearfix cc-widget-border"></div>
+    <div class="cc-widget-finaid-budget-graph" data-cc-budget-chart-directive="finaidBudget.items"></div>
+  </div>
+</div>

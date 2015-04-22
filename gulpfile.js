@@ -81,7 +81,13 @@
           // Angular Swipe Directive
           // TODO - remove as soon as
           // https://github.com/angular/angular.js/issues/4030 is fixed
-          'src/assets/javascripts/angularlib/swipeDirective.js'
+          'src/assets/javascripts/angularlib/swipeDirective.js',
+          // Highcharts - standalone adapter
+          'node_modules/highcharts-release-temp/adapters/standalone-framework.js',
+          // Highcharts - main module
+          'node_modules/highcharts-release-temp/highcharts.js',
+          // TODO - remove as soon as https://github.com/pablojim/highcharts-ng/issues/238 is fixed
+          'node_modules/highcharts-ng-temp/dist/highcharts-ng.js'
         ],
         // Our own files, we put this in a separate array to make sure we run
         // ng-annotate on it
