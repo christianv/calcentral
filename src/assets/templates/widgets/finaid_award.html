@@ -11,6 +11,59 @@
   </div>
 
   <div class="cc-widget-text">
-    {{term.totalOffered}}
+
+    <div class="cc-widget-finaid-award-block cc-left">
+      <div class="cc-text-light cc-text-small cc-uppercase">Academic Year</div>
+      <strong class="cc-text-big cc-widget-finaid-award-block-big" data-ng-bind-template="{{term.startTerm}} {{term.startTermYear}} - {{term.endTerm}} {{term.endTermYear}}"></strong>
+    </div>
+
+    <div class="cc-widget-finaid-award-block cc-widget-finaid-award-block-right cc-right cc-text-right">
+      <div class="cc-text-light cc-text-small cc-uppercase">Total Accepted</div>
+      <strong class="cc-text-big cc-widget-finaid-award-block-big" data-cc-amount-directive="term.totalAccepted"></strong>
+    </div>
+
+    <div class="cc-widget-finaid-award-block cc-right cc-text-right">
+      <div class="cc-text-light cc-text-small cc-uppercase">Total Offered</div>
+      <strong class="cc-text-big cc-widget-finaid-award-block-big" data-cc-amount-directive="term.totalOffered"></strong>
+    </div>
+
+    <div data-ng-repeat="category in term.categories">
+      <div class="cc-table cc-table-finances">
+        <table>
+          <thead>
+            <tr>
+              <th width="15%" scope="col" data-ng-bind="category.title"></th>
+              <th width="35%" data-ng-click="changeSorting('transDesc')" scope="col">
+                Description <i data-ng-class="getSortClass('transDesc')"></i>
+              </th>
+              <th width="30%" data-ng-click="changeSorting('transBalanceAmountFloat')" class="cc-table-right cc-table-right-spacing" scope="col">
+                <i data-ng-class="getSortClass('transBalanceAmountFloat')"></i> Amount
+              </th>
+              <th width="10%" data-ng-click="changeSorting('transType')" data-ng-if="!myfinances.summary.hasDPPTransactions" scope="col">
+                Type <i data-ng-class="getSortClass('transType')"></i>
+              </th>
+              <th width="10%" data-ng-click="changeSorting('isDPP')" class="cc-table-center" data-ng-if="myfinances.summary.hasDPPTransactions" scope="col">
+                DPP <i data-ng-class="getSortClass('isDPP')"></i>
+              </th>
+              <th width="15%" data-ng-click="changeSorting('isDueNow')" class="cc-table-center" scope="col">Due
+                <i data-ng-class="getSortClass('isDueNow')"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            class="cc-widget-table-hover"
+            data-cc-accessible-focus-directive
+            data-ng-class="{'cc-widget-table-hover-opened cc-widget-list-selected':(item.show)}"
+            data-ng-click="api.widget.toggleShow($event, myfinances.activity, item, 'My Finances - Transaction')"
+             data-ng-repeat="item in (filteredList = (myfinances.activity | filter:search | filter:statusFilter | filter:dateFilter | orderBy:sort.column:sort.descending)) | limitTo: activityLimit">
+            <tr data-ng-class="{'cc-page-myfinances-red':(item.isPastDueDate === true), 'cc-page-myfinances-green':(item.transBalanceAmountFloat < 0), 'cc-page-myfinances-unapplied': (item.transStatus === 'Unapplied'), 'cc-page-myfinances-unapplied-award': (item.transStatus === 'Unapplied' && item.transType === 'Award')}">
+              <td>
+                <span data-ng-bind="item.transDate | date:'MM/dd/yy'" class="hide-for-small"></span>
+                <span data-ng-bind="item.transDate | date:'MM/dd'" class="hide-for-medium-up"></span>
+              </td>
+      </div>
+    </div>
+
+
   </div>
 </div>
