@@ -95,7 +95,7 @@
                 "transaction": "OR0009436704"
               },
               {
-                "title": "Federal Direct Subsidized Loan (For Fall 2014)",
+                "title": "Federal Direct Subsidized Loan (For Fall 2015)",
                 "type": "Subsidized Loan",
                 "offered": 7000,
                 "amount": 7000,
@@ -103,8 +103,8 @@
                 "transaction": "OR0009436704"
               },
               {
-                "title": "Federal Direct Subsidized Loan (For Fall 2014)",
-                "type": "Subsidized Loan",
+                "title": "Federal Direct Unsubsidized Loan",
+                "type": "Unsubsidized Loan",
                 "offered": 10000,
                 "amount": 0,
                 "status": "Declined",
