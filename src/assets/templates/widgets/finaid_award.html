@@ -1,0 +1,16 @@
+<div class="cc-widget cc-widget-finaid-award" data-ng-controller="FinaidAwardController">
+  <div class="cc-widget-title">
+    <div class="row collapse">
+      <div class="columns" data-ng-class="{true:'small-6',false:'small-12'}[!!finaidAwards.terms.length]"><h2>Award Package</h2></div>
+      <div class="columns small-6" data-ng-show="finaidAwards.terms.length">
+        <div class="cc-right cc-select">
+          <select ng-model="term" class="cc-ellipsis" ng-options="term.termLabel for term in finaidAwards.terms"></select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cc-widget-text">
+    test {{finaidAwards}}
+  </div>
+</div>

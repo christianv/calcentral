@@ -1,0 +1,17 @@
+<div class="cc-widget cc-widget-finaid-budget" data-ng-controller="FinaidBudgetController">
+  <div class="cc-widget-title">
+    <h2>
+      Budget
+      <span class="cc-widget-title-sub" data-ng-bind-template="{{budget.startTerm}} {{budget.startTermYear}} - {{budget.endTerm}} {{budget.endTermYear}}"></span>
+    </h2>
+  </div>
+
+  <div class="cc-widget-text">
+    <div class="cc-widget-finaid-budget-header cc-clearfix-container">
+      <span class="cc-left">Cost of Attendance</span>
+      <span class="cc-right" data-cc-amount-directive="budget.budgetTotal"></span>
+    </div>
+    <div class="cc-clearfix cc-widget-border"></div>
+    <div class="cc-widget-finaid-budget-graph" data-cc-budget-chart-directive="budget.items"></div>
+  </div>
+</div>

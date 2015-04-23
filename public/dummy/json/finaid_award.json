@@ -1,0 +1,119 @@
+{
+  "finaidAwards": {
+    "terms": [
+      {
+        "startTerm": "Fall",
+        "startTermYear": "2014",
+        "endTerm": "Spring",
+        "endTermYear": "2015",
+        "totalOffered": 60000,
+        "totalAccepted": 43500,
+        "categories": [
+          {
+            "title": "Gift Aid",
+            "total": 16000,
+            "link": {
+              "title": "Add additional resource",
+              "type": "add",
+              "url": "https://bcs-web-dev-03.is.berkeley.edu:8443/psp/bcsdev/EMPLOYEE/HRMS/h/?tab=DEFAULT"
+            },
+            "items": [
+              {
+                "title": "Federal Pell Grant (for Fall 2014)",
+                "amount": 2500,
+                "transaction": "GA0009436703",
+                "servicer": {
+                  "website": {
+                    "title": "Great Lakes Higher Education Corporation & Affiliates",
+                    "url": "https://home.mygreatlakes.org"
+                  },
+                  "phone": "(800) 236-4300"
+                },
+                "requirements": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus malesuada, ante eget volutpat suscipit, arcu lacus gravida ligula, sit amet suscipit metus elit ac quam. Mauris mauris ex, vestibulum id pretium ac, pretium ac leo. Donec tristique tortor malesuada dolor posuere, sed sagittis ante molestie. Vestibulum et accumsan mauris."
+              },
+              {
+                "title": "Federal Pell Grant (for Fall 2015)",
+                "amount": 2500,
+                "transaction": "GA0009436704"
+              },
+              {
+                "title": "Wyzant College Scholarship",
+                "amount": 10000,
+                "transaction": "GA0009436705"
+              },
+              {
+                "title": "Hispanic College Fund",
+                "amount": 1000,
+                "transaction": "GA0009436706"
+              }
+            ]
+          },
+          {
+            "title": "Net Cost",
+            "total": 27600,
+            "link": {
+              "title": "Revise loan amounts",
+              "type": "regular",
+              "url": "https://bcs-web-dev-03.is.berkeley.edu:8443/psp/bcsdev/EMPLOYEE/HRMS/h/?tab=DEFAULT"
+            },
+            "items": [
+              {
+                "title": "Great Lakes Educational Loan",
+                "type": "Private Loan",
+                "offered": 18000,
+                "amount": 11500,
+                "status": "Accepted",
+                "Fees": "2.3% of loan total",
+                "transaction": "OR0009436703",
+                "servicer": {
+                  "website": {
+                    "title": "Great Lakes Higher Education Corporation & Affiliates",
+                    "url": "https://home.mygreatlakes.org"
+                  },
+                  "phone": "(800) 236-4300"
+                },
+                "counseling": [
+                  {
+                    "title": "Entrance counseling",
+                    "completed": true,
+                    "completedDate": "2015-04-15T00:00:00-07:00"
+                  },
+                  {
+                    "title": "Exit counseling",
+                    "completed": true,
+                    "completedDate": "2015-04-20T00:00:00-07:00"
+                  }
+                ],
+                "requirements": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus malesuada, ante eget volutpat suscipit, arcu lacus gravida ligula, sit amet suscipit metus elit ac quam. Mauris mauris ex, vestibulum id pretium ac, pretium ac leo. Donec tristique tortor malesuada dolor posuere, sed sagittis ante molestie. Vestibulum et accumsan mauris."
+              },
+              {
+                "title": "Federal Direct Subsidized Loan (For Fall 2014)",
+                "type": "Subsidized Loan",
+                "offered": 7000,
+                "amount": 7000,
+                "status": "Accepted",
+                "transaction": "OR0009436704"
+              },
+              {
+                "title": "Federal Direct Subsidized Loan (For Fall 2014)",
+                "type": "Subsidized Loan",
+                "offered": 7000,
+                "amount": 7000,
+                "status": "Accepted",
+                "transaction": "OR0009436704"
+              },
+              {
+                "title": "Federal Direct Subsidized Loan (For Fall 2014)",
+                "type": "Subsidized Loan",
+                "offered": 10000,
+                "amount": 0,
+                "status": "Declined",
+                "transaction": "OR0009436704"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
