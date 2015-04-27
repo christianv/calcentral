@@ -5,11 +5,17 @@
 .cc-text-center {
   text-align: center;
 }
+.cc-text-green {
+  color: $cc-color-green;
+}
 .cc-text-line-height {
   line-height: 1.6;
 }
 .cc-text-light {
   color: $cc-color-lighter-medium-grey;
+}
+.cc-text-red {
+  color: $cc-color-red;
 }
 .cc-text-right {
   text-align: right;

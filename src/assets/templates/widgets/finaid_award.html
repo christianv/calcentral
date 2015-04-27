@@ -1,7 +1,7 @@
 <div class="cc-widget cc-widget-finaid-award" data-ng-controller="FinaidAwardController">
   <div class="cc-widget-title">
     <div class="row collapse">
-      <div class="columns" data-ng-class="{true:'small-6',false:'small-12'}[!!finaidAwards.terms.length]"><h2>Award Package</h2></div>
+      <div class="columns" data-ng-class="{true:'small-6',false:'small-12'}[!!finaidAwards.terms.length]"><h2>Financial Aid Awards</h2></div>
       <div class="columns small-6" data-ng-show="finaidAwards.terms.length">
         <div class="cc-right cc-select cc-widget-title-select">
           <select data-ng-model="term" class="cc-ellipsis" data-ng-options="term.termLabel for term in finaidAwards.terms"></select>
@@ -39,7 +39,7 @@
                 Offered
               </th>
               <th width="22%" scope="col" class="cc-table-right">
-                Amount
+                Accepted
               </th>
             </tr>
           </thead>
@@ -54,7 +54,14 @@
                 <div data-ng-bind="item.title"></div>
                 <div data-ng-if="item.type" data-ng-bind="item.type" class="cc-text-light cc-text-small"></div>
               </td>
-              <td data-cc-amount-directive="item.offered" class="cc-table-right" data-ng-if="item.offered"></td>
+              <td data-ng-if="item.offered" class="cc-table-right">
+                <div data-cc-amount-directive="item.offered"></div>
+                <div data-ng-if="item.disbursed" class="cc-text-light cc-text-small">
+                  <span data-ng-if="item.disbursed==='no'" class="cc-text-red"><i class="fa fa-exclamation-circle cc-icon-red"></i> Not Disbursed</span>
+                  <span data-ng-if="item.disbursed==='yes'" class="cc-text-green"><i class="fa fa-check-circle cc-icon-green"></i> Disbursed</span>
+                  <span data-ng-if="item.disbursed==='partial'" class="cc-text-light">Partially Disbursed</span>
+                </div>
+              </td>
               <td class="cc-table-right">
                 <div data-cc-amount-directive="item.amount"></div>
                 <div data-ng-if="item.status" data-ng-bind="item.status" class="cc-text-light cc-text-small"></div>
