@@ -30,7 +30,7 @@
     </div>
 
     <div data-ng-repeat="category in term.categories" class="cc-clearfix cc-widget-finaid-award-table-container">
-      <div class="cc-table cc-table-finances cc-widget-finaid-award-table">
+      <div class="cc-table cc-table-finances">
         <table>
           <thead>
             <tr>
@@ -64,12 +64,25 @@
               <td data-ng-attr-colspan="{{item.offered ? 3 : 2}}">
                 <div class="row collapse">
                   <div data-ng-if="item.transaction">
-                    <strong>Transaction #:</strong>
+                    <strong>Transaction #</strong>
                     <span data-ng-bind="item.transaction"></span>
                   </div>
                   <div data-ng-if="item.originalAmount">
-                    <strong>Original Amount:</strong>
+                    <strong>Original Amount</strong>
                     <span class="cc-page-myfinances-amount" data-cc-amount-directive="item.originalAmount"></span>
+                  </div>
+                  <div data-ng-if="item.fees">
+                    <strong>Fees</strong>
+                    <span data-ng-bind="item.fees"></span>
+                  </div>
+                  <div data-ng-if="item.servicer.website || item.servicer.phone">
+                    <strong>Servicer</strong>
+                    <a data-ng-if="item.servicer.website" data-ng-href="{{item.servicer.website.url}}" data-ng-bind="item.servicer.website.title"></a>
+                    <span data-ng-bind="item.servicer.phone"></span>
+                  </div>
+                  <div data-ng-if="item.requirements">
+                    <strong>Requirements</strong><br />
+                    <div data-ng-bind="item.requirements"></div>
                   </div>
                 </div>
               </td>
@@ -77,7 +90,7 @@
           </tbody>
         </table>
       </div>
-      <div class="cc-clearfix-container">
+      <div class="cc-clearfix-container cc-widget-finaid-award-table-total">
         <div class="cc-left" data-ng-if="category.link.title">
           <a data-ng-href="{{category.link.url}}">
             <i data-ng-if="category.link.type === 'add'" class="fa fa-plus"></i>
