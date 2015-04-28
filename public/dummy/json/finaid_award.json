@@ -131,12 +131,12 @@
         "startTermYear": "2013",
         "endTerm": "Spring",
         "endTermYear": "2014",
-        "totalOffered": 60000,
-        "totalAccepted": 43500,
+        "totalOffered": 40000,
+        "totalAccepted": 26500,
         "categories": [
           {
             "title": "Gift Aid",
-            "total": 15000,
+            "total": 16000,
             "link": {
               "title": "Add additional resource",
               "type": "add",
@@ -144,7 +144,7 @@
             },
             "items": [
               {
-                "title": "Federal Pell Grant (for Fall 2014)",
+                "title": "Federal Pell Grant (for Fall 2013)",
                 "amount": 2500,
                 "transaction": "GA0009436703",
                 "servicer": {
@@ -154,32 +154,33 @@
                   },
                   "phone": "(800) 236-4300"
                 },
+                "type": "Financial Aid and Scholarships",
+                "status": "Confirmed",
                 "requirements": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus malesuada, ante eget volutpat suscipit, arcu lacus gravida ligula, sit amet suscipit metus elit ac quam. Mauris mauris ex, vestibulum id pretium ac, pretium ac leo. Donec tristique tortor malesuada dolor posuere, sed sagittis ante molestie. Vestibulum et accumsan mauris."
               },
               {
-                "title": "Federal Pell Grant (for Fall 2015)",
+                "title": "Federal Pell Grant (for Fall 2014)",
                 "amount": 2500,
-                "transaction": "GA0009436704"
+                "transaction": "GA0009436704",
+                "status": "Estimated",
+                "type": "Grant"
               },
               {
                 "title": "Wyzant College Scholarship",
                 "amount": 10000,
-                "transaction": "GA0009436705"
-              },
-              {
-                "title": "Hispanic College Fund",
-                "amount": 1000,
-                "transaction": "GA0009436706"
+                "transaction": "GA0009436705",
+                "status": "Estimated",
+                "type": "Grant"
               }
             ]
           },
           {
-            "title": "Net Cost",
+            "title": "Loan",
             "total": 27600,
             "link": {
               "title": "Revise loan amounts",
               "type": "regular",
-              "url": "https://bcs-web-dev-03.is.berkeley.edu:8443/psp/bcsdev/EMPLOYEE/HRMS/h/?tab=DEFAULT"
+              "url": "https://bcs-web-dev-03.is.berkeley.edu:8443/psc/bcsdev/EMPLOYEE/HRMS/c/UC_FA_AWD_PROTO_FL.UC_FA_AWD_PROTO_FL.GBL?ucFrom=CalCentral&ucFromLink=https://calcentral.berkeley.edu"
             },
             "items": [
               {
@@ -188,7 +189,6 @@
                 "offered": 7000,
                 "amount": 7000,
                 "min": 3500,
-                "status": "Accepted",
                 "transaction": "OR0009436704",
                 "fees": "2.3% of loan total",
                 "disbursed": "partial",
@@ -219,29 +219,8 @@
                 "offered": 7000,
                 "amount": 7000,
                 "min": 2000,
-                "status": "Accepted",
                 "transaction": "OR0009436704",
                 "disbursed": "partial"
-              },
-              {
-                "title": "Federal Direct Parent Loan",
-                "type": "Unsubsidized Parental Loan",
-                "offered": 10000,
-                "amount": 0,
-                "min": 1500,
-                "status": "Declined",
-                "transaction": "OR0009436705",
-                "disbursed": "yes"
-              },
-              {
-                "title": "Great Lakes Educational Loan",
-                "type": "Private Loan",
-                "offered": 18000,
-                "amount": 11500,
-                "min": 1000,
-                "status": "Accepted",
-                "transaction": "OR0009436703",
-                "disbursed": "no"
               }
             ]
           }
