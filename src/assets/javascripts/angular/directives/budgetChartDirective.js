@@ -1,7 +1,7 @@
 (function(angular) {
   'use strict';
 
-  angular.module('calcentral.directives').directive('ccBudgetChartDirective', function(apiService, $compile, $sce) {
+  angular.module('calcentral.directives').directive('ccBudgetChartDirective', function() {
     // TODO bring into util API (see AmountDirective)
     var isNumber = function(number) {
       return !isNaN(parseFloat(number)) && isFinite(number);
