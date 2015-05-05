@@ -5,8 +5,8 @@
    * My Classes Factory
    */
   angular.module('calcentral.factories').factory('myClassesFactory', function(apiService) {
-    // var url = '/dummy/json/classes.json';
-    var url = '/api/my/classes';
+    var url = '/dummy/json/classes.json';
+    // var url = '/api/my/classes';
     var addSubclasses = function(classesHash) {
       for (var j = 0; j < classesHash.otherClasses.length; j++) {
         for (var k = 0; k < classesHash.otherClasses[j].courses.length; k++) {
