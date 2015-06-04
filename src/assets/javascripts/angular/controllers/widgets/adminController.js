@@ -1,5 +1,5 @@
 /* jshint camelcase: false */
-(function(window, angular) {
+(function(angular) {
   'use strict';
 
   /**
@@ -166,4 +166,4 @@
     ];
     getStoredUsers();
   });
-})(window, window.angular);
+})(window.angular);

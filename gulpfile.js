@@ -62,8 +62,6 @@
         external: [
           // Date parsing
           'node_modules/moment/moment.js',
-          // Libraries (google analytics)
-          'src/assets/javascripts/lib/**/*.js',
           // Human Sorting in JavaScript
           'node_modules/js-natural-sort/dist/naturalSort.js',
           // Remote JavaScript error logging

@@ -1,5 +1,4 @@
 src/assets/javascripts/angularlib/**
-src/assets/javascripts/lib/**
 public/assets/**
 coverage/**
 node_modules/**

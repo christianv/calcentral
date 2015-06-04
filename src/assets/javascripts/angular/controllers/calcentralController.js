@@ -1,4 +1,4 @@
-(function(window, angular) {
+(function(angular) {
   'use strict';
 
   /**
@@ -20,8 +20,9 @@
       apiService.util.changeControllerName(current.controller);
       apiService.util.checkIsBcourses();
       apiService.util.hideOffCanvasMenu();
+      apiService.analytics.load();
       apiService.auth.isLoggedInRedirect();
       apiService.updatedFeeds.initiate(current.$$route, $rootScope);
     });
   });
-})(window, window.angular);
+})(window.angular);

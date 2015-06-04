@@ -1,8 +1,8 @@
-(function(angular, calcentralConfig, Raven) {
+(function(angular, Raven) {
   'use strict';
 
-  angular.module('calcentral.services').service('errorService', [function() {
-    Raven.config(calcentralConfig.sentryUrl).install();
+  angular.module('calcentral.services').service('errorService', function(calcentralConfigFactory) {
+    var calcentralConfig = {};
 
     var findElement = function(id) {
       var element = document.getElementById(id);
@@ -31,9 +31,14 @@
       });
     };
 
+    calcentralConfigFactory.getConfig().success(function(data) {
+      Raven.config(data.sentryUrl).install();
+      calcentralConfig = data;
+    });
+
     // Expose methods
     return {
       send: send
     };
-  }]);
-}(window.angular, window.calcentralConfig, window.Raven));
+  });
+}(window.angular, window.Raven));
