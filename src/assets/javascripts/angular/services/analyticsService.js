@@ -1,7 +1,7 @@
-(function(angular, calcentralConfig) {
+(function(angular) {
   'use strict';
 
-  angular.module('calcentral.services').service('analyticsService', function($rootScope, $window, $location) {
+  angular.module('calcentral.services').service('analyticsService', function(calcentralConfig, $rootScope, $window, $location) {
     // See whether GA is available
     var isGaAvailable = $window && $window.ga;
 
@@ -51,6 +51,7 @@
     // Whenever we're changing the content loaded, we need to track which page we're viewing.
     $rootScope.$on('$viewContentLoaded', trackPageview);
 
+    console.log(calcentralConfig);
     setUserId(calcentralConfig.uid);
 
     // Expose methods
@@ -59,4 +60,4 @@
       trackExternalLink: trackExternalLink
     };
   });
-}(window.angular, window.calcentralConfig));
+}(window.angular));
