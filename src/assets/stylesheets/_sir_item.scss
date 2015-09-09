@@ -1,0 +1,43 @@
+.cc-widget-sir {
+  // Backgrounds
+  .cc-widget-sir-header {
+    background: $cc-color-white;
+    min-height: 96px;
+    overflow: hidden;
+    padding: 10px;
+    position: relative;
+    .cc-widget-sir-header-intro {
+      font-size: 14px;
+      position: relative;
+      z-index: 2;
+    }
+    &:before {
+      background-size: cover;
+      content: ' ';
+      display: block;
+      height: 100%;
+      left: 0;
+      opacity: .15;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: 1;
+    }
+  }
+  .cc-widget-sir-background-haasgrad:before {
+    background-image: url('../images/sir/banner_haas_326x96.jpg');
+  }
+  .cc-widget-sir-background-lawjd:before {
+    background-image: url('../images/sir/banner_law_326x96.jpg');
+  }
+  .cc-widget-sir-background-berkeley:before {
+    background-image: url('../images/sir/banner_berkeley_326x96.jpg');
+  }
+  // Images
+  .cc-widget-sir-image-haasgrad {
+    background-image: url('../images/sir/haas_richard_lyons_100x140.jpg');
+  }
+  .cc-widget-sir-image-lawjd {
+    background-image: url('../images/sir/law_sujit_choudhry_100x140.jpg');
+  }
+}
