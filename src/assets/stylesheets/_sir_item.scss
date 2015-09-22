@@ -64,6 +64,10 @@
   .cc-widget-sir-form {
     background: transparent;
     border: 0;
+    .cc-widget-sir-form-fieldset {
+      margin: 0;
+      padding: 0;
+    }
     .cc-widget-sir-form-button {
       margin-top: 10px;
       text-align: center;

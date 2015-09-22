@@ -24,7 +24,7 @@
     </div>
     <!-- SIR Options -->
     <form class="cc-widget-sir-form" data-ng-submit="submitSirReponse()">
-      <fieldset data-ng-disabled="sirItem.isSubmitting">
+      <fieldset class="cc-widget-sir-form-fieldset" data-ng-disabled="sirItem.isSubmitting">
         <div data-ng-repeat="sirOption in item.config.sirOptions">
           <label class="cc-widget-sir-form-label">
             <input class="cc-widget-sir-form-radio" type="radio" data-ng-model="sirItem.form.option" data-ng-value="sirOption"></input>
@@ -48,13 +48,13 @@
               <select id="cc-widget-sir-form-reasons" data-ng-model="sirItem.form.decline.reasonCode" data-ng-options="r.responseReason as r.descr for r in item.responseReasons">
               </select>
             </div>
-            <div data-ng-if="sirItem.form.decline.reasonCode === 'SCHL' || sirItem.form.decline.reasonCode === 'OTHR'" class="cc-widget-sir-form-reason-description">
-              <label for="cc-widget-sir-form-reason-description" class="cc-visuallyhidden">Description:</label>
-              <input type="text" id="cc-widget-sir-form-reason-description" data-ng-model="sirItem.form.decline.reasonDescription"></input>
+            <div class="cc-widget-sir-form-reason-description">
+              <label for="cc-widget-sir-form-reason-description" class="cc-visuallyhidden">Specify:</label>
+              <input type="text" id="cc-widget-sir-form-reason-description" placeholder="Specify" data-ng-model="sirItem.form.decline.reasonDescription" maxlength="30"></input>
             </div>
             <hr />
             <div class="cc-text-small">
-              To confirm this decision, please select the <strong>I Decline This Offer</span> button.
+              To confirm this decision, please select the <strong>I Decline This Offer</strong> button.
             </div>
           </div>
         </div>

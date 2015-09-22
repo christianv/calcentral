@@ -17,10 +17,8 @@ angular.module('calcentral.factories').factory('sirFactory', function(apiService
     return apiService.http.request(options, urlSirConfig);
   };
 
-  var postSirResponse = function(response) {
-    return $http.post(urlSirResponse, {
-      response: response
-    });
+  var postSirResponse = function(params) {
+    return $http.post(urlSirResponse, params);
   };
 
   return {
