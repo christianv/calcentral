@@ -22,6 +22,9 @@ angular.module('calcentral.services').factory('httpService', function($cacheFact
   var request = function(options, url) {
     url = url ? url : options.url;
     clearCache(options, url);
+    if (options && options.params) {
+        console.log(options.params);
+    }
     return $http.get(url, {
       cache: true,
       params: options ? options.params : null

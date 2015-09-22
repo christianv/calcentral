@@ -6,7 +6,7 @@ var _ = require('lodash');
 /**
  * SIR (Statement of Intent to Register) item controller
  */
-angular.module('calcentral.controllers').controller('SirItemController', function(sirFactory, $scope) {
+angular.module('calcentral.controllers').controller('SirItemController', function(sirFactory, $rootScope, $scope) {
   $scope.sirItem = {
     form: {
       option: false,
@@ -58,9 +58,9 @@ angular.module('calcentral.controllers').controller('SirItemController', functio
       if (_.get(data, 'data.errored')) {
         $scope.sirItem.hasError = true;
       } else {
-
+        // Reload the checklistItem you were currently modifying
+        $rootScope.$broadcast('calcentral.custom.api.sir.update');
       }
-
     });
   };
 
@@ -109,6 +109,7 @@ angular.module('calcentral.controllers').controller('SirItemController', functio
       if (!value) {
         return;
       }
+      console.log($scope.item);
       $scope.sirItem.form.decline.reasonCode = $scope.item.responseReasons[0].responseReason;
     });
   };

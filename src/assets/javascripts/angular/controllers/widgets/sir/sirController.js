@@ -28,22 +28,19 @@ angular.module('calcentral.controllers').controller('SirController', function(si
       $scope.sir.checklistItems = checklistItems;
       return;
     }
-console.log('updateChecklistItems', checklistItems);
-    _(checklistItems).forEach(function(checklistItem) {
+
+    checklistItems.forEach(function(checklistItem) {
       var result = _.findWhere($scope.sir.checklistItems, {
         chklstItemCd: checklistItem.chklstItemCd
       });
-      console.log('result', result);
       // If we don't find it in the current scope, it's a new item, so we should add it
       if (!result) {
         $scope.sir.checklistItems.push(checklistItem);
       } else {
-        if (result.itemStatus !== checklistItem.itemStatus) {
+        if (result.itemStatusCode !== checklistItem.itemStatusCode) {
           // Update specific checklist item
           var index = _.indexOf($scope.sir.checklistItems, result);
-          console.log('index', index);
           $scope.sir.checklistItems.splice(index, 1, checklistItem);
-          console.log('checklistitems - last', $scope.sir.checklistItems);
         }
       }
     });
@@ -69,72 +66,7 @@ console.log('updateChecklistItems', checklistItems);
     });
 
     if (checklistItems.length) {
-      console.log('1 - checklistItems', JSON.stringify(checklistItems));
       updateChecklistItems(checklistItems);
-
-      checklistItems = [
-    {
-        "emplid": "CC00000004",
-        "chklstItemCd": "AGS002",
-        "checkListDescr": "Statement Intent to Register",
-        "itemStatus": "Received",
-        "itemStatusCode": "R",
-        "statusDt": "2015-09-16",
-        "dueDt": "2015-08-17",
-        "responsibleCntctName": "Bender Rodriguez",
-        "responsibleCntctEmail": "BCS@BERKELEY.EDU",
-        "associationIdName": null,
-        "itemComment": "Grad SIR 2 (Haas FT MBA)",
-        "adminFunc": "ADMP",
-        "adminFuncDescr": "Admissions Program",
-        "checkListDocMgmt": {
-            "linkUrlLbl": null,
-            "linkUrl": null,
-            "docUploadLink": null,
-            "displayStatusDt": null,
-            "displayDueDt": null
-        },
-        "checkListMgmtAdmp": {
-            "varDataSeq": "1",
-            "acadCareer": "GRAD",
-            "stdntCarNbr": "0",
-            "admApplNbr": "00000134",
-            "applProgNbr": "0"
-        }
-    },
-    {
-        "emplid": "CC00000004",
-        "chklstItemCd": "AGS004",
-        "checkListDescr": "Statement Intent to Register",
-        "itemStatus": "Received",
-        "itemStatusCode": "R",
-        "statusDt": "2015-09-16",
-        "dueDt": "2015-08-17",
-        "responsibleCntctName": "Bender Rodriguez",
-        "responsibleCntctEmail": "BCS@BERKELEY.EDU",
-        "associationIdName": null,
-        "itemComment": "Exec MBA SIR",
-        "adminFunc": "ADMP",
-        "adminFuncDescr": "Admissions Program",
-        "checkListDocMgmt": {
-            "linkUrlLbl": null,
-            "linkUrl": null,
-            "docUploadLink": null,
-            "displayStatusDt": null,
-            "displayDueDt": null
-        },
-        "checkListMgmtAdmp": {
-            "varDataSeq": "2",
-            "acadCareer": "GRAD",
-            "stdntCarNbr": "0",
-            "admApplNbr": "00000134",
-            "applProgNbr": "1"
-        }
-    }
-];
-
-      updateChecklistItems(checklistItems);
-
       return $q.resolve(checklistItems);
     } else {
       // Make sure none of the other code ever gets run
@@ -184,6 +116,7 @@ console.log('updateChecklistItems', checklistItems);
    */
   var mapChecklistItems = function() {
     $scope.sir.checklistItems = $scope.sir.checklistItems.map(mapChecklistItem);
+console.log($scope.sir.checklistItems);
   };
 
   /**
@@ -219,4 +152,6 @@ console.log('updateChecklistItems', checklistItems);
   };
 
   initWorkflow();
+
+  $scope.$on('calcentral.custom.api.sir.update', initWorkflow);
 });
