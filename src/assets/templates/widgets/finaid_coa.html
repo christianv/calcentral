@@ -32,7 +32,10 @@
                 <td data-ng-if="item.show" class="cc-table-right">-</td>
               </tr>
               <tr data-ng-if="item.totals.length">
-                <td data-ng-bind-template="{{category.title | uppercase}} TOTAL" data-ng-attr-colspan="{{item.totals.length + 1}}" class="cc-table-right cc-table-top-border cc-text-small cc-widget-finaid-coa-budget-total-title"></td>
+                <td data-ng-attr-colspan="{{item.totals.length + 1}}" class="cc-table-right cc-table-top-border cc-text-small cc-widget-finaid-coa-budget-total-title cc-text-uppercase">
+                  <span data-ng-if="category.title === 'Standard Budget Items'">Standard Budget Total</span>
+                  <span data-ng-if="category.title === 'Additional Items'">Additional Budget Total</span>
+                </td>
               </tr>
               <tr data-ng-if="item.totals.length">
                 <td>&nbsp;</td>
