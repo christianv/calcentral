@@ -35,10 +35,10 @@ angular.module('calcentral.controllers').controller('FinaidController', function
   };
 
   /**
-   * See whether the finaid year, semester option combination exist, otherwise, send them to the 404 page
+   * See whether the finaid year exist, otherwise, send them to the 404 page
    */
-  var combinationExists = function(data, finaidYearId, semesterOptionId) {
-    var combination = finaidService.combinationExists(data, finaidYearId, semesterOptionId);
+  var combinationExists = function(data, finaidYearId) {
+    var combination = finaidService.combinationExists(data, finaidYearId);
 
     // If no correct finaid year comes back, make sure to send them to the 404 page.
     if (!combination) {
@@ -53,7 +53,7 @@ angular.module('calcentral.controllers').controller('FinaidController', function
   var getFinaidSummary = function(options) {
     return finaidFactory.getSummary(options).success(function(data) {
       setFinaidYear(data.feed, $routeParams.finaidYearId);
-      combinationExists(data.feed, _.get($scope, 'finaidYear.id'), $routeParams.semesterOptionId);
+      combinationExists(data.feed, _.get($scope, 'finaidYear.id'));
       setCanSeeFinaidYear(data.feed, $scope.finaidYear);
       $scope.finaidSummary = data.feed.finaidSummary;
       $scope.finaid.isLoading = false;

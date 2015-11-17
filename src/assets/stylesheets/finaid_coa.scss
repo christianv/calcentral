@@ -6,11 +6,6 @@
     &:not(:last-child) {
       margin-bottom: 15px;
     }
-    &:last-child td {
-      border-top: 1px solid $cc-color-popover-border;
-      font-weight: bold;
-      padding-top: 5px;
-    }
     .cc-widget-finaid-coa-budget-table-title-sub {
       padding-left: 20px;
       position: relative;
@@ -20,5 +15,10 @@
         position: absolute;
       }
     }
+  }
+  .cc-widget-finaid-coa-table-grand-total td {
+    border-top: 1px solid $cc-color-popover-border;
+    font-weight: bold;
+    padding-top: 5px;
   }
 }

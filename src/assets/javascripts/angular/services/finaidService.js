@@ -5,19 +5,12 @@ var angular = require('angular');
 
 angular.module('calcentral.services').service('finaidService', function($rootScope) {
   var options = {
-    finaidYear: false,
-    semesterOption: false
+    finaidYear: false
   };
 
   var findFinaidYear = function(data, finaidYearId) {
     return _.find(data.finaidSummary.finaidYears, function(finaidYear) {
       return finaidYear.id === finaidYearId;
-    });
-  };
-
-  var findSemesterOption = function(finaidYear, semesterOptionId) {
-    return _.find(finaidYear.semesterOptions, function(semesterOption) {
-      return semesterOption.id === semesterOptionId;
     });
   };
 
@@ -42,25 +35,12 @@ angular.module('calcentral.services').service('finaidService', function($rootSco
   };
 
   /**
-   * See whether the finaid year & semester option combination exists
+   * See whether the finaid year option combination exists
    * @param {Object} data Summary data
    * @param {String} finaidYearId e.g. 2015
-   * @param {String} semesterOptionId e.g. spring-fall
    */
-  var combinationExists = function(data, finaidYearId, semesterOptionId) {
-    var finaidYear = findFinaidYear(data, finaidYearId);
-    var semesterOption = true;
-
-    if (!finaidYear) {
-      return false;
-    }
-
-    // If the semester option is also defined, we should also check for this
-    if (typeof semesterOptionId !== 'undefined') {
-      semesterOption = findSemesterOption(finaidYear, semesterOptionId);
-    }
-
-    return finaidYear && semesterOption;
+  var combinationExists = function(data, finaidYearId) {
+    return !!findFinaidYear(data, finaidYearId);
   };
 
   /**
@@ -94,25 +74,6 @@ angular.module('calcentral.services').service('finaidService', function($rootSco
     return options.finaidYear;
   };
 
-  /**
-   * Set the default semester option, usually it's the first one in the list
-   */
-  var setDefaultSemesterOption = function(semesterOptionId) {
-    if (options.finaidYear && options.finaidYear.semesterOptions && options.finaidYear.semesterOptions.length) {
-      if (semesterOptionId) {
-        setSemesterOption(findSemesterOption(options.finaidYear, semesterOptionId));
-      } else {
-        setSemesterOption(options.finaidYear.semesterOptions[0]);
-      }
-    }
-    return options.semesterOption;
-  };
-
-  var setSemesterOption = function(semesterOption) {
-    options.semesterOption = semesterOption;
-    $rootScope.$broadcast('calcentral.custom.api.finaid.semesterOption');
-  };
-
   var setFinaidYear = function(finaidYear) {
     options.finaidYear = finaidYear;
     $rootScope.$broadcast('calcentral.custom.api.finaid.finaidYear');
@@ -124,9 +85,7 @@ angular.module('calcentral.services').service('finaidService', function($rootSco
     combinationExists: combinationExists,
     findFinaidYear: findFinaidYear,
     options: options,
-    setDefaultSemesterOption: setDefaultSemesterOption,
     setDefaultFinaidYear: setDefaultFinaidYear,
-    setFinaidYear: setFinaidYear,
-    setSemesterOption: setSemesterOption
+    setFinaidYear: setFinaidYear
   };
 });

@@ -9,9 +9,13 @@
     <div data-ng-if="!errored">
       <div data-ng-bind="coa.message"></div>
       <hr />
-      <div data-ng-if="!currentCoaData">No data available for this semester option</div>
-      <div data-ng-if="currentCoaData">
-        <div class="cc-table cc-widget-finaid-coa-table" data-ng-repeat="category in currentCoaData.data">
+      <div data-ng-if="!coa[coa.currentView].data.length">Currently we don't have your data available for this aid year.</div>
+      <div data-ng-if="coa[coa.currentView].data.length">
+        <div
+          class="cc-table cc-widget-finaid-coa-table"
+          data-ng-class="{'cc-widget-finaid-coa-table-grand-total':(category.title === 'Grand Total')}"
+          data-ng-repeat="category in coa[coa.currentView].data"
+        >
           <table>
             <thead>
               <tr>
@@ -32,7 +36,10 @@
                 <td data-ng-if="item.show" class="cc-table-right">-</td>
               </tr>
               <tr data-ng-if="item.totals.length">
-                <td data-ng-attr-colspan="{{item.totals.length + 1}}" class="cc-table-right cc-table-top-border cc-text-small cc-widget-finaid-coa-budget-total-title cc-text-uppercase">
+                <td
+                  data-ng-attr-colspan="{{item.totals.length + 1}}"
+                  class="cc-table-right cc-table-top-border cc-text-small cc-widget-finaid-coa-budget-total-title cc-text-uppercase"
+                >
                   <span data-ng-if="category.title === 'Standard Budget Items'">Standard Budget Total</span>
                   <span data-ng-if="category.title === 'Additional Items'">Additional Budget Total</span>
                 </td>

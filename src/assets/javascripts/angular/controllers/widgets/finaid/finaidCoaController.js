@@ -1,23 +1,27 @@
 'use strict';
 
 var angular = require('angular');
-var _ = require('lodash');
 
 /**
  * Finaid COA (Cost of Attendance) controller
  */
 angular.module('calcentral.controllers').controller('FinaidCoaController', function($scope, finaidFactory, finaidService) {
+  var views = ['fullYear', 'semester'];
   $scope.coa = {
-    isLoading: true
+    isLoading: true,
+    // TODO make this views[0] as soon as fullYear is available
+    currentView: views[1]
   };
 
-  var setCurrentCoaData = function(semesterOptionId, coa) {
-    if (!semesterOptionId || !coa) {
-      return;
+  /**
+   * Toggle between the semester & year view
+   */
+  $scope.toggleView = function() {
+    if ($scope.coa.currentView === views[0]) {
+      $scope.coa.currentView = views[1];
+    } else {
+      $scope.coa.currentView = views[0];
     }
-    $scope.currentCoaData = _.find(coa.semesterOptions, function(semesterOption) {
-      return semesterOption.id === semesterOptionId;
-    });
   };
 
   var loadCoa = function() {
@@ -26,10 +30,9 @@ angular.module('calcentral.controllers').controller('FinaidCoaController', funct
     }).success(function(data) {
       angular.extend($scope.coa, data.feed.coa);
       $scope.errored = data.errored;
-      setCurrentCoaData(finaidService.options.semesterOption.id, data.feed.coa);
       $scope.coa.isLoading = false;
     });
   };
 
-  $scope.$on('calcentral.custom.api.finaid.semesterOption', loadCoa);
+  $scope.$on('calcentral.custom.api.finaid.finaidYear', loadCoa);
 });

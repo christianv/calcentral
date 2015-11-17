@@ -29,17 +29,15 @@ angular.module('calcentral.controllers').controller('FinaidSummaryController', f
   };
 
   /**
-   * Set the default selections on the finaid year and semester options
+   * Set the default selections on the finaid year
    */
   var setDefaultSelections = function(data) {
     if (!_.get(data, 'finaidSummary.finaidYears.length')) {
       return;
     }
     finaidService.setDefaultFinaidYear(data, $routeParams.finaidYearId);
-    finaidService.setDefaultSemesterOption($routeParams.semesterOptionId);
     updateCanSeeFinaid();
     selectFinaidYear();
-    selectSemesterOption();
     updateFinaidUrl();
   };
 
@@ -47,8 +45,7 @@ angular.module('calcentral.controllers').controller('FinaidSummaryController', f
     if (!$scope.selected.finaidYear) {
       return;
     }
-    var semesterOptionUrl = $scope.selected.semesterOption ? '/' + $scope.selected.semesterOption.id : '';
-    $scope.finaidUrl = 'finances/finaid/' + $scope.selected.finaidYear.id + semesterOptionUrl;
+    $scope.finaidUrl = 'finances/finaid/' + $scope.selected.finaidYear.id;
 
     if ($scope.isMainFinaid) {
       $location.path($scope.finaidUrl, false);
@@ -76,28 +73,13 @@ angular.module('calcentral.controllers').controller('FinaidSummaryController', f
     getFinaidYearData();
   };
 
-  var selectSemesterOption = function() {
-    $scope.selected.semesterOption = finaidService.options.semesterOption;
-  };
-
   $scope.$on('calcentral.custom.api.finaid.finaidYear', selectFinaidYear);
-  $scope.$on('calcentral.custom.api.finaid.semesterOption', selectSemesterOption);
-
-  /**
-   * Update a semester option selection
-   */
-  $scope.updateSemesterOption = function() {
-    finaidService.setSemesterOption($scope.selected.semesterOption);
-    updateFinaidUrl();
-  };
 
   /**
    * Update the finaid year selection
    */
   $scope.updateFinaidYear = function() {
     finaidService.setFinaidYear($scope.selected.finaidYear);
-    finaidService.setDefaultSemesterOption();
-    selectSemesterOption();
     updateFinaidUrl();
     updateCanSeeFinaid();
   };

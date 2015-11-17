@@ -46,18 +46,8 @@
               <strong>Semester Type:</strong>
             </label>
           </div>
-          <div class="cc-widget-finaid-summary-semester-options">
-            <div data-ng-if="selected.finaidYear.semesterOptions.length > 1">
-              <div data-ng-repeat="semesterOption in selected.finaidYear.semesterOptions">
-                <label>
-                  <input type="radio" data-ng-change="updateSemesterOption()" data-ng-model="selected.semesterOption" data-ng-value="semesterOption" />
-                  <span data-ng-bind="semesterOption.semesters | andFilter"></span>
-                </label>
-              </div>
-            </div>
-            <div data-ng-if="selected.finaidYear.semesterOptions.length === 1">
-              <span data-ng-bind="selected.finaidYear.semesterOptions[0].semesters | andFilter"></span>
-            </div>
+          <div class="cc-widget-finaid-summary-available-semesters" data-ng-if="selected.finaidYear.availableSemesters.length">
+            <span data-ng-bind="selected.finaidYear.availableSemesters | andFilter"></span>
           </div>
         </div>
         <div data-cc-spinner-directive="finaidSummaryInfo.isLoadingData">
