@@ -67,6 +67,7 @@
   }
 
   @media print {
+    overflow: visible;
     padding: 0;
 
     .cc-page-roster-image-unavailable:before {
