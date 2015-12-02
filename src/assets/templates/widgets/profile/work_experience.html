@@ -1,9 +1,18 @@
-<div class="cc-widget-text cc-page-widget-profile-sections" data-ng-controller="WorkExperienceController" data-cc-spinner-directive>
+<div
+  class="cc-widget-text cc-page-widget-profile-sections"
+  data-ng-controller="WorkExperienceController"
+  data-cc-spinner-directive="workExperienceInformation.isLoading">
 
-  <!-- Editable soon -->
-  <div data-ng-include="'widgets/profile/editable_soon.html'"></div>
+  <div data-ng-if="!workExperienceInformation.isErrored">
+    <!-- Editable soon -->
+    <div data-ng-include="'widgets/profile/editable_soon.html'"></div>
+    <!-- Work experience -->
+    <div data-ng-include="'widgets/profile/work_experience_section.html'"></div>
+  </div>
 
-  <!-- Work experience -->
-  <div data-ng-include="'widgets/profile/work_experience_section.html'"></div>
+  <div
+    data-ng-if="workExperienceInformation.isErrored"
+    data-ng-include="'widgets/profile/unavailable.html'">
+  </div>
 
 </div>

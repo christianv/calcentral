@@ -38,6 +38,9 @@ angular.module('calcentral.controllers').controller('ProfileAddressController', 
    * Fix the formatted addresses
    */
   var fixFormattedAddresses = function() {
+    if (!$scope.items.content) {
+      return;
+    }
     $scope.items.content = $scope.items.content.map(function(element) {
       element.formattedAddress = apiService.profile.fixFormattedAddress(element.formattedAddress);
       return element;

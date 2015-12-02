@@ -1,9 +1,18 @@
-<div class="cc-widget-text cc-page-widget-profile-sections" data-ng-controller="EmergencyController" data-cc-spinner-directive>
+<div
+  class="cc-widget-text cc-page-widget-profile-sections"
+  data-ng-controller="EmergencyController"
+  data-cc-spinner-directive="emergencyContactInformation.isLoading">
 
-  <!-- Editable soon -->
-  <div data-ng-include="'widgets/profile/editable_soon.html'"></div>
+  <div data-ng-if="!emergencyContactInformation.isErrored">
+    <!-- Editable soon -->
+    <div data-ng-include="'widgets/profile/editable_soon.html'"></div>
+    <!-- Emergency contact -->
+    <div data-ng-include="'widgets/profile/emergency_contact.html'"></div>
+  </div>
 
-  <!-- Emergency contact -->
-  <div data-ng-include="'widgets/profile/emergency_contact.html'"></div>
+  <div
+    data-ng-if="emergencyContactInformation.isErrored"
+    data-ng-include="'widgets/profile/unavailable.html'">
+  </div>
 
 </div>
