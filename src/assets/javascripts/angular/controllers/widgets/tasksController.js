@@ -60,7 +60,7 @@ angular.module('calcentral.controllers').controller('TasksController', function(
   };
 
   var getTasks = function(options) {
-    return tasksFactory.getTasks(options).success(function(data) {
+    return tasksFactory.getTasks(options).then(function(data) {
       apiService.updatedFeeds.feedLoaded(data);
       angular.extend($scope, data);
       if ($scope.tasks) {

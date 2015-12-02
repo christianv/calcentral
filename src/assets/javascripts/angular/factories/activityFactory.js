@@ -16,7 +16,7 @@ angular.module('calcentral.factories').factory('activityFactory', function(apiSe
    */
   var filterFinaidOnly = function(activities) {
     return _.filter(activities, {
-      isFinaidActivity: true
+      isFinaid: true
     });
   };
 

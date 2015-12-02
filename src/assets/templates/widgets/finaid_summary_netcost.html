@@ -1,0 +1,10 @@
+<div
+  data-ng-if="finaidSummaryData.netCost"
+  data-ng-class="{'cc-widget-finaid-summary-netcost-summary': (netcostInfo.card === 'summary'), 'cc-widget-finaid-summary-netcost-awards': (netcostInfo.card === 'awards')}"
+>
+  <div data-ng-repeat="item in finaidSummaryData.netCost.items">
+    <div data-cc-finaid-summary-item-directive data-item="item"></div>
+  </div>
+  <hr class="cc-hr-spacing-5" />
+  <div data-cc-finaid-summary-item-directive data-item="finaidSummaryData.netCost.total"></div>
+</div>

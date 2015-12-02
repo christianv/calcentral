@@ -51,7 +51,12 @@
     </li>
   </ul>
   <div data-cc-show-more-directive data-cc-show-more-list="filteredList" data-cc-show-more-watch="search.source" data-cc-show-more-limit="activitiesLimit"></div>
-  <div data-ng-show="!list.length" class="cc-widget-text">
-    You have no notifications at this time.
+  <div data-ng-if="!list.length" class="cc-widget-text">
+    <span data-ng-if="!aidYearName">
+      You have no notifications at this time.
+    </span>
+    <span data-ng-if="aidYearName">
+      You have no messages for <span data-ng-bind="aidYearName"></span>.
+    </span>
   </div>
 </div>

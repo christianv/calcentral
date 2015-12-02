@@ -18,6 +18,14 @@
           </div>
         </div>
 
+        <div class="cc-widget-finaid-summary" data-ng-controller="FinaidSummaryController">
+          <div class="cc-widget-text" data-cc-spinner-directive="finaidSummaryInfo.isLoadingData">
+            <div data-ng-if="finaidSummary.finaidYears.length && canSeeFinaidData">
+              <div data-ng-include="'widgets/finaid_summary_netcost.html'" data-onload="netcostInfo.card = 'awards'"></div>
+            </div>
+          </div>
+        </div>
+
         <div
           data-ng-repeat="key in finaidAwardsInfo.keysGiftWork"
           data-ng-include="'widgets/finaid_awards_section.html'"

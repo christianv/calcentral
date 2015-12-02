@@ -13,7 +13,10 @@ angular.module('calcentral.controllers').controller('FinaidSummaryController', f
     selected: {},
     finaidSummaryInfo: {
       isLoadingOptions: true,
-      isLoadingData: true
+      isLoadingData: true,
+      // This will be true when it's loaded on the My Finances main dashboard
+      // If that's the case, we need to show some additional data
+      isLoadedOnMainDashboard: !$routeParams.finaidYearId
     },
     finaidSummaryData: {},
     shoppingSheet: {}

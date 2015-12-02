@@ -1,0 +1,36 @@
+<div class="cc-widget-text" data-ng-if="tasks.length === 0">
+  You have no tasks for <span data-ng-bind="communicationsInfo.aidYear.name"></span>.
+</div>
+
+<div class="cc-widget-tasks-container" data-ng-if="tasks.length > 0">
+  <h3 class="cc-widget-tasks-section-label">
+    <span>Task</span>
+    <span class="cc-right">Status Date</span>
+  </h3>
+
+  <ul class="cc-widget-tasks-list cc-widget-list-color cc-widget-list-color-grey">
+    <li
+      data-ng-repeat="task in tasks | limitTo: taskLimit"
+      data-ng-class="{'cc-widget-list-selected': task.show}">
+      <div data-ng-include src="'dashboard_task_loop.html'"></div>
+    </li>
+  </ul>
+</div>
+
+<div class="cc-widget-text">
+  <hr>
+  <ul class="cc-list-bullets">
+    <li>
+      Financial Aid and Scholarships <a href="http://financialaid.berkeley.edu/forms">Forms Page</a>.
+    </li>
+    <li>
+      <strong>Optional</strong>
+      <a
+        data-cc-campus-solutions-link-directive="communicationsInfo.unsolicitedResourcesUrl"
+        data-cc-outbound-enabled="false"
+        data-cc-campus-solutions-link-directive-text="backToText"
+      >Upload</a>
+      an Optional Financial Aid Document.
+    </li>
+  </ul>
+</div>
