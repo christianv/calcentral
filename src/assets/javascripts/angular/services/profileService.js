@@ -9,7 +9,7 @@ angular.module('calcentral.services').service('profileService', function() {
    */
   var actionCompleted = function($scope, data, callback) {
     if (data.data.errored) {
-      $scope.errorMessage = data.data.feed.errmsgtext;
+      $scope.errorMessage = _.get(data, 'data.feed.errmsgtext') || 'An error occurred while saving your data.';
     } else {
       $scope.closeEditor();
       callback({
@@ -123,12 +123,12 @@ angular.module('calcentral.services').service('profileService', function() {
   /**
    * Show the editor to add / edit object
    */
-  var showSaveAdd = function($scope, item, isAdding) {
+  var showSaveAdd = function($scope, item, config) {
     closeEditors($scope);
     angular.merge($scope.currentObject, {
-      data: item,
-      isAdding: isAdding
+      data: item
     });
+    angular.merge($scope.currentObject, config);
     item.isModifying = true;
     $scope.errorMessage = '';
     $scope.items.editorEnabled = true;
@@ -147,14 +147,18 @@ angular.module('calcentral.services').service('profileService', function() {
         }
       });
     }
-    showSaveAdd($scope, initObject, true);
+    showSaveAdd($scope, initObject, {
+      isAdding: true
+    });
   };
 
   /**
    * Show the edit editor
    */
   var showEdit = function($scope, item) {
-    showSaveAdd($scope, item);
+    showSaveAdd($scope, item, {
+      isPreferredOnLoad: !!item.primary
+    });
   };
 
   // Expose methods

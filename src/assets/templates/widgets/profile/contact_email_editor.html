@@ -26,7 +26,7 @@
       <div>
         <input type="text" id="cc-page-widget-profile-email-address" data-ng-model="currentObject.data.emailAddress" required aria-required="true" />
       </div>
-      <div>
+      <div data-ng-if="!currentObject.isPreferredOnLoad">
         <input type="checkbox" id="cc-page-widget-profile-email-preferred" data-ng-model="currentObject.data.primary" />
         <label for="cc-page-widget-profile-email-preferred">Preferred email address</label>
       </div>
