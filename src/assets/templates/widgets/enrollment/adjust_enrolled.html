@@ -11,21 +11,21 @@
       data-link="enrollmentTerm.links.addEnrolledClasses"
       data-text="Add"
       data-cache="enrollment"
-      data-ng-if="enrollmentTerm.isClassScheduleAvailable"
+      data-ng-if="enrollmentTerm.isClassScheduleAvailable && enrollmentTerm.links.gradeBase"
     ></div>
     <div
       data-cc-campus-solutions-link-item-directive
       data-link="enrollmentTerm.links.dropEnrolledClasses"
       data-text="Drop"
       data-cache="enrollment"
-      data-ng-if="enrollmentTerm.isClassScheduleAvailable"
+      data-ng-if="enrollmentTerm.isClassScheduleAvailable && enrollmentTerm.links.gradeBase"
     ></div>
     <div
       data-cc-campus-solutions-link-item-directive
       data-link="enrollmentTerm.links.swapEnrolledClasses"
       data-text="Swap"
       data-cache="enrollment"
-      data-ng-if="enrollmentTerm.isClassScheduleAvailable"
+      data-ng-if="enrollmentTerm.isClassScheduleAvailable && enrollmentTerm.links.gradeBase"
     ></div>
     <div
       data-cc-campus-solutions-link-item-directive
@@ -33,6 +33,13 @@
       data-text="Withdraw"
       data-ng-if="enrollmentTerm.enrollmentPeriod[0]"
       data-cache="enrollment"
+    ></div>
+    <div
+      data-cc-campus-solutions-link-item-directive
+      data-link="enrollmentTerm.links.gradeBase"
+      data-text="Change grade base"
+      data-cache="enrollment"
+      data-ng-if="enrollmentTerm.isGradeBaseAvailable"
     ></div>
   </div>
 </div>
