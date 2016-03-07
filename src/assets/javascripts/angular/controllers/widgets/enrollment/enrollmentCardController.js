@@ -69,6 +69,19 @@ angular.module('calcentral.controllers').controller('EnrollmentCardController', 
   };
 
   /**
+   * The API gives us '2016 Fall', instead, we want to show 'Fall 2016'
+   */
+  var swapTermDescription = function(data) {
+    if (!data.termDescr) {
+      return data;
+    }
+
+    data.termDescr = data.termDescr.split(' ').reverse().join(' ');
+
+    return data;
+  };
+
+  /**
    * Add aditional metadata to the links
    */
   var mapLinks = function(data) {
@@ -98,6 +111,7 @@ angular.module('calcentral.controllers').controller('EnrollmentCardController', 
       return;
     }
 
+    termData = swapTermDescription(termData);
     termData = mapLinks(termData);
     termData = setSections(termData);
     setTermData(termData, termData.term);
