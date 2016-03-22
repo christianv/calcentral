@@ -53,6 +53,7 @@
     "js-natural-sort": "^0.8.1",
     "jscs": "2.0.0",
     "jshint": "2.8.0",
+    "left-pad": "github:azer/left-pad#bff80e3ef0db0bfaba7698606c4f623433d14355",
     "lodash": "^4.5.0",
     "minimist": "^1.1.2",
     "moment": "^2.10.6",
