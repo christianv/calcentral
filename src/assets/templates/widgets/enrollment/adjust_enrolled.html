@@ -57,10 +57,17 @@
 </div>
 
 <div data-ng-if="enrollmentTerm.enrolledClasses.length">
-  <div class="cc-table">
+  <div
+    class="cc-table"
+    data-ng-class="{'cc-enrollment-card-margin-top' : ($index > 0)}"
+    data-ng-repeat="(groupedSectionKey, groupedSection) in enrollmentTerm.enrolledClassesGrouped"
+  >
     <table>
       <thead>
-        <th scope="col" width="100px">Class</th>
+        <th scope="col" width="100px">
+          <span class="cc-text-small" data-ng-bind-template="{{groupedSectionKey}}"></span>
+          <span class="cc-visuallyhidden">Class</span>
+        </th>
         <th scope="col" width="30px" class="cc-table-right-spacing">
           <span class="cc-visuallyhidden">Component</span>
         </th>
@@ -68,7 +75,7 @@
         <th scope="col" class="cc-table-right">Units</th>
       </thead>
       <tbody>
-        <tr data-ng-repeat="class in enrollmentTerm.enrolledClasses">
+        <tr data-ng-repeat="class in groupedSection">
           <td data-ng-bind="class.subjectCatalog"></td>
           <td data-ng-attr-title="{{class.ssrComponentDescr}}" class="cc-table-right-spacing">
             <span class="cc-visuallyhidden" data-ng-bind-template="{{class.ssrComponentDescr}} -"></span>
