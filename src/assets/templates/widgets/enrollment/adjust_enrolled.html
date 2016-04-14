@@ -3,7 +3,7 @@
     <strong>Enrolled Classes</strong>
   </div>
   <div
-    data-ng-if="api.user.profile.actAsOptions.canSeeCSLinks"
+    data-ng-if="api.user.profile.actAsOptions.canSeeCSLinks && enrollmentTerm.hasActiveEnrollmentPeriod"
     class="cc-flex cc-flex-wrap cc-enrollment-card-enrolled-links"
   >
     <div
